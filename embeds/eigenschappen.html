@@ -19,19 +19,25 @@
 
     <!-- Het Inleiding Element -->
     <div class="bg-white rounded-2xl border border-slate-200 p-4 md:p-6 shadow-sm space-y-6 max-w-7xl mx-auto w-full">
-        
+
         <!-- Header -->
         <div class="flex flex-col sm:flex-row sm:items-center justify-between border-b border-slate-100 pb-3">
             <div>
-                <span class="text-[10px] font-bold text-teal-600 uppercase tracking-widest">Studiewijzer &bull; Les 1 &amp; 2</span>
-                <h2 class="text-lg font-bold text-slate-900 leading-tight">🎓 Inleiding: Bouwstenen van een Automaat</h2>
+                <span class="text-[10px] font-bold text-teal-600 uppercase tracking-widest">Elementen &amp;
+                    eigenschappen</span>
+                <h2 class="text-lg font-bold text-slate-900 leading-tight">🎓 Samenvatting: Bouwstenen van een Automaat
+                </h2>
             </div>
-            <span class="text-[10px] font-semibold text-slate-400 mt-1 sm:mt-0">De basisregels en symbolen op een rij</span>
+            <span class="text-[10px] font-semibold text-slate-400 mt-1 sm:mt-0">De basisregels en symbolen op een
+                rij</span>
         </div>
 
         <!-- Introductie Tekst -->
         <p class="text-xs md:text-sm text-slate-600 leading-relaxed">
-            Om een automaat te kunnen ontwerpen, moet je de elementen kennen. Laten we terugkijken op de nooddienstregeling en de theorie van Les 1 om de basisregels en symbolen scherp op een rij te zetten. Hierna ga je aan de slag met een praktische opdracht waarin je een stukje van een game observeert en hierbij zelf het toestandsdiagram ontwerpt en tekent!
+            Om een automaat te kunnen ontwerpen, moet je de elementen kennen. Laten we terugkijken op de
+            nooddienstregeling om de basisregels en symbolen scherp op een rij te zetten. Hierna
+            ga je aan de slag met een praktische opdracht waarin je een stukje van een game observeert en hierbij zelf
+            het toestandsdiagram ontwerpt en tekent!
         </p>
 
         <!-- Sectie 1: De 4 Basiselementen van het Schema -->
@@ -45,88 +51,107 @@
 
             <!-- 2x2 Grid voor Basiselementen -->
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                
+
                 <!-- Beginpunt -->
-                <div class="p-3 bg-slate-50 border border-slate-200 rounded-xl flex items-center justify-between gap-3 shadow-sm">
+                <div
+                    class="p-3 bg-slate-50 border border-slate-200 rounded-xl flex items-center justify-between gap-3 shadow-sm">
                     <div class="space-y-1">
                         <span class="text-[9px] font-bold text-teal-600 uppercase tracking-wider block">Element 1</span>
                         <h4 class="font-bold text-slate-800 text-xs">Beginpunt</h4>
                         <p class="text-[10px] text-slate-500 leading-relaxed">
                             De plek waar de verwerking van de invoerreeks altijd start.
                         </p>
-                        <span class="text-[9px] font-semibold text-slate-400 block font-mono">Kenmerk: Losse pijl die naar toestand wijst.</span>
+                        <span class="text-[9px] font-semibold text-slate-400 block font-mono">Kenmerk: Losse pijl die
+                            naar toestand wijst.</span>
                     </div>
-                    <div class="w-20 h-20 bg-white border border-slate-200 rounded-lg flex items-center justify-center text-slate-600 shrink-0 shadow-inner">
+                    <div
+                        class="w-20 h-20 bg-white border border-slate-200 rounded-lg flex items-center justify-center text-slate-600 shrink-0 shadow-inner">
                         <svg class="w-16 h-16 text-teal-600" viewBox="0 0 100 100">
                             <defs>
-                                <marker id="arrow-start" viewBox="0 0 10 10" refX="18" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                                <marker id="arrow-start" viewBox="0 0 10 10" refX="18" refY="5" markerWidth="6"
+                                    markerHeight="6" orient="auto-start-reverse">
                                     <path d="M 0 1.5 L 8 5 L 0 8.5 z" fill="currentColor" />
                                 </marker>
                             </defs>
-                            <line x1="15" y1="50" x2="60" y2="50" stroke="currentColor" stroke-width="3" marker-end="url(#arrow-start)" />
+                            <line x1="15" y1="50" x2="60" y2="50" stroke="currentColor" stroke-width="3"
+                                marker-end="url(#arrow-start)" />
                             <circle cx="68" cy="50" r="14" stroke="currentColor" stroke-width="3" fill="none" />
                         </svg>
                     </div>
                 </div>
 
                 <!-- Toestand -->
-                <div class="p-3 bg-slate-50 border border-slate-200 rounded-xl flex items-center justify-between gap-3 shadow-sm">
+                <div
+                    class="p-3 bg-slate-50 border border-slate-200 rounded-xl flex items-center justify-between gap-3 shadow-sm">
                     <div class="space-y-1">
                         <span class="text-[9px] font-bold text-teal-600 uppercase tracking-wider block">Element 2</span>
                         <h4 class="font-bold text-slate-800 text-xs">Toestand</h4>
                         <p class="text-[10px] text-slate-500 leading-relaxed">
                             Een specifieke, unieke status of locatie van het actieve systeem.
                         </p>
-                        <span class="text-[9px] font-semibold text-slate-400 block font-mono">Kenmerk: Cirkel (vaak met naam of nummer).</span>
+                        <span class="text-[9px] font-semibold text-slate-400 block font-mono">Kenmerk: Cirkel (vaak met
+                            naam of nummer).</span>
                     </div>
-                    <div class="w-20 h-20 bg-white border border-slate-200 rounded-lg flex items-center justify-center text-slate-600 shrink-0 shadow-inner">
+                    <div
+                        class="w-20 h-20 bg-white border border-slate-200 rounded-lg flex items-center justify-center text-slate-600 shrink-0 shadow-inner">
                         <svg class="w-16 h-16 text-teal-600" viewBox="0 0 100 100">
                             <circle cx="50" cy="50" r="20" stroke="currentColor" stroke-width="3.5" fill="none" />
-                            <text x="50" y="54" text-anchor="middle" font-size="12" font-weight="bold" fill="currentColor">1</text>
+                            <text x="50" y="54" text-anchor="middle" font-size="12" font-weight="bold"
+                                fill="currentColor">1</text>
                         </svg>
                     </div>
                 </div>
 
                 <!-- Overgang (Transitie) -->
-                <div class="p-3 bg-slate-50 border border-slate-200 rounded-xl flex items-center justify-between gap-3 shadow-sm">
+                <div
+                    class="p-3 bg-slate-50 border border-slate-200 rounded-xl flex items-center justify-between gap-3 shadow-sm">
                     <div class="space-y-1">
                         <span class="text-[9px] font-bold text-teal-600 uppercase tracking-wider block">Element 3</span>
                         <h4 class="font-bold text-slate-800 text-xs">Overgang (Transitie)</h4>
                         <p class="text-[10px] text-slate-500 leading-relaxed">
                             De wissel naar de volgende toestand via een invoersymbool.
                         </p>
-                        <span class="text-[9px] font-semibold text-slate-400 block font-mono">Kenmerk: Pijl met een label (zoals A, B of cijfer).</span>
+                        <span class="text-[9px] font-semibold text-slate-400 block font-mono">Kenmerk: Pijl met een
+                            label (zoals A, B of cijfer).</span>
                     </div>
-                    <div class="w-20 h-20 bg-white border border-slate-200 rounded-lg flex items-center justify-center text-slate-600 shrink-0 shadow-inner">
+                    <div
+                        class="w-20 h-20 bg-white border border-slate-200 rounded-lg flex items-center justify-center text-slate-600 shrink-0 shadow-inner">
                         <svg class="w-16 h-16 text-teal-600" viewBox="0 0 100 100">
                             <defs>
-                                <marker id="arrow-trans" viewBox="0 0 10 10" refX="16" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                                <marker id="arrow-trans" viewBox="0 0 10 10" refX="16" refY="5" markerWidth="6"
+                                    markerHeight="6" orient="auto-start-reverse">
                                     <path d="M 0 1.5 L 8 5 L 0 8.5 z" fill="currentColor" />
                                 </marker>
                             </defs>
                             <circle cx="20" cy="50" r="10" stroke="currentColor" stroke-width="2.5" fill="none" />
-                            <line x1="30" y1="50" x2="70" y2="50" stroke="currentColor" stroke-width="2.5" marker-end="url(#arrow-trans)" />
+                            <line x1="30" y1="50" x2="70" y2="50" stroke="currentColor" stroke-width="2.5"
+                                marker-end="url(#arrow-trans)" />
                             <circle cx="80" cy="50" r="10" stroke="currentColor" stroke-width="2.5" fill="none" />
-                            <text x="50" y="42" text-anchor="middle" font-size="10" font-weight="bold" fill="currentColor">A</text>
+                            <text x="50" y="42" text-anchor="middle" font-size="10" font-weight="bold"
+                                fill="currentColor">A</text>
                         </svg>
                     </div>
                 </div>
 
                 <!-- Eindtoestand -->
-                <div class="p-3 bg-slate-50 border border-slate-200 rounded-xl flex items-center justify-between gap-3 shadow-sm">
+                <div
+                    class="p-3 bg-slate-50 border border-slate-200 rounded-xl flex items-center justify-between gap-3 shadow-sm">
                     <div class="space-y-1">
                         <span class="text-[9px] font-bold text-teal-600 uppercase tracking-wider block">Element 4</span>
                         <h4 class="font-bold text-slate-800 text-xs">Eindtoestand</h4>
                         <p class="text-[10px] text-slate-500 leading-relaxed">
                             Geeft aan dat een reeks symbolen succesvol en geldig is verwerkt.
                         </p>
-                        <span class="text-[9px] font-semibold text-slate-400 block font-mono">Kenmerk: Een dubbele cirkel.</span>
+                        <span class="text-[9px] font-semibold text-slate-400 block font-mono">Kenmerk: Een dubbele
+                            cirkel.</span>
                     </div>
-                    <div class="w-20 h-20 bg-white border border-slate-200 rounded-lg flex items-center justify-center text-slate-600 shrink-0 shadow-inner">
+                    <div
+                        class="w-20 h-20 bg-white border border-slate-200 rounded-lg flex items-center justify-center text-slate-600 shrink-0 shadow-inner">
                         <svg class="w-16 h-16 text-teal-600" viewBox="0 0 100 100">
                             <circle cx="50" cy="50" r="22" stroke="currentColor" stroke-width="3.5" fill="none" />
                             <circle cx="50" cy="50" r="16" stroke="currentColor" stroke-width="2" fill="none" />
-                            <text x="50" y="54" text-anchor="middle" font-size="10" font-weight="bold" fill="currentColor">7</text>
+                            <text x="50" y="54" text-anchor="middle" font-size="10" font-weight="bold"
+                                fill="currentColor">7</text>
                         </svg>
                     </div>
                 </div>
@@ -147,7 +172,9 @@
             <div class="space-y-2.5">
                 <!-- Eigenschap 1 -->
                 <div class="p-3 bg-slate-50/50 border border-slate-100 rounded-xl">
-                    <span class="text-[9px] font-bold text-teal-600 uppercase tracking-wider block mb-0.5 font-mono">EIGENSCHAP 1</span>
+                    <span
+                        class="text-[9px] font-bold text-teal-600 uppercase tracking-wider block mb-0.5 font-mono">EIGENSCHAP
+                        1</span>
                     <h4 class="text-xs font-extrabold text-slate-800">Eén actieve toestand</h4>
                     <p class="text-[10px] text-slate-500 mt-1 leading-relaxed">
                         De automaat bevindt zich op elk moment in precies één specifieke toestand.
@@ -156,7 +183,9 @@
 
                 <!-- Eigenschap 2 -->
                 <div class="p-3 bg-slate-50/50 border border-slate-100 rounded-xl">
-                    <span class="text-[9px] font-bold text-teal-600 uppercase tracking-wider block mb-0.5 font-mono">EIGENSCHAP 2</span>
+                    <span
+                        class="text-[9px] font-bold text-teal-600 uppercase tracking-wider block mb-0.5 font-mono">EIGENSCHAP
+                        2</span>
                     <h4 class="text-xs font-extrabold text-slate-800">Toestandsovergangen</h4>
                     <p class="text-[10px] text-slate-500 mt-1 leading-relaxed">
                         De automaat kan door invoer (triggers) wisselen van toestand (de transities).
@@ -165,7 +194,9 @@
 
                 <!-- Eigenschap 3 -->
                 <div class="p-3 bg-slate-50/50 border border-slate-100 rounded-xl">
-                    <span class="text-[9px] font-bold text-teal-600 uppercase tracking-wider block mb-0.5 font-mono">EIGENSCHAP 3</span>
+                    <span
+                        class="text-[9px] font-bold text-teal-600 uppercase tracking-wider block mb-0.5 font-mono">EIGENSCHAP
+                        3</span>
                     <h4 class="text-xs font-extrabold text-slate-800">Eindig veel toestanden</h4>
                     <p class="text-[10px] text-slate-500 mt-1 leading-relaxed">
                         Er is een strikt gelimiteerd, telbaar aantal mogelijke toestanden aanwezig.
@@ -184,13 +215,17 @@
             </p>
             <ol class="list-decimal ml-4 space-y-1.5 leading-relaxed text-emerald-700 font-semibold">
                 <li>
-                    <span class="font-bold text-emerald-900">Startpunt:</span> De verwerking start bij het officiële beginpunt.
+                    <span class="font-bold text-emerald-900">Startpunt:</span> De verwerking start bij het officiële
+                    beginpunt.
                 </li>
                 <li>
-                    <span class="font-bold text-emerald-950">Transities:</span> Elk symbool uit de invoerreeks een pijl (transitie) volgt die exact overeenkomt met dat symbool.
+                    <span class="font-bold text-emerald-950">Transities:</span> Elk symbool uit de invoerreeks een pijl
+                    (transitie) volgt die exact overeenkomt met dat symbool.
                 </li>
                 <li>
-                    <span class="font-bold text-emerald-900">Einde:</span> De automaat <span class="underline">eindigt</span> in een toestand met een dubbele cirkel nadat het laatste symbool is verwerkt.
+                    <span class="font-bold text-emerald-900">Einde:</span> De automaat <span
+                        class="underline">eindigt</span> in een toestand met een dubbele cirkel nadat het laatste
+                    symbool is verwerkt.
                 </li>
             </ol>
         </div>
@@ -201,25 +236,13 @@
                 <span>💡</span> Kritiek Inzicht: Waarom noemen we een automaat "eindig"?
             </strong>
             <p class="text-[11px] leading-relaxed text-amber-700 font-medium">
-                <strong>Definitie:</strong> De term "eindig" slaat uitsluitend op het aantal <strong>toestanden</strong> in het blueprint-diagram. 
+                <strong>Definitie:</strong> De term "eindig" slaat uitsluitend op het aantal <strong>toestanden</strong>
+                in het blueprint-diagram.
             </p>
             <p class="text-[11px] leading-relaxed text-amber-750 font-medium mt-1">
-                Hoewel de invoerreeks of de uitkomst oneindig kan zijn (zoals een repeterende klasnaam), moet het aantal cirkels (toestanden) in de automaat altijd telbaar en beperkt zijn.
+                Hoewel de invoerreeks of de uitkomst oneindig kan zijn (zoals een repeterende klasnaam), moet het aantal
+                cirkels (toestanden) in de automaat altijd telbaar en beperkt zijn.
             </p>
-        </div>
-
-        <!-- Sectie 5: Fysieke Vertaling naar Diagram (De Lift) -->
-        <div class="bg-slate-50 border border-slate-200 rounded-xl p-4 text-xs text-slate-700 space-y-2">
-            <strong class="text-slate-900 font-bold block flex items-center gap-1">
-                <span>🏢</span> Fysieke Vertaling naar Diagram (De Lift)
-            </strong>
-            <p class="text-[11px] leading-relaxed text-slate-600">
-                Het vertalen van een fysiek apparaat naar een diagram vereist een strakke logica. Neem de <strong>lift</strong> in een gebouw met drie verdiepingen (BG, 1 en 2):
-            </p>
-            <ul class="list-disc ml-4 space-y-1.5 text-[11px] text-slate-600 font-medium">
-                <li>Dit systeem heeft <strong>3 toestanden</strong> (de verdiepingen).</li>
-                <li>Er zijn <strong>9 transities nodig</strong>. Waarom? Omdat de lift op elke verdieping drie keuzes heeft: "blijf staan" (self-loop), "ga omhoog" of "ga omlaag". Elke actie is een transitie die de nieuwe toestand bepaalt.</li>
-            </ul>
         </div>
 
         <!-- Quick Check Quiz -->
@@ -233,28 +256,47 @@
 
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-2">
                 <!-- Vraag 1 -->
-                <div class="bg-slate-50 border border-slate-200 rounded-xl p-3 shadow-inner flex flex-col justify-between">
+                <div
+                    class="bg-slate-50 border border-slate-200 rounded-xl p-3 shadow-inner flex flex-col justify-between">
                     <div>
-                        <span class="text-[9px] font-bold text-teal-600 uppercase tracking-widest block mb-1">Vraag 1</span>
-                        <p class="text-[11px] font-semibold text-slate-700 mb-2 leading-tight">Waar slaat de term "eindig" op in een "eindige automaat"?</p>
+                        <span class="text-[9px] font-bold text-teal-600 uppercase tracking-widest block mb-1">Vraag
+                            1</span>
+                        <p class="text-[11px] font-semibold text-slate-700 mb-2 leading-tight">Waar slaat de term
+                            "eindig" op in een "eindige automaat"?</p>
                         <div class="flex flex-col gap-1.5">
-                            <button onclick="checkIntroAnswer('q1', 'incorrect1')" id="btn-q1-incorrect1" class="w-full py-1.5 px-3 bg-white border border-slate-200 rounded-lg text-[10px] text-left font-medium hover:bg-slate-100 transition">A) De lengte van de invoerreeks (deze moet beperkt zijn).</button>
-                            <button onclick="checkIntroAnswer('q1', 'correct')" id="btn-q1-correct" class="w-full py-1.5 px-3 bg-white border border-slate-200 rounded-lg text-[10px] text-left font-medium hover:bg-slate-100 transition">B) Het aantal toestanden (cirkels) in het blueprint-diagram.</button>
-                            <button onclick="checkIntroAnswer('q1', 'incorrect2')" id="btn-q1-incorrect2" class="w-full py-1.5 px-3 bg-white border border-slate-200 rounded-lg text-[10px] text-left font-medium hover:bg-slate-100 transition">C) De maximale tijd dat een automaat actief mag zijn.</button>
+                            <button onclick="checkIntroAnswer('q1', 'incorrect1')" id="btn-q1-incorrect1"
+                                class="w-full py-1.5 px-3 bg-white border border-slate-200 rounded-lg text-[10px] text-left font-medium hover:bg-slate-100 transition">A)
+                                De lengte van de invoerreeks (deze moet beperkt zijn).</button>
+                            <button onclick="checkIntroAnswer('q1', 'correct')" id="btn-q1-correct"
+                                class="w-full py-1.5 px-3 bg-white border border-slate-200 rounded-lg text-[10px] text-left font-medium hover:bg-slate-100 transition">B)
+                                Het aantal toestanden (cirkels) in het blueprint-diagram.</button>
+                            <button onclick="checkIntroAnswer('q1', 'incorrect2')" id="btn-q1-incorrect2"
+                                class="w-full py-1.5 px-3 bg-white border border-slate-200 rounded-lg text-[10px] text-left font-medium hover:bg-slate-100 transition">C)
+                                De maximale tijd dat een automaat actief mag zijn.</button>
                         </div>
                     </div>
                     <div id="feedback-q1" class="mt-2 text-[9px] font-semibold hidden"></div>
                 </div>
 
                 <!-- Vraag 2 -->
-                <div class="bg-slate-50 border border-slate-200 rounded-xl p-3 shadow-inner flex flex-col justify-between">
+                <div
+                    class="bg-slate-50 border border-slate-200 rounded-xl p-3 shadow-inner flex flex-col justify-between">
                     <div>
-                        <span class="text-[9px] font-bold text-teal-600 uppercase tracking-widest block mb-1">Vraag 2</span>
-                        <p class="text-[11px] font-semibold text-slate-700 mb-2 leading-tight">Wanneer is een invoerreeks (route) officieel "geldig" in een diagram?</p>
+                        <span class="text-[9px] font-bold text-teal-600 uppercase tracking-widest block mb-1">Vraag
+                            2</span>
+                        <p class="text-[11px] font-semibold text-slate-700 mb-2 leading-tight">Wanneer is een
+                            invoerreeks (route) officieel "geldig" in een diagram?</p>
                         <div class="flex flex-col gap-1.5">
-                            <button onclick="checkIntroAnswer('q2', 'incorrect1')" id="btn-q2-incorrect1" class="w-full py-1.5 px-3 bg-white border border-slate-200 rounded-lg text-[10px] text-left font-medium hover:bg-slate-100 transition">A) Zolang we bij het beginpunt starten en alle pijlen correct doorlopen.</button>
-                            <button onclick="checkIntroAnswer('q2', 'incorrect2')" id="btn-q2-incorrect2" class="w-full py-1.5 px-3 bg-white border border-slate-200 rounded-lg text-[10px] text-left font-medium hover:bg-slate-100 transition">B) Als we eindigen in een toestand met een dubbele cirkel.</button>
-                            <button onclick="checkIntroAnswer('q2', 'correct')" id="btn-q2-correct" class="w-full py-1.5 px-3 bg-white border border-slate-200 rounded-lg text-[10px] text-left font-medium hover:bg-slate-100 transition">C) Als we starten bij het beginpunt, de juiste pijlen volgen én eindigen op een dubbele cirkel.</button>
+                            <button onclick="checkIntroAnswer('q2', 'incorrect1')" id="btn-q2-incorrect1"
+                                class="w-full py-1.5 px-3 bg-white border border-slate-200 rounded-lg text-[10px] text-left font-medium hover:bg-slate-100 transition">A)
+                                Zolang we bij het beginpunt starten en alle pijlen correct doorlopen.</button>
+                            <button onclick="checkIntroAnswer('q2', 'incorrect2')" id="btn-q2-incorrect2"
+                                class="w-full py-1.5 px-3 bg-white border border-slate-200 rounded-lg text-[10px] text-left font-medium hover:bg-slate-100 transition">B)
+                                Als we eindigen in een toestand met een dubbele cirkel.</button>
+                            <button onclick="checkIntroAnswer('q2', 'correct')" id="btn-q2-correct"
+                                class="w-full py-1.5 px-3 bg-white border border-slate-200 rounded-lg text-[10px] text-left font-medium hover:bg-slate-100 transition">C)
+                                Als we starten bij het beginpunt, de juiste pijlen volgen én eindigen op een dubbele
+                                cirkel.</button>
                         </div>
                     </div>
                     <div id="feedback-q2" class="mt-2 text-[9px] font-semibold hidden"></div>
