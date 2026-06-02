@@ -40,10 +40,10 @@
             </p>
 
             <div
-                class="bg-slate-50 border border-slate-200 rounded-xl p-3 flex flex-col md:flex-row items-center justify-center gap-6">
+                class="bg-slate-50 border border-slate-200 rounded-xl p-3 flex flex-col sm:flex-row items-center justify-center gap-4">
                 <!-- SVG Diagram -->
                 <div
-                    class="relative w-full max-w-[620px] h-[340px] bg-white rounded-lg border border-slate-150 shadow-inner overflow-hidden shrink-0">
+                    class="relative w-full max-w-[460px] h-[270px] bg-white rounded-lg border border-slate-150 shadow-inner overflow-hidden shrink-0">
                     <svg class="w-full h-full" viewBox="0 0 600 350" id="guard-fsm-svg">
                         <defs>
                             <!-- UserSpaceOnUse markers for pixel-perfect arrowhead size and alignment -->
@@ -95,58 +95,58 @@
                         <!-- Scanning (ruststand) -->
                         <g id="node-scan" class="cursor-pointer font-semibold" onclick="selectGuardNode('scan')">
                             <circle cx="100" cy="100" r="28" fill="#ccfbf1" stroke="#0d9488" stroke-width="3" />
-                            <text x="100" y="104" text-anchor="middle" font-size="9" font-weight="bold"
+                            <text x="100" y="104" text-anchor="middle" font-size="10" font-weight="bold"
                                 fill="#115e59">Scanning</text>
                         </g>
 
                         <!-- Speler gezien (waakstand) -->
                         <g id="node-seen" class="cursor-pointer font-semibold" onclick="selectGuardNode('seen')">
                             <circle cx="300" cy="100" r="28" fill="white" stroke="#94a3b8" stroke-width="2.5" />
-                            <text x="300" y="104" text-anchor="middle" font-size="9" fill="#1e293b">Waakstand</text>
+                            <text x="300" y="104" text-anchor="middle" font-size="10" fill="#1e293b">Waakstand</text>
                         </g>
 
                         <!-- Achtervolging (renstand) -->
                         <g id="node-chase" class="cursor-pointer font-semibold" onclick="selectGuardNode('chase')">
                             <circle cx="500" cy="120" r="28" fill="white" stroke="#94a3b8" stroke-width="2.5" />
-                            <text x="500" y="124" text-anchor="middle" font-size="9" fill="#1e293b">Achtervolg</text>
+                            <text x="500" y="124" text-anchor="middle" font-size="10" fill="#1e293b">Achtervolg</text>
                         </g>
 
                         <!-- Gewond / verward -->
                         <g id="node-hurt" class="cursor-pointer font-semibold" onclick="selectGuardNode('hurt')">
                             <circle cx="410" cy="265" r="28" fill="white" stroke="#94a3b8" stroke-width="2.5" />
-                            <text x="410" y="269" text-anchor="middle" font-size="9" fill="#1e293b">Gewond</text>
+                            <text x="410" y="269" text-anchor="middle" font-size="10" fill="#1e293b">Gewond</text>
                         </g>
 
                         <!-- Dood (Eindtoestand) -->
                         <g id="node-dead" class="cursor-pointer font-semibold" onclick="selectGuardNode('dead')">
                             <circle cx="150" cy="265" r="28" fill="white" stroke="#94a3b8" stroke-width="2.5" />
                             <circle cx="150" cy="265" r="22" fill="none" stroke="#94a3b8" stroke-width="1.5" />
-                            <text x="150" y="269" text-anchor="middle" font-size="9" fill="#1e293b">Dood</text>
+                            <text x="150" y="269" text-anchor="middle" font-size="10" fill="#1e293b">Dood</text>
                         </g>
 
                         <!-- Labels -->
-                        <text x="200" y="66" text-anchor="middle" fill="#64748b" font-size="8" font-weight="bold">speler
+                        <text x="200" y="66" text-anchor="middle" fill="#64748b" font-size="9" font-weight="bold">speler
                             gezien</text>
-                        <text x="200" y="138" text-anchor="middle" fill="#64748b" font-size="8"
+                        <text x="200" y="138" text-anchor="middle" fill="#64748b" font-size="9"
                             font-weight="bold">speler kwijt</text>
-                        <text x="235" y="212" text-anchor="middle" fill="#64748b" font-size="8"
+                        <text x="235" y="214" text-anchor="middle" fill="#64748b" font-size="9"
                             font-weight="bold">geraakt</text>
-                        <text x="400" y="76" text-anchor="middle" fill="#64748b" font-size="8"
+                        <text x="400" y="76" text-anchor="middle" fill="#64748b" font-size="9"
                             font-weight="bold">achtervolging start</text>
-                        <text x="400" y="147" text-anchor="middle" fill="#64748b" font-size="8"
+                        <text x="400" y="147" text-anchor="middle" fill="#64748b" font-size="9"
                             font-weight="bold">speler kwijt</text>
-                        <text x="480" y="208" text-anchor="middle" fill="#64748b" font-size="8"
+                        <text x="480" y="208" text-anchor="middle" fill="#64748b" font-size="9"
                             font-weight="bold">geraakt</text>
-                        <text x="430" y="175" text-anchor="middle" fill="#64748b" font-size="8"
+                        <text x="430" y="175" text-anchor="middle" fill="#64748b" font-size="9"
                             font-weight="bold">hersteld</text>
-                        <text x="280" y="256" text-anchor="middle" fill="#64748b" font-size="8"
+                        <text x="280" y="256" text-anchor="middle" fill="#64748b" font-size="9"
                             font-weight="bold">nogmaals geraakt</text>
                     </svg>
                 </div>
 
                 <!-- Informatie Paneel -->
                 <div
-                    class="bg-white border border-slate-200 rounded-xl p-4 shadow-sm w-full md:max-w-[280px] h-[340px] flex flex-col justify-between overflow-y-auto">
+                    class="bg-white border border-slate-200 rounded-xl p-4 shadow-sm w-full sm:max-w-[260px] h-[270px] flex flex-col justify-between overflow-y-auto flex-grow">
                     <div>
                         <span class="text-[9px] font-bold text-teal-600 uppercase block mb-1">Toelichting
                             toestand</span>
