@@ -115,37 +115,35 @@
             </div>
 
             <!-- Rechterkolom: Controls, Werking & Logboek -->
-            <div class="bg-white border border-slate-200 rounded-xl p-4 shadow-sm flex flex-col justify-between h-[408px]">
-                <div class="space-y-3">
-                    <h3 class="font-extrabold text-slate-900 text-sm flex items-center gap-1.5">🔧 Besturing &amp; Werking</h3>
+            <div class="bg-white border border-slate-200 rounded-xl p-4 shadow-sm flex flex-col space-y-3 h-auto">
+                <h3 class="font-extrabold text-slate-900 text-sm flex items-center gap-1.5">🔧 Besturing &amp; Werking</h3>
 
-                    <!-- Triggers -->
-                    <div class="flex flex-col gap-1.5">
-                        <span class="text-[9px] font-bold text-slate-400 uppercase tracking-wider">Invoer (Sensor Meting):</span>
-                        <button onclick="triggerThermostat('te-laag')"
-                            class="px-3 py-2 bg-teal-600 hover:bg-teal-700 text-white text-[11px] font-extrabold rounded-lg transition-all shadow shadow-teal-700/10 active:scale-95 text-center">
-                            Temperatuur te laag (T &lt; gewenst)
-                        </button>
-                        <button onclick="triggerThermostat('te-hoog')"
-                            class="px-3 py-2 bg-slate-600 hover:bg-slate-700 text-white text-[11px] font-extrabold rounded-lg transition-all shadow shadow-slate-600/10 active:scale-95 text-center">
-                            Temperatuur te hoog (T &gt; gewenst)
-                        </button>
-                    </div>
+                <!-- Triggers -->
+                <div class="flex flex-col gap-1.5">
+                    <span class="text-[9px] font-bold text-slate-400 uppercase tracking-wider">Invoer (Sensor Meting):</span>
+                    <button onclick="triggerThermostat('te-laag')"
+                        class="px-3 py-2 bg-teal-600 hover:bg-teal-700 text-white text-[11px] font-extrabold rounded-lg transition-all shadow shadow-teal-700/10 active:scale-95 text-center">
+                        Temperatuur te laag (T &lt; gewenst)
+                    </button>
+                    <button onclick="triggerThermostat('te-hoog')"
+                        class="px-3 py-2 bg-slate-600 hover:bg-slate-700 text-white text-[11px] font-extrabold rounded-lg transition-all shadow shadow-slate-600/10 active:scale-95 text-center">
+                        Temperatuur te hoog (T &gt; gewenst)
+                    </button>
+                </div>
 
-                    <!-- Uitleg werking (Compact) -->
-                    <div class="p-3 bg-slate-50 border border-slate-100 rounded-lg">
-                        <span class="text-[9px] font-extrabold text-slate-400 uppercase tracking-wider">Hoe het werkt:</span>
-                        <p class="text-[10px] text-slate-500 mt-1 leading-relaxed">
-                            Bij kou stuurt de sensor de trigger <code class="font-mono bg-white px-1 py-0.5 rounded border border-slate-200">T &lt; gewenst</code>. De automaat wisselt naar de toestand <strong>CV AAN</strong>. Stijgt de warmte boven de ingestelde waarde, dan activeert de trigger <code class="font-mono bg-white px-1 py-0.5 rounded border border-slate-200">T &gt; gewenst</code> en schakelt de CV weer <strong>UIT</strong>.
-                        </p>
-                    </div>
+                <!-- Uitleg werking (Compact) -->
+                <div class="p-3 bg-slate-50 border border-slate-100 rounded-lg">
+                    <span class="text-[9px] font-extrabold text-slate-400 uppercase tracking-wider">Hoe het werkt:</span>
+                    <p class="text-[10px] text-slate-500 mt-1 leading-relaxed">
+                        Bij kou stuurt de sensor de trigger <code class="font-mono bg-white px-1 py-0.5 rounded border border-slate-200">T &lt; gewenst</code>. De automaat wisselt naar de toestand <strong>CV AAN</strong>. Stijgt de warmte boven de ingestelde waarde, dan activeert de trigger <code class="font-mono bg-white px-1 py-0.5 rounded border border-slate-200">T &gt; gewenst</code> en schakelt de CV weer <strong>UIT</strong>.
+                    </p>
                 </div>
 
                 <!-- Status Log -->
                 <div class="pt-3 border-t border-slate-100">
-                    <div class="p-2.5 bg-slate-50 border rounded-lg flex flex-col justify-center min-h-[56px]">
+                    <div class="p-2.5 bg-slate-50 border rounded-lg flex flex-col justify-center min-h-[76px]">
                         <span class="text-[9px] font-extrabold text-slate-400 uppercase tracking-wider">Transitie Logboek</span>
-                        <div id="thermostat-log-text" class="text-[11px] font-semibold text-slate-700 mt-0.5 leading-tight">
+                        <div id="thermostat-log-text" class="text-[11px] font-semibold text-slate-700 mt-1 leading-normal">
                             De thermostaat is gestart in de begintoestand: **CV UIT**.
                         </div>
                     </div>
