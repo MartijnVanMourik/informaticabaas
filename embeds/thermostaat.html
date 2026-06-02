@@ -253,6 +253,21 @@
                 }
             }
         }
+
+        // Self-resizing logic when hosted on the same domain as the parent page (Moodle)
+        if (window.parent && window.parent !== window) {
+            try {
+                const iframe = window.frameElement;
+                if (iframe) {
+                    const resizeObserver = new ResizeObserver(() => {
+                        iframe.style.height = document.documentElement.scrollHeight + 'px';
+                    });
+                    resizeObserver.observe(document.body);
+                }
+            } catch (e) {
+                console.log("Cross-origin restriction: falling back to static CSS iframe height.");
+            }
+        }
     </script>
 </body>
 
