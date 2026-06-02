@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="nl">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Treinen Nooddienstregeling Simulator - Grondslagen (B3)</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+
+        .animate-pulse-subtle {
+            animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% {
+                opacity: 1;
+                transform: scale(1);
+            }
+            50% {
+                opacity: .85;
+                transform: scale(1.03);
+            }
+        }
+    </style>
+</head>
+
+<body class="bg-transparent text-slate-800 min-h-screen flex flex-col antialiased p-2">
+
+    <!-- Het Simulator Element -->
+    <div class="bg-white rounded-2xl border border-slate-200 p-4 md:p-6 shadow-sm space-y-4 max-w-7xl mx-auto w-full">
+        <div>
+            <span class="text-xs font-bold text-teal-600 uppercase tracking-widest">Interactieve Tool</span>
+            <h2 class="text-xl md:text-2xl font-bold text-slate-900 mt-1 mb-2">💻 Nooddienstregeling Simulator</h2>
+            <p class="text-xs md:text-sm text-slate-500">
+                Test je routes en help de passagiers op hun bestemming te komen!
+            </p>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+
+            <!-- Linker kolom: Het diagram -->
+            <div class="lg:col-span-2 border border-slate-200 rounded-xl p-4 bg-slate-50 flex flex-col justify-between overflow-hidden">
+                <div class="text-center mb-2">
+                    <span class="text-[10px] sm:text-xs font-semibold text-slate-400">Actieve toestand wordt groen gemarkeerd</span>
+                </div>
+
+                <!-- Interactieve SVG (Compleet storingsvrije, ruime layout) -->
+                <div class="relative w-full overflow-x-auto flex justify-center items-center">
+                    <svg class="w-full min-w-[700px] h-[520px]" viewBox="0 0 980 540" id="fsm-svg">
+                        <defs>
+                            <marker id="arrow" viewBox="0 0 10 10" refX="28" refY="5" markerWidth="6"
+                                markerHeight="6" orient="auto-start-reverse">
+                                <path d="M 0 0 L 10 5 L 0 10 z" fill="#64748b" />
+                            </marker>
+                            <marker id="arrow-green" viewBox="0 0 10 10" refX="28" refY="5" markerWidth="6"
+                                markerHeight="6" orient="auto-start-reverse">
+                                <path d="M 0 0 L 10 5 L 0 10 z" fill="#0d9488" />
+                            </marker>
+                        </defs>
+
+                        <!-- Overgangslijnen (Transities) -->
+                        <!-- 1 -> 2 (A) -->
+                        <path id="edge-1-2" d="M 100,240 L 300,100" stroke="#64748b" stroke-width="2.5"
+                            fill="none" marker-end="url(#arrow)" />
+                        <!-- 1 -> 4 (B - Gebogen voor tweerichtingsverkeer) -->
+                        <path id="edge-1-4" d="M 100,240 Q 240,280 300,380" stroke="#64748b" stroke-width="2.5"
+                            fill="none" marker-end="url(#arrow)" />
+                        <!-- 2 -> 4 (A) -->
+                        <path id="edge-2-4" d="M 300,100 L 300,380" stroke="#64748b" stroke-width="2.5"
+                            fill="none" marker-end="url(#arrow)" />
+                        <!-- 2 -> 3 (B - Bovenlangs gebogen) -->
+                        <path id="edge-2-3" d="M 300,100 Q 400,60 500,100" stroke="#64748b"
+                            stroke-width="2.5" fill="none" marker-end="url(#arrow)" />
+                        <!-- 3 -> 2 (B - Onderlangs gebogen) -->
+                        <path id="edge-3-2" d="M 500,100 Q 400,140 300,100" stroke="#64748b"
+                            stroke-width="2.5" fill="none" marker-end="url(#arrow)" />
+                        <!-- 3 -> 4 (A) -->
+                        <path id="edge-3-4" d="M 500,100 L 300,380" stroke="#64748b" stroke-width="2.5"
+                            fill="none" marker-end="url(#arrow)" />
+                        <!-- 4 -> 1 (A - Gebogen voor tweerichtingsverkeer) -->
+                        <path id="edge-4-1" d="M 300,380 Q 160,340 100,240" stroke="#64748b"
+                            stroke-width="2.5" fill="none" marker-end="url(#arrow)" />
+                        <!-- 4 -> 5 (B) -->
+                        <path id="edge-4-5" d="M 300,380 L 500,380" stroke="#64748b" stroke-width="2.5"
+                            fill="none" marker-end="url(#arrow)" />
+                        <!-- 5 -> 3 (B) -->
+                        <path id="edge-5-3" d="M 500,380 L 500,100" stroke="#64748b" stroke-width="2.5"
+                            fill="none" marker-end="url(#arrow)" />
+                        <!-- 5 -> 6 (A) -->
+                        <path id="edge-5-6" d="M 500,380 L 700,240" stroke="#64748b" stroke-width="2.5"
+                            fill="none" marker-end="url(#arrow)" />
+                        <!-- 6 -> 1 (A - De boog loopt helemaal onderlangs en buigt links buitenom station 1) -->
+                        <path id="edge-6-1" d="M 700,240 C 500,560 200,560 50,320 C 30,280 40,240 100,240" stroke="#64748b"
+                            stroke-width="2.5" fill="none" marker-end="url(#arrow)" />
+                        <!-- 6 -> 7 (B) -->
+                        <path id="edge-6-7" d="M 700,240 L 880,240" stroke="#64748b" stroke-width="2.5"
+                            fill="none" marker-end="url(#arrow)" />
+
+                        <!-- Toestanden (Nodes) -->
+                        <!-- Node 1 -->
+                        <g id="node-1">
+                            <circle cx="100" cy="240" r="24" fill="white" stroke="#64748b" stroke-width="3" />
+                            <text x="100" y="245" text-anchor="middle" font-weight="bold" fill="#1e293b">1</text>
+                        </g>
+                        <!-- Node 2 -->
+                        <g id="node-2">
+                            <circle cx="300" cy="100" r="24" fill="white" stroke="#64748b" stroke-width="3" />
+                            <text x="300" y="105" text-anchor="middle" font-weight="bold" fill="#1e293b">2</text>
+                        </g>
+                        <!-- Node 3 -->
+                        <g id="node-3">
+                            <circle cx="500" cy="100" r="24" fill="white" stroke="#64748b" stroke-width="3" />
+                            <text x="500" y="105" text-anchor="middle" font-weight="bold" fill="#1e293b">3</text>
+                        </g>
+                        <!-- Node 4 -->
+                        <g id="node-4">
+                            <circle cx="300" cy="380" r="24" fill="white" stroke="#64748b" stroke-width="3" />
+                            <text x="300" y="385" text-anchor="middle" font-weight="bold" fill="#1e293b">4</text>
+                        </g>
+                        <!-- Node 5 -->
+                        <g id="node-5">
+                            <circle cx="500" cy="380" r="24" fill="white" stroke="#64748b" stroke-width="3" />
+                            <text x="500" y="385" text-anchor="middle" font-weight="bold" fill="#1e293b">5</text>
+                        </g>
+                        <!-- Node 6 -->
+                        <g id="node-6">
+                            <circle cx="700" cy="240" r="24" fill="white" stroke="#64748b" stroke-width="3" />
+                            <text x="700" y="245" text-anchor="middle" font-weight="bold" fill="#1e293b">6</text>
+                        </g>
+                        <!-- Node 7 (Eindtoestand, dubbel) -->
+                        <g id="node-7">
+                            <circle cx="880" cy="240" r="24" fill="white" stroke="#64748b" stroke-width="3" />
+                            <circle cx="880" cy="240" r="18" fill="none" stroke="#64748b" stroke-width="2" />
+                            <text x="880" y="245" text-anchor="middle" font-weight="bold" fill="#1e293b">7</text>
+                        </g>
+
+                        <!-- Labels -->
+                        <text x="185" y="160" fill="#475569" font-size="14" font-weight="bold">A</text>
+                        <text x="215" y="290" fill="#475569" font-size="14" font-weight="bold">B</text>
+                        <text x="280" y="240" fill="#475569" font-size="14" font-weight="bold">A</text>
+                        <text x="400" y="70" fill="#475569" font-size="14" font-weight="bold">B</text>
+                        <text x="400" y="135" fill="#475569" font-size="14" font-weight="bold">B</text>
+                        <text x="385" y="235" fill="#475569" font-size="14" font-weight="bold">A</text>
+                        <text x="175" y="335" fill="#475569" font-size="14" font-weight="bold">A</text>
+                        <text x="400" y="400" fill="#475569" font-size="14" font-weight="bold">B</text>
+                        <text x="515" y="240" fill="#475569" font-size="14" font-weight="bold">B</text>
+                        <text x="610" y="300" fill="#475569" font-size="14" font-weight="bold">A</text>
+                        <text x="350" y="455" fill="#475569" font-size="14" font-weight="bold">A</text>
+                        <text x="790" y="225" fill="#475569" font-size="14" font-weight="bold">B</text>
+                    </svg>
+                </div>
+            </div>
+
+            <!-- Rechter kolom: Controls -->
+            <div class="bg-white border border-slate-200 rounded-xl p-6 shadow-sm flex flex-col justify-between">
+                <div class="space-y-4">
+                    <h3 class="font-extrabold text-slate-900 text-lg">🔧 Besturing</h3>
+
+                    <div class="p-3 bg-slate-50 rounded-xl border">
+                        <span class="text-xs text-slate-400 block font-bold">HUIDIGE LOCATIE</span>
+                        <span id="current-station-name"
+                            class="text-base font-extrabold text-slate-800">Station 1 (Den Haag / Utrecht)</span>
+                    </div>
+
+                    <!-- Handmatig reizen -->
+                    <div class="space-y-2">
+                        <label class="text-xs font-bold text-slate-500 uppercase">Handmatig reizen (Klik):</label>
+                        <div class="grid grid-cols-2 gap-2">
+                            <button onclick="stepSimulatorManual('A')"
+                                class="py-3 bg-teal-600 hover:bg-teal-700 text-white font-extrabold rounded-xl shadow-sm text-sm transition">Reis via A</button>
+                            <button onclick="stepSimulatorManual('B')"
+                                class="py-3 bg-teal-600 hover:bg-teal-700 text-white font-extrabold rounded-xl shadow-sm text-sm transition">Reis via B</button>
+                        </div>
+                    </div>
+
+                    <!-- Automatische routes -->
+                    <div class="space-y-2 pt-4 border-t border-slate-100">
+                        <label class="text-xs font-bold text-slate-500 uppercase">Voer een route in:</label>
+                        <input type="text" id="route-string-input" placeholder="Bijv. ABABAB"
+                            class="w-full px-4 py-2 border rounded-xl font-mono text-sm uppercase tracking-wider focus:ring-2 focus:ring-teal-500">
+                        <div class="grid grid-cols-2 gap-2">
+                            <button onclick="runAutoRoute()"
+                                class="py-2.5 bg-slate-800 hover:bg-slate-900 text-white text-xs font-bold rounded-xl transition">Start Simulatie</button>
+                            <button onclick="resetSimulator()"
+                                class="py-2.5 bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold rounded-xl transition">Reset</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Uitkomst badge -->
+                <div class="mt-6 pt-4 border-t border-slate-100">
+                    <div id="simulator-outcome-badge"
+                        class="p-3 text-center rounded-xl text-sm font-extrabold bg-slate-100 text-slate-500">
+                        Wacht op route...
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script>
+        let currentSimulatorState = 1;
+
+        const stations = {
+            1: "Station 1 (Den Haag / Utrecht)",
+            2: "Station 2 (Amsterdam)",
+            3: "Station 3 (Amersfoort)",
+            4: "Station 4 (Rotterdam)",
+            5: "Station 5 (Utrecht Centraal)",
+            6: "Station 6 (Nijmegen)",
+            7: "🏁 Station 7 (Groningen - Eindtoestand)"
+        };
+
+        const fsmMatrix = {
+            1: { A: 2, B: 4 },
+            2: { A: 4, B: 3 },
+            3: { A: 4, B: 2 },
+            4: { A: 1, B: 5 },
+            5: { A: 6, B: 3 },
+            6: { A: 1, B: 7 },
+            7: { A: null, B: null }
+        };
+
+        function drawSimulatorActiveNode() {
+            // Reset all nodes
+            for (let i = 1; i <= 7; i++) {
+                const node = document.getElementById('node-' + i);
+                if (node) {
+                    const circle = node.querySelector('circle:first-child');
+                    circle.setAttribute('stroke', '#64748b');
+                    circle.setAttribute('fill', 'white');
+                }
+            }
+
+            // Highlight active node
+            const activeNode = document.getElementById('node-' + currentSimulatorState);
+            if (activeNode) {
+                const circle = activeNode.querySelector('circle:first-child');
+                circle.setAttribute('stroke', '#0d9488');
+                circle.setAttribute('fill', '#ccfbf1');
+            }
+
+            // Update text label
+            document.getElementById('current-station-name').innerText = stations[currentSimulatorState];
+
+            // Evaluate acceptance status
+            const outcomeBadge = document.getElementById('simulator-outcome-badge');
+            if (currentSimulatorState === 7) {
+                outcomeBadge.className = "p-3 text-center rounded-xl text-sm font-extrabold bg-emerald-100 text-emerald-800 border border-emerald-200 animate-bounce";
+                outcomeBadge.innerText = "🎉 AANGEKOMEN OP BESTEMMING (GELDIG)";
+            } else {
+                outcomeBadge.className = "p-3 text-center rounded-xl text-sm font-extrabold bg-slate-100 text-slate-500 border border-slate-200";
+                outcomeBadge.innerText = "Onderweg...";
+            }
+        }
+
+        function stepSimulatorManual(char) {
+            const next = fsmMatrix[currentSimulatorState][char];
+            if (next) {
+                currentSimulatorState = next;
+                drawSimulatorActiveNode();
+            } else {
+                const outcomeBadge = document.getElementById('simulator-outcome-badge');
+                outcomeBadge.className = "p-3 text-center rounded-xl text-sm font-extrabold bg-red-100 text-red-800 border border-red-200";
+                outcomeBadge.innerText = `Geen treinverbinding via ${char} vanaf dit station!`;
+            }
+        }
+
+        async function runAutoRoute() {
+            resetSimulator();
+            const input = document.getElementById('route-string-input').value.toUpperCase().trim();
+            if (input === "") return;
+
+            const outcomeBadge = document.getElementById('simulator-outcome-badge');
+
+            for (let i = 0; i < input.length; i++) {
+                const char = input[i];
+                if (char !== 'A' && char !== 'B') {
+                    outcomeBadge.className = "p-3 text-center rounded-xl text-sm font-extrabold bg-red-100 text-red-800 border border-red-200";
+                    outcomeBadge.innerText = `Ongeldig karakter: ${char}. Gebruik alleen A of B!`;
+                    return;
+                }
+
+                await new Promise(resolve => setTimeout(resolve, 800));
+
+                const next = fsmMatrix[currentSimulatorState][char];
+                if (next) {
+                    currentSimulatorState = next;
+                    drawSimulatorActiveNode();
+                } else {
+                    outcomeBadge.className = "p-3 text-center rounded-xl text-sm font-extrabold bg-red-100 text-red-800 border border-red-200";
+                    outcomeBadge.innerText = `Trein ontspoord! Geen route via ${char} op station ${currentSimulatorState}.`;
+                    return;
+                }
+            }
+        }
+
+        function resetSimulator() {
+            currentSimulatorState = 1;
+            drawSimulatorActiveNode();
+        }
+
+        window.onload = function () {
+            drawSimulatorActiveNode();
+        }
+    </script>
+</body>
+
+</html>

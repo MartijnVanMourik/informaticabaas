@@ -1,0 +1,1491 @@
+<!DOCTYPE html>
+<html lang="nl">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Eindige Automaten - Grondslagen (B3) Informatica</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+
+        .animate-pulse-subtle {
+            animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+        }
+
+        @keyframes pulse {
+
+            0%,
+            100% {
+                opacity: 1;
+                transform: scale(1);
+            }
+
+            50% {
+                opacity: .85;
+                transform: scale(1.03);
+            }
+        }
+
+        @keyframes dash {
+            to {
+                stroke-dashoffset: -20;
+            }
+        }
+    </style>
+</head>
+
+<body class="bg-slate-50 text-slate-800 min-h-screen flex flex-col antialiased">
+
+    <!-- Navigatiebalk bovenkant -->
+    <header class="bg-white border-b border-slate-200 sticky top-0 z-40 shadow-sm">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16">
+                <div class="flex items-center space-x-3">
+                    <div
+                        class="w-10 h-10 bg-teal-600 rounded-xl flex items-center justify-center text-white font-bold text-xl shadow-md shadow-teal-100">
+                        B3
+                    </div>
+                    <div>
+                        <span class="font-extrabold text-lg text-slate-900 tracking-tight">Grondslagen: Automaten</span>
+                        <span
+                            class="hidden sm:inline-block ml-2 text-xs font-semibold px-2 py-0.5 bg-teal-100 text-teal-800 rounded-full">Havo
+                            / Vwo</span>
+                    </div>
+                </div>
+                <div class="flex items-center space-x-2">
+                    <button onclick="switchTab('syllabus')" id="nav-syllabus"
+                        class="px-3 py-2 text-sm font-medium rounded-lg bg-teal-50 text-teal-700">Syllabus</button>
+                    <button onclick="switchTab('simulator-tab')" id="nav-simulator"
+                        class="px-3 py-2 text-sm font-medium rounded-lg text-slate-600 hover:bg-slate-100">💻
+                        Simulator</button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hoofdcontainer met Sidebar en Content -->
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 flex-grow w-full flex flex-col md:flex-row gap-8">
+
+        <!-- Sidebar Menu -->
+        <aside class="w-full md:w-64 shrink-0">
+            <div class="bg-white rounded-2xl border border-slate-200 p-4 sticky top-24 shadow-sm space-y-1">
+                <p class="text-xs font-bold text-slate-400 px-3 uppercase tracking-wider mb-2">De Lessenserie</p>
+
+                <button onclick="switchTab('syllabus')" id="menu-syllabus"
+                    class="w-full text-left px-3 py-2.5 rounded-xl text-sm font-semibold flex items-center gap-3 bg-teal-600 text-white transition-all">
+                    <svg class="w-5 h-5 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+                    </svg>
+                    <span>Intro &amp; Syllabus</span>
+                </button>
+
+                <button onclick="switchTab('les1')" id="menu-les1"
+                    class="w-full text-left px-3 py-2.5 rounded-xl text-sm font-medium flex items-center gap-3 text-slate-600 hover:bg-slate-50 hover:text-slate-900 transition-all">
+                    <span
+                        class="w-5 h-5 shrink-0 bg-slate-100 rounded-md text-xs font-bold flex items-center justify-center text-slate-500">1</span>
+                    <span>Les 1: Wat is een FSM?</span>
+                </button>
+
+                <button onclick="switchTab('les2')" id="menu-les2"
+                    class="w-full text-left px-3 py-2.5 rounded-xl text-sm font-medium flex items-center gap-3 text-slate-600 hover:bg-slate-50 hover:text-slate-900 transition-all">
+                    <span
+                        class="w-5 h-5 shrink-0 bg-slate-100 rounded-md text-xs font-bold flex items-center justify-center text-slate-500">2</span>
+                    <span>Les 2: Toestanden &amp; Trein</span>
+                </button>
+
+                <button onclick="switchTab('les3')" id="menu-les3"
+                    class="w-full text-left px-3 py-2.5 rounded-xl text-sm font-medium flex items-center gap-3 text-slate-600 hover:bg-slate-50 hover:text-slate-900 transition-all">
+                    <span
+                        class="w-5 h-5 shrink-0 bg-slate-100 rounded-md text-xs font-bold flex items-center justify-center text-slate-500">3</span>
+                    <span>Les 3: De Generator</span>
+                </button>
+
+                <button onclick="switchTab('les4')" id="menu-les4"
+                    class="w-full text-left px-3 py-2.5 rounded-xl text-sm font-medium flex items-center gap-3 text-slate-600 hover:bg-slate-50 hover:text-slate-900 transition-all">
+                    <span
+                        class="w-5 h-5 shrink-0 bg-slate-100 rounded-md text-xs font-bold flex items-center justify-center text-slate-500">4</span>
+                    <span>Les 4: Controle &amp; Beperking</span>
+                </button>
+
+                <div class="pt-4 border-t border-slate-100 mt-4">
+                    <p class="text-xs font-bold text-slate-400 px-3 uppercase tracking-wider mb-2">Extra &amp;
+                        Verdieping</p>
+                    <button onclick="switchTab('verdieping')" id="menu-verdieping"
+                        class="w-full text-left px-3 py-2.5 rounded-xl text-sm font-medium flex items-center gap-3 text-indigo-600 hover:bg-indigo-50 transition-all">
+                        <svg class="w-5 h-5 text-indigo-500 shrink-0" fill="none" viewBox="0 0 24 24"
+                            stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M13 10V3L4 14h7v7l9-11h-7z" />
+                        </svg>
+                        <span>Vwo Verdieping (NFA)</span>
+                    </button>
+                    <button onclick="switchTab('simulator-tab')" id="menu-simulator-tab"
+                        class="w-full text-left px-3 py-2.5 rounded-xl text-sm font-medium flex items-center gap-3 text-teal-600 hover:bg-teal-50 transition-all">
+                        <svg class="w-5 h-5 text-teal-500 shrink-0" fill="none" viewBox="0 0 24 24"
+                            stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                        </svg>
+                        <span>Spoorwegen Simulator</span>
+                    </button>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Hoofdcontent panels -->
+        <main class="flex-grow min-w-0">
+
+            <!-- TAB 1: SYLLABUS / INTRO -->
+            <section id="tab-syllabus" class="space-y-6">
+                <div class="bg-white rounded-2xl border border-slate-200 p-6 md:p-8 shadow-sm">
+                    <span class="text-xs font-bold text-teal-600 uppercase tracking-widest">Grondslagen (B) &bull;
+                        Subdomein B3</span>
+                    <h1 class="text-3xl md:text-4xl font-extrabold text-slate-900 tracking-tight mt-1 mb-4">Eindige
+                        Automaten</h1>
+                    <p class="text-lg text-slate-600 leading-relaxed">
+                        Welkom bij de interactieve lessenserie over eindige automaten! Deze website sluit direct aan bij
+                        het schoolexamenprogramma voor het vak <strong>Informatica bovenbouw (havo/vwo)</strong>. We
+                        baseren ons op de officiële richtlijnen en didactische slides van de Radboud Universiteit.
+                    </p>
+
+                    <!-- PDF Referenties -->
+                    <div
+                        class="mt-6 p-4 bg-teal-50 border border-teal-100 rounded-xl flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                        <div class="flex items-start gap-3">
+                            <span class="text-2xl mt-0.5">📂</span>
+                            <div>
+                                <h4 class="font-bold text-teal-900 text-sm">Gekoppelde bronnen</h4>
+                                <p class="text-xs text-teal-700 leading-normal">Tijdens deze lessen gebruiken we het
+                                    bestand <strong class="underline">examenprogramma_Informatica_havo-vwo.pdf</strong>,
+                                    en de lesbrieven <strong class="underline">Les 1 &amp; 2 - Eindige automaten en een
+                                        nooddienstregeling bij de spoorwegen.pdf</strong> en <strong
+                                        class="underline">Les 3 &amp; 4 - Toepassing eindige automaten.pdf</strong>.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Video Sectie -->
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                    <div
+                        class="lg:col-span-2 bg-white rounded-2xl border border-slate-200 p-6 shadow-sm flex flex-col justify-between">
+                        <div>
+                            <h2 class="text-xl font-bold text-slate-900 mb-2">📺 Introductievideo: Finite State Machines
+                            </h2>
+                            <p class="text-sm text-slate-600 mb-4">Bekijk deze korte, heldere animatie over hoe eindige
+                                automaten (of Finite State Machines) simpele processen, zoals een snoepautomaat, een
+                                game-vijand of een code-validator, wiskundig modelleren.</p>
+                        </div>
+                        <div class="relative aspect-video rounded-xl overflow-hidden bg-slate-900 shadow">
+                            <iframe class="absolute inset-0 w-full h-full"
+                                src="https://www.youtube.com/embed/4XEK7OU2gIw"
+                                title="Finite State Machines - Computerphile" frameborder="0"
+                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                                allowfullscreen></iframe>
+                        </div>
+                    </div>
+
+                    <!-- Leerdoelen Card -->
+                    <div
+                        class="bg-gradient-to-br from-teal-500 to-emerald-600 text-white rounded-2xl p-6 shadow-md flex flex-col justify-between">
+                        <div>
+                            <span class="text-xs font-bold uppercase tracking-wider text-teal-100">Jouw Doelen</span>
+                            <h2 class="text-2xl font-extrabold tracking-tight mt-1 mb-4">Wat leer je hier?</h2>
+                            <ul class="space-y-3 text-sm text-teal-50">
+                                <li class="flex items-start gap-2">
+                                    <span class="text-emerald-300 font-bold">✓</span>
+                                    <span>Je legt uit wat een eindige automaat is en noemt de eigenschappen.</span>
+                                </li>
+                                <li class="flex items-start gap-2">
+                                    <span class="text-emerald-300 font-bold">✓</span>
+                                    <span>Je leest en ontwerpt toestandsdiagrammen.</span>
+                                </li>
+                                <li class="flex items-start gap-2">
+                                    <span class="text-emerald-300 font-bold">✓</span>
+                                    <span>Je past automaten toe als generator en als controlemiddel (validator).</span>
+                                </li>
+                                <li class="flex items-start gap-2">
+                                    <span class="text-emerald-300 font-bold">✓</span>
+                                    <span>Je kent de structurele beperkingen (zoals het gebrek aan geheugen).</span>
+                                </li>
+                            </ul>
+                        </div>
+                        <button onclick="switchTab('les1')"
+                            class="mt-6 w-full py-3 bg-white text-teal-700 font-bold rounded-xl text-center shadow-lg shadow-teal-900/10 hover:bg-teal-50 transition-all">Start
+                            Les 1 &rarr;</button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- TAB 2: LES 1 -->
+            <section id="tab-les1" class="space-y-6 hidden">
+                <div class="bg-white rounded-2xl border border-slate-200 p-6 shadow-sm">
+                    <span class="text-xs font-bold text-teal-600 uppercase tracking-widest">Les 1 &bull; Theorie</span>
+                    <h2 class="text-2xl font-bold text-slate-900 mt-1 mb-4">Wat is een Eindige Automaat?</h2>
+
+                    <p class="text-slate-600 mb-4 leading-relaxed text-sm">
+                        In het dagelijks leven zijn er veel apparaten die eenvoudige, voorspelbare taken hebben en steeds hetzelfde gedrag vertonen. Denk aan een <strong>snoepautomaat</strong>, een <strong>verkeerslicht</strong> of een <strong>lift</strong>. Dit soort systemen kunnen we uitstekend modelleren met een <strong>eindige automaat</strong> (Engels: <em>Finite State Machine</em> of <em>FSM</em>).
+                    </p>
+
+                    <!-- Informatica Toepassing Box -->
+                    <div class="mb-6 p-4 bg-slate-50 border border-slate-100 rounded-xl text-sm leading-relaxed text-slate-600">
+                        <h4 class="font-extrabold text-slate-900 text-xs mb-1.5 flex items-center gap-2">
+                            <span class="text-base">💻</span> Wat is een automaat in de informatica?
+                        </h4>
+                        <p class="text-xs">
+                            Binnen de <strong>informatica</strong> is een eindige automaat een fundamenteel wiskundig en logisch model. Het helpt software- en hardware-engineers om de werking van opeenvolgende stappen en systemen met vaste gedragingen foutloos te ontwerpen en te valideren.
+                        </p>
+                        <p class="text-xs mt-2 font-bold text-slate-700">
+                            We gebruiken eindige automaten in de informatica met name voor:
+                        </p>
+                        <ul class="list-disc list-inside mt-1.5 space-y-1 text-[11px] text-slate-500 ml-2">
+                            <li><strong>State Management &amp; Logica:</strong> Het beheren van de status in applicaties (zoals laadschermen, interactieve formulieren, webshop-bestelprocessen of het gedrag van vijanden in computergames).</li>
+                            <li><strong>Tekstverwerking &amp; Regex:</strong> Reguliere expressies (regex) gebruiken onder water eindige automaten om patronen in teksten (zoals e-mailadressen of postcodes) razendsnel te controleren op geldigheid.</li>
+                            <li><strong>Compilers &amp; Parsers:</strong> Het scannen van geschreven code in programmeertalen (zoals Java, Python of JavaScript) om te controleren op syntaxfouten voordat de code door de computer kan worden uitgevoerd.</li>
+                        </ul>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 my-6">
+                        <div class="p-4 bg-slate-50 border border-slate-100 rounded-xl">
+                            <span class="text-xs font-bold text-teal-600 uppercase">Eigenschap 1</span>
+                            <h4 class="font-bold text-slate-800 text-sm mt-1">Eén actieve toestand</h4>
+                            <p class="text-xs text-slate-500 mt-1">De automaat bevindt zich op elk moment in precies één
+                                specifieke toestand.</p>
+                        </div>
+                        <div class="p-4 bg-slate-50 border border-slate-100 rounded-xl">
+                            <span class="text-xs font-bold text-teal-600 uppercase">Eigenschap 2</span>
+                            <h4 class="font-bold text-slate-800 text-sm mt-1">Toestandsovergangen</h4>
+                            <p class="text-xs text-slate-500 mt-1">De automaat kan door invoer (triggers) wisselen van
+                                toestand (de transities).</p>
+                        </div>
+                        <div class="p-4 bg-slate-50 border border-slate-100 rounded-xl">
+                            <span class="text-xs font-bold text-teal-600 uppercase">Eigenschap 3</span>
+                            <h4 class="font-bold text-slate-800 text-sm mt-1">Eindig veel toestanden</h4>
+                            <p class="text-xs text-slate-500 mt-1">Er is een strikt gelimiteerd, telbaar aantal
+                                mogelijke toestanden aanwezig.</p>
+                        </div>
+                    </div>
+
+                    <!-- Interactieve Thermostaat Widget -->
+                    <div class="bg-teal-50 border border-teal-100 rounded-2xl p-6 my-6">
+                        <h3 class="text-lg font-bold text-teal-900 mb-2">🧠 Interactieve Verkenning: Slimme Thermostaat
+                        </h3>
+                        <p class="text-sm text-teal-700 mb-4">Klik op de knoppen om invoer aan te leveren aan de
+                            thermostaat-automaat en bekijk hoe de toestand verandert.</p>
+
+                        <div
+                            class="flex flex-col sm:flex-row items-center justify-around gap-6 p-4 bg-white rounded-xl border border-teal-100">
+                            <!-- Visualisatie van de 2 toestanden -->
+                            <div class="flex items-center gap-4">
+                                <div id="state-cv-uit"
+                                    class="w-24 h-24 rounded-full border-4 border-teal-600 bg-teal-50 flex flex-col items-center justify-center text-center shadow transition-all duration-300">
+                                    <span class="text-xs font-bold text-teal-800">CV UIT</span>
+                                    <span class="text-[10px] text-teal-600 font-mono mt-1">(Actief)</span>
+                                </div>
+                                <div class="text-slate-400 font-bold">&harr;</div>
+                                <div id="state-cv-aan"
+                                    class="w-24 h-24 rounded-full border-4 border-slate-200 bg-white flex flex-col items-center justify-center text-center shadow transition-all duration-300">
+                                    <span class="text-xs font-bold text-slate-400">CV AAN</span>
+                                    <span class="text-[10px] text-slate-400 font-mono mt-1">(Inactief)</span>
+                                </div>
+                            </div>
+
+                            <!-- Triggers -->
+                            <div class="flex flex-col gap-2">
+                                <button onclick="triggerThermostat('te-laag')"
+                                    class="px-4 py-2 bg-teal-600 text-white text-sm font-bold rounded-lg hover:bg-teal-700 transition">Invoer:
+                                    "Temperatuur te laag"</button>
+                                <button onclick="triggerThermostat('te-hoog')"
+                                    class="px-4 py-2 bg-slate-600 text-white text-sm font-bold rounded-lg hover:bg-slate-700 transition">Invoer:
+                                    "Temperatuur te hoog"</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Casus & Transities: De Lift -->
+                <div class="bg-white rounded-2xl border border-slate-200 p-6 md:p-8 shadow-sm space-y-6">
+                    <div>
+                        <span class="text-xs font-bold text-teal-600 uppercase tracking-widest">Les 1 &bull; Diepere Duik</span>
+                        <h2 class="text-2xl font-bold text-slate-900 mt-1 mb-3">Toestandsovergangen (Transities) &amp; De Lift</h2>
+                        <p class="text-slate-600 leading-relaxed text-sm">
+                            Een van de belangrijkste onderdelen van een eindige automaat is de <strong>transitie</strong> (de toestandsovergang). Dit beschrijft hoe het systeem reageert op een bepaalde invoer door van de ene toestand naar de andere over te gaan.
+                        </p>
+                        <p class="text-slate-600 leading-relaxed text-sm mt-2">
+                            Laten we kijken naar een <strong>lift</strong> die 3 verdiepingen bedient: de begane grond (<strong>BG</strong>), de eerste verdieping (<strong>1</strong>) en de tweede verdieping (<strong>2</strong>). Dit zijn onze 3 toestanden.
+                        </p>
+                        <p class="text-slate-600 leading-relaxed text-sm mt-2">
+                            De invoer voor deze automaat is de verdiepingsknop die een passagier indrukt. Omdat je vanaf elke verdieping naar elk van de drie verdiepingen kunt reizen, kent deze automaat in totaal <strong>9 mogelijke transities</strong>:
+                        </p>
+                        <ul class="list-disc list-inside text-xs text-slate-500 mt-2 space-y-1 ml-2">
+                            <li><strong>Reizen tussen verdiepingen:</strong> Bijvoorbeeld van <code>BG</code> naar <code>1</code> (omhoog) of van <code>2</code> naar <code>BG</code> (omlaag).</li>
+                            <li><strong>Zelf-loops (Self-loops):</strong> Als de lift al op verdieping <code>1</code> staat en er wordt op knop <code>1</code> gedrukt, blijft de lift op <code>1</code>. De toestand verandert niet, maar er vindt wél een transitie plaats naar dezelfde toestand!</li>
+                        </ul>
+                    </div>
+
+                    <!-- De Twee Basiselementen Uitleg (Toestand & Transitie) -->
+                    <div class="border-t border-slate-100 pt-4">
+                        <h4 class="font-extrabold text-slate-900 text-xs mb-3 flex items-center gap-2">
+                            <span class="text-base">🎨</span> De Twee Basis-Symbolen in het Schema
+                        </h4>
+                        <p class="text-slate-600 text-xs leading-relaxed mb-3">
+                            Aangezien de lift altijd stand-by staat en oneindig in bedrijf is, heeft dit toestandsdiagram <strong>geen begin- of eindtoestanden</strong>. De FSM wordt puur opgebouwd uit de twee basiselementen:
+                        </p>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                            <div class="p-3 bg-slate-50 border border-slate-100 rounded-xl flex items-start gap-3">
+                                <div class="w-10 h-10 shrink-0 bg-white border border-slate-200 rounded-lg flex items-center justify-center text-teal-600 shadow-sm">
+                                    <svg class="w-6 h-6" viewBox="0 0 100 100">
+                                        <circle cx="50" cy="50" r="32" stroke="currentColor" stroke-width="6" fill="none" />
+                                    </svg>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-slate-800 text-xs">De Toestand (Cirkel)</h4>
+                                    <p class="text-[11px] text-slate-500 mt-0.5 leading-normal">
+                                        Dit is de cirkel in het schema. Het geeft de huidige status van het systeem of apparaat aan. Bij de lift is de toestand de verdieping waar de lift stilstaat (<code>BG</code>, <code>1</code> of <code>2</code>).
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="p-3 bg-slate-50 border border-slate-100 rounded-xl flex items-start gap-3">
+                                <div class="w-10 h-10 shrink-0 bg-white border border-slate-200 rounded-lg flex items-center justify-center text-teal-600 shadow-sm">
+                                    <svg class="w-8 h-8" viewBox="0 0 100 100">
+                                        <line x1="15" y1="50" x2="70" y2="50" stroke="currentColor" stroke-width="6" />
+                                        <polygon points="70,42 85,50 70,58" fill="currentColor" />
+                                    </svg>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-slate-800 text-xs">De Transitie (Gerichte Pijl)</h4>
+                                    <p class="text-[11px] text-slate-500 mt-0.5 leading-normal">
+                                        De gerichte pijl. Deze geeft de overgang aan van de ene toestand naar de andere door een trigger (invoer). Bij de lift is dit de beweging na het indrukken van een knop.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Interactieve Lift Widget -->
+                    <div class="bg-teal-50 border border-teal-100 rounded-2xl p-6">
+                        <h3 class="text-lg font-bold text-teal-900 mb-2">🏢 Interactieve Verkenning: De Lift Simulator</h3>
+                        <p class="text-sm text-teal-700 mb-6">Bestuur de lift en bekijk hoe de toestand verschuift in de liftschacht én in het wiskundige FSM-diagram ernaast.</p>
+
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-center bg-white p-6 rounded-xl border border-teal-100">
+                            <!-- Linker kolom: Liftschacht -->
+                            <div class="flex flex-col items-center space-y-4">
+                                <span class="text-xs font-bold text-slate-400 uppercase tracking-wider">De Liftschacht</span>
+                                <div class="relative w-36 h-[270px] bg-slate-800 rounded-2xl p-2 border-4 border-slate-700 shadow-inner flex flex-col justify-between items-center select-none">
+                                    <!-- Verdieping-lijnen achtergrond -->
+                                    <div class="absolute inset-x-0 top-[40px] border-t border-dashed border-slate-600/50"></div>
+                                    <div class="absolute inset-x-0 top-[130px] border-t border-dashed border-slate-600/50"></div>
+                                    <div class="absolute inset-x-0 top-[220px] border-t border-dashed border-slate-600/50"></div>
+                                    
+                                    <!-- Verdieping Labels -->
+                                    <div class="absolute right-3 top-[25px] text-[10px] font-extrabold text-slate-500">2e Fl.</div>
+                                    <div class="absolute right-3 top-[115px] text-[10px] font-extrabold text-slate-500">1e Fl.</div>
+                                    <div class="absolute right-3 top-[205px] text-[10px] font-extrabold text-slate-500">BG</div>
+
+                                    <!-- De Liftcabine -->
+                                    <div id="lift-cabin" class="absolute w-[calc(100%-24px)] h-16 bg-gradient-to-br from-teal-500 to-emerald-600 rounded-xl border border-teal-400 shadow-lg shadow-teal-900/30 flex flex-col items-center justify-center left-3 transition-all duration-1000 ease-in-out" style="bottom: 12px;">
+                                        <!-- Deuren streep -->
+                                        <div class="absolute inset-y-0 w-0.5 bg-teal-700/50"></div>
+                                        <!-- Display -->
+                                        <div class="w-8 h-4 bg-slate-900 rounded border border-slate-700 flex items-center justify-center text-[10px] font-mono font-bold text-teal-400 shadow-inner z-10">
+                                            <span id="lift-cabin-display">BG</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Rechter kolom: SVG Diagram -->
+                            <div class="flex flex-col items-center space-y-4">
+                                <span class="text-xs font-bold text-slate-400 uppercase tracking-wider">Het Toestandsdiagram (FSM)</span>
+                                <div class="relative w-64 h-[270px] bg-slate-50 rounded-xl border border-slate-100 flex items-center justify-center p-2">
+                                    <svg class="w-full h-full" viewBox="0 0 200 270" id="lift-fsm-svg">
+                                        <defs>
+                                            <marker id="arrow-lift" viewBox="0 0 10 10" refX="18" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                                                <path d="M 0 1.5 L 8 5 L 0 8.5 z" fill="#94a3b8" />
+                                            </marker>
+                                            <marker id="arrow-lift-active" viewBox="0 0 10 10" refX="18" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                                                <path d="M 0 1.5 L 8 5 L 0 8.5 z" fill="#0d9488" />
+                                            </marker>
+                                        </defs>
+
+                                        <!-- TRANSITIE PIJLEN (EDGES) -->
+                                        <!-- Self-loops (curves) -->
+                                        <!-- Loop 2 -->
+                                        <path id="lift-edge-2-2" d="M 80,45 C 50,25 50,65 80,45" stroke="#94a3b8" stroke-width="2" fill="none" marker-end="url(#arrow-lift)" />
+                                        <!-- Loop 1 -->
+                                        <path id="lift-edge-1-1" d="M 80,135 C 50,115 50,155 80,135" stroke="#94a3b8" stroke-width="2" fill="none" marker-end="url(#arrow-lift)" />
+                                        <!-- Loop BG -->
+                                        <path id="lift-edge-BG-BG" d="M 80,225 C 50,205 50,245 80,225" stroke="#94a3b8" stroke-width="2" fill="none" marker-end="url(#arrow-lift)" />
+
+                                        <!-- Directe transities -->
+                                        <!-- BG -> 1 (up) -->
+                                        <path id="lift-edge-BG-1" d="M 105,210 C 112,190 112,170 105,150" stroke="#94a3b8" stroke-width="2" fill="none" marker-end="url(#arrow-lift)" />
+                                        <!-- 1 -> BG (down) -->
+                                        <path id="lift-edge-1-BG" d="M 95,150 C 88,170 88,190 95,210" stroke="#94a3b8" stroke-width="2" fill="none" marker-end="url(#arrow-lift)" />
+
+                                        <!-- 1 -> 2 (up) -->
+                                        <path id="lift-edge-1-2" d="M 105,120 C 112,100 112,80 105,60" stroke="#94a3b8" stroke-width="2" fill="none" marker-end="url(#arrow-lift)" />
+                                        <!-- 2 -> 1 (down) -->
+                                        <path id="lift-edge-2-1" d="M 95,60 C 88,80 88,100 95,120" stroke="#94a3b8" stroke-width="2" fill="none" marker-end="url(#arrow-lift)" />
+
+                                        <!-- BG -> 2 (direct up) -->
+                                        <path id="lift-edge-BG-2" d="M 115,210 C 145,160 145,110 115,60" stroke="#94a3b8" stroke-width="2" fill="none" marker-end="url(#arrow-lift)" />
+                                        <!-- 2 -> BG (direct down) -->
+                                        <path id="lift-edge-2-BG" d="M 85,60 C 55,110 55,160 85,210" stroke="#94a3b8" stroke-width="2" fill="none" marker-end="url(#arrow-lift)" />
+
+                                        <!-- TOESTANDEN (NODES) -->
+                                        <!-- Node 2 -->
+                                        <g id="lift-node-2" class="cursor-pointer" onclick="triggerLift('2')">
+                                            <circle cx="100" cy="45" r="18" fill="white" stroke="#94a3b8" stroke-width="2.5" />
+                                            <text x="100" y="49" text-anchor="middle" font-size="11" font-weight="bold" fill="#1e293b">2</text>
+                                        </g>
+                                        <!-- Node 1 -->
+                                        <g id="lift-node-1" class="cursor-pointer" onclick="triggerLift('1')">
+                                            <circle cx="100" cy="135" r="18" fill="white" stroke="#94a3b8" stroke-width="2.5" />
+                                            <text x="100" y="139" text-anchor="middle" font-size="11" font-weight="bold" fill="#1e293b">1</text>
+                                        </g>
+                                        <!-- Node BG -->
+                                        <g id="lift-node-BG" class="cursor-pointer" onclick="triggerLift('BG')">
+                                            <circle cx="100" cy="225" r="18" fill="white" stroke="#94a3b8" stroke-width="2.5" />
+                                            <text x="100" y="229" text-anchor="middle" font-size="11" font-weight="bold" fill="#1e293b">BG</text>
+                                        </g>
+                                    </svg>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Knoppen & Status Log -->
+                        <div class="mt-6 grid grid-cols-1 sm:grid-cols-2 gap-4 items-center">
+                            <!-- Knoppen -->
+                            <div class="flex flex-col gap-2">
+                                <span class="text-xs font-bold text-teal-800 uppercase tracking-wider">Invoer (Knop indrukken):</span>
+                                <div class="grid grid-cols-3 gap-2">
+                                    <button onclick="triggerLift('2')" class="px-3 py-2.5 bg-teal-600 hover:bg-teal-700 text-white text-xs font-extrabold rounded-lg transition shadow shadow-teal-800/10">Knop 2</button>
+                                    <button onclick="triggerLift('1')" class="px-3 py-2.5 bg-teal-600 hover:bg-teal-700 text-white text-xs font-extrabold rounded-lg transition shadow shadow-teal-800/10">Knop 1</button>
+                                    <button onclick="triggerLift('BG')" class="px-3 py-2.5 bg-teal-600 hover:bg-teal-700 text-white text-xs font-extrabold rounded-lg transition shadow shadow-teal-800/10">Knop BG</button>
+                                </div>
+                            </div>
+
+                            <!-- Status Log -->
+                            <div class="p-4 bg-white border border-teal-100 rounded-xl flex flex-col justify-center min-h-[82px] shadow-sm">
+                                <span class="text-[10px] font-extrabold text-slate-400 uppercase tracking-wider">Transitie Logboek</span>
+                                <div id="lift-log-text" class="text-xs font-semibold text-slate-700 mt-1 leading-relaxed">
+                                    De lift staat stil op de **Begane Grond** (begintoestand). Druk op een knop om een transitie te starten.
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+
+                <!-- Quiz Les 1 -->
+                <div class="bg-white rounded-2xl border border-slate-200 p-6 shadow-sm">
+                    <h3 class="text-xl font-bold text-slate-900 mb-4">✏️ Zelf-test: Les 1</h3>
+                    <div class="space-y-4">
+                        <div>
+                            <p class="text-sm font-semibold text-slate-700 mb-2">Vraag 1: Hoeveel actieve toestanden kan
+                                een deterministische eindige automaat op elk willekeurig moment hebben?</p>
+                            <div class="grid grid-cols-1 sm:grid-cols-3 gap-2">
+                                <button onclick="checkAnswer('q1', 'incorrect1')" id="btn-q1-incorrect1"
+                                    class="p-3 text-left border rounded-xl text-sm hover:bg-slate-50 transition">A)
+                                    Meerdere tegelijk</button>
+                                <button onclick="checkAnswer('q1', 'correct')" id="btn-q1-correct"
+                                    class="p-3 text-left border rounded-xl text-sm hover:bg-slate-50 transition">B)
+                                    Precies één</button>
+                                <button onclick="checkAnswer('q1', 'incorrect2')" id="btn-q1-incorrect2"
+                                    class="p-3 text-left border rounded-xl text-sm hover:bg-slate-50 transition">C) Geen
+                                    enkele</button>
+                            </div>
+                            <div id="feedback-q1" class="mt-2 text-xs font-medium hidden"></div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- TAB 3: LES 2 -->
+            <section id="tab-les2" class="space-y-6 hidden">
+                <div class="bg-white rounded-2xl border border-slate-200 p-6 shadow-sm">
+                    <span class="text-xs font-bold text-teal-600 uppercase tracking-widest">Les 2 &bull; Theorie</span>
+                    <h2 class="text-2xl font-bold text-slate-900 mt-1 mb-4">Toestandsdiagrammen &amp; De
+                        Nooddienstregeling</h2>
+                    <p class="text-slate-600 mb-4">
+                        In deze les kijken we direct naar de casus uit de lesbrief <strong>"Les 1 &amp; 2 - Eindige
+                            automaten en een nooddienstregeling bij de spoorwegen.pdf"</strong>. Bij Code Rood rijden
+                        treinen alleen over specifieke trajecten gemarkeerd met de letters $A$ of $B$.
+                    </p>
+
+                    <div class="bg-teal-50 border border-teal-100 rounded-xl p-4 mb-4 text-sm text-teal-800">
+                        <strong>Wat maakt een route geldig?</strong>
+                        <ol class="list-decimal ml-5 mt-2 space-y-1">
+                            <li>De route begint altijd bij de <strong>begintoestand</strong> (in dit geval Toestand 1).
+                            </li>
+                            <li>Bij elk karakter uit de invoer (bijv. A of B) volg je de bijbehorende pijl.</li>
+                            <li>Wanneer de gehele invoer is verwerkt, moeten we eindigen in een
+                                <strong>eindtoestand</strong> (Toestand 7, de dubbele cirkel).</li>
+                        </ol>
+                    </div>
+
+                    <!-- Simulator Embed Referentie -->
+                    <div
+                        class="p-6 bg-slate-100 rounded-xl border border-slate-200 flex flex-col md:flex-row justify-between items-center gap-4">
+                        <div class="space-y-1">
+                            <h4 class="font-bold text-slate-900 text-base">💻 Interactieve Simulator Ingebouwd!</h4>
+                            <p class="text-xs text-slate-600">Simuleer direct de routes en test of ze geldig zijn voor
+                                de nooddienstregeling.</p>
+                        </div>
+                        <button onclick="switchTab('simulator-tab')"
+                            class="px-5 py-2.5 bg-teal-600 text-white font-bold rounded-xl text-sm shadow hover:bg-teal-700 transition">Naar
+                            de Simulator &rarr;</button>
+                    </div>
+                </div>
+
+                <!-- Begintoestand en Eindtoestand Introductie -->
+                <div class="bg-white rounded-2xl border border-slate-200 p-6 md:p-8 shadow-sm space-y-4">
+                    <span class="text-xs font-bold text-teal-600 uppercase tracking-widest">Les 2 &bull; Nieuwe Elementen</span>
+                    <h3 class="text-xl font-bold text-slate-950 mt-1 mb-2">🚦 De Begin- en Eindtoestand</h3>
+                    <p class="text-slate-600 text-sm leading-relaxed">
+                        In tegenstelling tot de lift (die altijd stand-by staat en oneindig in rondjes kan draaien), hebben veel informaticasystemen en processen een duidelijk startpunt en een gewenst eindpunt. Binnen een toestandsdiagram introduceren we daarvoor twee cruciale nieuwe symbolen: de <strong>begintoestand</strong> en de <strong>eindtoestand</strong>.
+                    </p>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
+                        <div class="p-4 border border-slate-200 rounded-xl flex gap-3 items-start bg-slate-50">
+                            <div class="w-12 h-12 shrink-0 bg-white border border-slate-200 rounded-lg flex items-center justify-center text-teal-600 shadow-sm">
+                                <svg class="w-8 h-8" viewBox="0 0 100 100">
+                                    <line x1="10" y1="50" x2="45" y2="50" stroke="currentColor" stroke-width="4" />
+                                    <polygon points="40,45 50,50 40,55" fill="currentColor" />
+                                    <circle cx="70" cy="50" r="20" stroke="currentColor" stroke-width="4" fill="none" />
+                                </svg>
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-slate-800 text-xs">De Begintoestand</h4>
+                                <p class="text-[11px] text-slate-500 mt-1 leading-normal">
+                                    Dit is een cirkel met een 'losse' binnenkomende pijl aan de linkerkant die nergens anders vandaan komt. Dit markeert exact waar de verwerking van de invoer start. In onze nooddienstregeling is dit <strong>Station 1 (Den Haag / Utrecht)</strong>.
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="p-4 border border-slate-200 rounded-xl flex gap-3 items-start bg-slate-50">
+                            <div class="w-12 h-12 shrink-0 bg-white border border-slate-200 rounded-lg flex items-center justify-center text-teal-600 shadow-sm">
+                                <svg class="w-8 h-8" viewBox="0 0 100 100">
+                                    <circle cx="50" cy="50" r="30" stroke="currentColor" stroke-width="4" fill="none" />
+                                    <circle cx="50" cy="50" r="22" stroke="currentColor" stroke-width="3" fill="none" />
+                                </svg>
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-slate-800 text-xs">De Eindtoestand (Acceptatietoestand)</h4>
+                                <p class="text-[11px] text-slate-500 mt-1 leading-normal">
+                                    Dit is een dubbele cirkel. Het is het einddoel van de invoer. Als de volledige route (invoer) is afgelopen en de trein staat stil op een van de eindtoestanden, dan is de route <strong>geldig (geaccepteerd)</strong>. In onze casus is dit <strong>Station 7 (Groningen)</strong>.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Quiz Les 2 -->
+                <div class="bg-white rounded-2xl border border-slate-200 p-6 shadow-sm">
+                    <h3 class="text-xl font-bold text-slate-900 mb-4">✏️ Vragen &amp; Oefeningen: Les 2</h3>
+                    <div class="space-y-6">
+                        <!-- Vraag 1 -->
+                        <div>
+                            <p class="text-sm font-semibold text-slate-700 mb-2">Vraag 1: Welke van de volgende
+                                invoerstrings (routes) leidt tot een geldige aankomst op station Groningen (Toestand 7)?
+                            </p>
+                            <div class="grid grid-cols-1 sm:grid-cols-3 gap-2">
+                                <button onclick="checkAnswer('q2', 'incorrect1')" id="btn-q2-incorrect1"
+                                    class="p-3 text-left border rounded-xl text-sm hover:bg-slate-50 transition">A)
+                                    AAB</button>
+                                <button onclick="checkAnswer('q2', 'correct')" id="btn-q2-correct"
+                                    class="p-3 text-left border rounded-xl text-sm hover:bg-slate-50 transition">B)
+                                    ABABAB</button>
+                                <button onclick="checkAnswer('q2', 'incorrect2')" id="btn-q2-incorrect2"
+                                    class="p-3 text-left border rounded-xl text-sm hover:bg-slate-50 transition">C)
+                                    BBBAA</button>
+                            </div>
+                            <div id="feedback-q2" class="mt-2 text-xs font-medium hidden"></div>
+                        </div>
+
+                        <!-- Vraag 2 -->
+                        <div class="pt-4 border-t border-slate-100">
+                            <p class="text-sm font-semibold text-slate-700 mb-2">Vraag 2: Kun je op basis van dit
+                                diagram de *langste* mogelijke route bepalen?</p>
+                            <div class="grid grid-cols-1 sm:grid-cols-3 gap-2">
+                                <button onclick="checkAnswer('q3', 'incorrect1')" id="btn-q3-incorrect1"
+                                    class="p-3 text-left border rounded-xl text-sm hover:bg-slate-50 transition">A) Ja,
+                                    dat is 12 stappen</button>
+                                <button onclick="checkAnswer('q3', 'correct')" id="btn-q3-correct"
+                                    class="p-3 text-left border rounded-xl text-sm hover:bg-slate-50 transition">B) Nee,
+                                    er is een oneindige loop</button>
+                                <button onclick="checkAnswer('q3', 'incorrect2')" id="btn-q3-incorrect2"
+                                    class="p-3 text-left border rounded-xl text-sm hover:bg-slate-50 transition">C)
+                                    Hangt af van de rails</button>
+                            </div>
+                            <div id="feedback-q3" class="mt-2 text-xs font-medium hidden"></div>
+                        </div>
+
+                        <!-- Vraag 3 (Kortste route) -->
+                        <div class="pt-4 border-t border-slate-100">
+                            <p class="text-sm font-semibold text-slate-700 mb-2">Oefening 3: Wat is de kortst mogelijke
+                                geldige route van Toestand 1 naar Toestand 7?</p>
+                            <div class="flex gap-2">
+                                <input type="text" id="shortest-route-input" placeholder="Bijv. AB"
+                                    class="px-4 py-2 border rounded-xl text-sm uppercase font-mono max-w-xs focus:ring-2 focus:ring-teal-500">
+                                <button onclick="checkShortestRoute()"
+                                    class="px-4 py-2 bg-teal-600 text-white text-sm font-bold rounded-xl hover:bg-teal-700 transition">Controleer</button>
+                            </div>
+                            <div id="shortest-route-feedback" class="mt-2 text-xs font-medium hidden"></div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- TAB 4: LES 3 -->
+            <section id="tab-les3" class="space-y-6 hidden">
+                <div class="bg-white rounded-2xl border border-slate-200 p-6 shadow-sm">
+                    <span class="text-xs font-bold text-teal-600 uppercase tracking-widest">Les 3 &bull; Theorie</span>
+                    <h2 class="text-2xl font-bold text-slate-900 mt-1 mb-4">De Eindige Automaat als Generator</h2>
+                    <p class="text-slate-600 mb-4">
+                        Een eindige automaat hoeft niet alleen invoer te <em>controleren</em>. We kunnen een automaat
+                        ook gebruiken om patronen, zinnen of geldige postcodes te <strong>genereren</strong>. Door
+                        simpelweg de transities in een diagram te volgen en de bijbehorende tekst bij te houden,
+                        ontstaat er automatisch geldige output.
+                    </p>
+
+                    <h3 class="text-lg font-bold text-slate-950 mt-6 mb-2">⚙️ Postcode-generator (Nederlandse ZIP-code)
+                    </h3>
+                    <p class="text-sm text-slate-600 mb-4">
+                        Een Nederlandse postcode is streng genormeerd. We kunnen een automaat bouwen die enkel postcodes
+                        genereert die voldoen aan het format:
+                        <code>4 cijfers (begint niet met 0) + spatie + 2 letters</code>.
+                    </p>
+
+                    <!-- Spoor van Postcode-automaat -->
+                    <div
+                        class="p-4 bg-slate-50 border border-slate-100 rounded-xl flex items-center justify-around flex-wrap gap-2 text-center">
+                        <div class="p-2 border rounded bg-white font-mono text-xs">Start</div>
+                        <div class="text-slate-400">&rarr;</div>
+                        <div class="p-2 border rounded bg-white text-xs font-bold">Cijfer 1-9</div>
+                        <div class="text-slate-400">&rarr;</div>
+                        <div class="p-2 border rounded bg-white text-xs">Cijfer 0-9 (x3)</div>
+                        <div class="text-slate-400">&rarr;</div>
+                        <div class="p-2 border rounded bg-white text-xs">Spatie</div>
+                        <div class="text-slate-400">&rarr;</div>
+                        <div class="p-2 border rounded bg-white text-xs">Letter A-Z (x2)</div>
+                        <div class="text-slate-400">&rarr;</div>
+                        <div class="p-2 border rounded bg-teal-50 border-teal-200 text-teal-800 text-xs font-bold">Eind
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Interactieve Zinnengenerator Widget -->
+                <div class="bg-white rounded-2xl border border-slate-200 p-6 shadow-sm">
+                    <h3 class="text-xl font-bold text-slate-900 mb-2">🎭 Interactief: De Zinnengenerator</h3>
+                    <p class="text-sm text-slate-600 mb-4">
+                        Klik op de opeenvolgende knoppen om een grammaticaal correcte zin op te bouwen aan de hand van
+                        het diagram van de Radboud-lesbrief.
+                    </p>
+
+                    <div class="p-4 bg-slate-50 border rounded-2xl mb-4 text-center">
+                        <span class="text-xs text-slate-400 block mb-1">Gegenereerde zin:</span>
+                        <div id="generated-sentence-box"
+                            class="text-lg font-bold text-teal-700 font-mono tracking-tight min-h-[1.75rem]">&nbsp;
+                        </div>
+                    </div>
+
+                    <!-- Flow van het bouwen -->
+                    <div id="sentence-step-container" class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                        <!-- Wordt dynamisch gevuld door JS -->
+                    </div>
+
+                    <button onclick="resetSentenceGenerator()"
+                        class="mt-4 px-4 py-2 bg-slate-200 hover:bg-slate-300 text-slate-700 text-xs font-bold rounded-lg transition">Opnieuw</button>
+                </div>
+
+                <!-- Quiz Les 3 -->
+                <div class="bg-white rounded-2xl border border-slate-200 p-6 shadow-sm">
+                    <h3 class="text-xl font-bold text-slate-900 mb-4">✏️ Zelf-test: Les 3</h3>
+                    <div class="space-y-4">
+                        <div>
+                            <p class="text-sm font-semibold text-slate-700 mb-2">Vraag 1: Waarom noemen we een automaat
+                                die een oneindig aantal verschillende klasnamen (zoals 1m1, 2h4, 3v12, enz.) kan
+                                genereren, toch een *eindige* automaat?</p>
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                                <button onclick="checkAnswer('q4', 'incorrect')" id="btn-q4-incorrect"
+                                    class="p-3 text-left border rounded-xl text-sm hover:bg-slate-50 transition">A)
+                                    Omdat de lengte van een gegenereerde zin altijd eindig is.</button>
+                                <button onclick="checkAnswer('q4', 'correct')" id="btn-q4-correct"
+                                    class="p-3 text-left border rounded-xl text-sm hover:bg-slate-50 transition">B)
+                                    Omdat de automaat een *eindig* aantal wiskundige toestanden heeft.</button>
+                            </div>
+                            <div id="feedback-q4" class="mt-2 text-xs font-medium hidden"></div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- TAB 5: LES 4 -->
+            <section id="tab-les4" class="space-y-6 hidden">
+                <div class="bg-white rounded-2xl border border-slate-200 p-6 shadow-sm">
+                    <span class="text-xs font-bold text-teal-600 uppercase tracking-widest">Les 4 &bull; Theorie</span>
+                    <h2 class="text-2xl font-bold text-slate-900 mt-1 mb-4">De Automaat als Controlemiddel &amp;
+                        Beperkingen</h2>
+                    <p class="text-slate-600 mb-4">
+                        Wanneer je in een webshop je e-mailadres of telefoonnummer invoert, wordt dit live
+                        gecontroleerd. Een eindige automaat is perfect geschikt als <strong>controlemiddel</strong>
+                        (validator) om te bepalen of de input voldoet aan een bepaald format.
+                    </p>
+
+                    <!-- Live validator demo -->
+                    <div class="bg-indigo-50 border border-indigo-100 rounded-2xl p-6 my-6">
+                        <h3 class="text-lg font-bold text-indigo-900 mb-1">📱 Live Demo: Telefoonnummer-Validator</h3>
+                        <p class="text-xs text-indigo-700 mb-4">Typ een mobiel nummer. De validator checkt of het start
+                            met <code>06</code>, <code>+316</code> of <code>00316</code>, gevolgd door precies 8
+                            cijfers.</p>
+
+                        <div class="flex flex-col sm:flex-row items-center gap-4">
+                            <input oninput="validatePhoneNumber()" type="text" id="phone-test-input"
+                                placeholder="Bijv. 0612345678"
+                                class="px-4 py-2.5 border rounded-xl text-base font-mono w-full sm:max-w-xs focus:ring-2 focus:ring-indigo-500">
+                            <div id="phone-validation-badge"
+                                class="px-4 py-2.5 rounded-xl text-sm font-bold bg-slate-200 text-slate-600">Voer nummer
+                                in...</div>
+                        </div>
+                    </div>
+
+                    <h3 class="text-xl font-bold text-slate-900 mt-6 mb-2">⚠️ De Beperkingen: Waarom geen HTML of
+                        Wiskunde?</h3>
+                    <p class="text-slate-600 mb-4">
+                        Hoewel eindige automaten krachtig zijn, hebben ze één fundamentele zwakte: <strong>een eindige
+                            automaat heeft geen extern geheugen</strong>. Hij 'weet' alleen in welke toestand hij zich
+                        op dit moment bevindt; hij kan niet onthouden hoe vaak hij ergens is geweest.
+                    </p>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div class="p-4 border rounded-xl">
+                            <h4 class="font-bold text-slate-900 text-sm">❌ Geen HTML-parsing</h4>
+                            <p class="text-xs text-slate-500 mt-1 leading-relaxed">
+                                Een automaat kan controleren of tags openen en sluiten (zoals
+                                <code>&lt;h1&gt; tekst &lt;/h1&gt;</code>). Maar hij kan niet <em>onthouden</em> welke
+                                tag hij heeft geopend om te verifiëren of de sluitingstag dezelfde is.
+                            </p>
+                        </div>
+                        <div class="p-4 border rounded-xl">
+                            <h4 class="font-bold text-slate-900 text-sm">❌ Geen recursieve berekeningen</h4>
+                            <p class="text-xs text-slate-500 mt-1 leading-relaxed">
+                                Controleren of de haakjes in een rekensom sluiten, bijv. <code>( ( 4 + 2 ) * 3 )</code>,
+                                is onmogelijk voor een FSM omdat de automaat moet onthouden hoeveel haakjes er nog
+                                "open" staan.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Quiz Les 4 -->
+                <div class="bg-white rounded-2xl border border-slate-200 p-6 shadow-sm">
+                    <h3 class="text-xl font-bold text-slate-900 mb-4">✏️ Zelf-test: Les 4</h3>
+                    <div class="space-y-4">
+                        <div>
+                            <p class="text-sm font-semibold text-slate-700 mb-2">Vraag 1: Waarom kan een eindige
+                                automaat *niet* controleren of de haakjes in een ingewikkelde wiskundige vergelijking
+                                correct sluiten?</p>
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                                <button onclick="checkAnswer('q5', 'incorrect')" id="btn-q5-incorrect"
+                                    class="p-3 text-left border rounded-xl text-sm hover:bg-slate-50 transition">A)
+                                    Omdat wiskundige vergelijkingen te lang zijn.</button>
+                                <button onclick="checkAnswer('q5', 'correct')" id="btn-q5-correct"
+                                    class="p-3 text-left border rounded-xl text-sm hover:bg-slate-50 transition">B)
+                                    Omdat de automaat niet kan tellen of dynamisch onthouden hoeveel haakjes geopend
+                                    zijn.</button>
+                            </div>
+                            <div id="feedback-q5" class="mt-2 text-xs font-medium hidden"></div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- TAB 6: VWO VERDIEPING -->
+            <section id="tab-verdieping" class="space-y-6 hidden">
+                <div class="bg-indigo-50 border border-indigo-100 rounded-2xl p-6 shadow-sm">
+                    <span class="text-xs font-bold text-indigo-700 uppercase tracking-widest">🎓 Vwo Verdieping &bull;
+                        Academisch</span>
+                    <h2 class="text-2xl font-bold text-indigo-950 mt-1 mb-4">DFA versus NFA</h2>
+                    <p class="text-indigo-900 mb-4 leading-relaxed">
+                        Voor de vwo-leerling die dieper wil gaan dan de basis: binnen de theoretische informatica
+                        verdelen we eindige automaten in twee hoofdcategorieën:
+                    </p>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 my-6">
+                        <div class="bg-white p-5 rounded-xl border border-indigo-100 shadow-sm">
+                            <h4 class="font-extrabold text-indigo-950 mb-2">DFA (Deterministisch)</h4>
+                            <p class="text-xs text-slate-600 leading-relaxed mb-3">
+                                <strong>Deterministic Finite Automaton:</strong> Vanuit elke toestand leidt een
+                                specifieke invoer naar exact één unieke volgende toestand. Er is geen onduidelijkheid of
+                                keuze.
+                            </p>
+                            <span
+                                class="inline-block px-2 py-1 bg-teal-50 text-teal-700 text-[10px] font-bold rounded-md">Simpel
+                                te bouwen in hardware</span>
+                        </div>
+                        <div class="bg-white p-5 rounded-xl border border-indigo-100 shadow-sm">
+                            <h4 class="font-extrabold text-indigo-950 mb-2">NFA (Niet-deterministisch)</h4>
+                            <p class="text-xs text-slate-600 leading-relaxed mb-3">
+                                <strong>Nondeterministic Finite Automaton:</strong> Vanuit een toestand kan dezelfde
+                                invoer naar meerdere verschillende toestanden leiden. Ook zijn er spontane transities
+                                (epsilon-transities) mogelijk zonder invoer.
+                            </p>
+                            <span
+                                class="inline-block px-2 py-1 bg-indigo-50 text-indigo-700 text-[10px] font-bold rounded-md">Vaak
+                                veel compacter te tekenen</span>
+                        </div>
+                    </div>
+
+                    <h3 class="text-lg font-bold text-indigo-950 mb-2">Equivalente Kracht</h3>
+                    <p class="text-xs text-indigo-900 leading-relaxed">
+                        Hoewel een NFA flexibeler lijkt, is de theoretische rekenkracht exact gelijk aan die van een
+                        DFA! Met de zogeheten <strong>subsetconstructie</strong> (of powersetconstructie) kunnen we elke
+                        NFA wiskundig omschrijven naar een gelijkwaardige DFA.
+                    </p>
+                </div>
+            </section>
+
+            <!-- TAB 7: STANDALONE INTERACTIVE SIMULATOR (SPOORWEGEN) -->
+            <section id="tab-simulator-tab" class="space-y-6 hidden">
+                <div class="bg-white rounded-2xl border border-slate-200 p-6 shadow-sm">
+                    <span class="text-xs font-bold text-teal-600 uppercase tracking-widest">Ingebouwde Interactive
+                        Tool</span>
+                    <h2 class="text-2xl font-bold text-slate-900 mt-1 mb-2">💻 Nooddienstregeling Simulator</h2>
+                    <p class="text-sm text-slate-500 mb-6">
+                        Dit element is gebouwd als een op zichzelf staande, interactieve applicatie. Test je routes en
+                        help de passagiers op hun bestemming te komen!
+                    </p>
+
+                    <!-- Het Simulator Element -->
+                    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+
+                        <!-- Linker kolom: Het diagram -->
+                        <div
+                            class="lg:col-span-2 border border-slate-200 rounded-xl p-4 bg-slate-50 flex flex-col justify-between">
+                            <div class="text-center mb-2">
+                                <span class="text-xs font-semibold text-slate-400">Actieve toestand wordt groen
+                                    gemarkeerd</span>
+                            </div>
+
+                            <!-- Interactieve SVG -->
+                            <div class="relative w-full max-h-[480px] overflow-x-auto flex justify-center items-center">
+                                <svg class="w-full min-w-[700px] h-[520px]" viewBox="0 0 980 540" id="fsm-svg">
+                                    <defs>
+                                        <marker id="arrow" viewBox="0 0 10 10" refX="28" refY="5" markerWidth="6"
+                                            markerHeight="6" orient="auto-start-reverse">
+                                            <path d="M 0 0 L 10 5 L 0 10 z" fill="#64748b" />
+                                        </marker>
+                                        <marker id="arrow-green" viewBox="0 0 10 10" refX="28" refY="5" markerWidth="6"
+                                            markerHeight="6" orient="auto-start-reverse">
+                                            <path d="M 0 0 L 10 5 L 0 10 z" fill="#0d9488" />
+                                        </marker>
+                                    </defs>
+
+                                    <!-- Overgangslijnen (Transities) -->
+                                    <!-- 1 -> 2 (A) -->
+                                    <path id="edge-1-2" d="M 100,240 L 300,100" stroke="#64748b" stroke-width="2.5"
+                                        fill="none" marker-end="url(#arrow)" />
+                                    <!-- 1 -> 4 (B - Gebogen voor tweerichtingsverkeer) -->
+                                    <path id="edge-1-4" d="M 100,240 Q 240,280 300,380" stroke="#64748b" stroke-width="2.5"
+                                        fill="none" marker-end="url(#arrow)" />
+                                    <!-- 2 -> 4 (A) -->
+                                    <path id="edge-2-4" d="M 300,100 L 300,380" stroke="#64748b" stroke-width="2.5"
+                                        fill="none" marker-end="url(#arrow)" />
+                                    <!-- 2 -> 3 (B - Bovenlangs gebogen) -->
+                                    <path id="edge-2-3" d="M 300,100 Q 400,60 500,100" stroke="#64748b"
+                                        stroke-width="2.5" fill="none" marker-end="url(#arrow)" />
+                                    <!-- 3 -> 2 (B - Onderlangs gebogen) -->
+                                    <path id="edge-3-2" d="M 500,100 Q 400,140 300,100" stroke="#64748b"
+                                        stroke-width="2.5" fill="none" marker-end="url(#arrow)" />
+                                    <!-- 3 -> 4 (A) -->
+                                    <path id="edge-3-4" d="M 500,100 L 300,380" stroke="#64748b" stroke-width="2.5"
+                                        fill="none" marker-end="url(#arrow)" />
+                                    <!-- 4 -> 1 (A - Gebogen voor tweerichtingsverkeer) -->
+                                    <path id="edge-4-1" d="M 300,380 Q 160,340 100,240" stroke="#64748b"
+                                        stroke-width="2.5" fill="none" marker-end="url(#arrow)" />
+                                    <!-- 4 -> 5 (B) -->
+                                    <path id="edge-4-5" d="M 300,380 L 500,380" stroke="#64748b" stroke-width="2.5"
+                                        fill="none" marker-end="url(#arrow)" />
+                                    <!-- 5 -> 3 (B) -->
+                                    <path id="edge-5-3" d="M 500,380 L 500,100" stroke="#64748b" stroke-width="2.5"
+                                        fill="none" marker-end="url(#arrow)" />
+                                    <!-- 5 -> 6 (A) -->
+                                    <path id="edge-5-6" d="M 500,380 L 700,240" stroke="#64748b" stroke-width="2.5"
+                                        fill="none" marker-end="url(#arrow)" />
+                                    <!-- 6 -> 1 (A - De boog loopt helemaal onderlangs en buigt links buitenom station 1) -->
+                                    <path id="edge-6-1" d="M 700,240 C 500,560 200,560 50,320 C 30,280 40,240 100,240" stroke="#64748b"
+                                        stroke-width="2.5" fill="none" marker-end="url(#arrow)" />
+                                    <!-- 6 -> 7 (B) -->
+                                    <path id="edge-6-7" d="M 700,240 L 880,240" stroke="#64748b" stroke-width="2.5"
+                                        fill="none" marker-end="url(#arrow)" />
+
+                                    <!-- Toestanden (Nodes) -->
+                                    <!-- Node 1 -->
+                                    <g id="node-1">
+                                        <circle cx="100" cy="240" r="24" fill="white" stroke="#64748b"
+                                            stroke-width="3" />
+                                        <text x="100" y="245" text-anchor="middle" font-weight="bold"
+                                            fill="#1e293b">1</text>
+                                    </g>
+                                    <!-- Node 2 -->
+                                    <g id="node-2">
+                                        <circle cx="300" cy="100" r="24" fill="white" stroke="#64748b"
+                                            stroke-width="3" />
+                                        <text x="300" y="105" text-anchor="middle" font-weight="bold"
+                                            fill="#1e293b">2</text>
+                                    </g>
+                                    <!-- Node 3 -->
+                                    <g id="node-3">
+                                        <circle cx="500" cy="100" r="24" fill="white" stroke="#64748b"
+                                            stroke-width="3" />
+                                        <text x="500" y="105" text-anchor="middle" font-weight="bold"
+                                            fill="#1e293b">3</text>
+                                    </g>
+                                    <!-- Node 4 -->
+                                    <g id="node-4">
+                                        <circle cx="300" cy="380" r="24" fill="white" stroke="#64748b"
+                                            stroke-width="3" />
+                                        <text x="300" y="385" text-anchor="middle" font-weight="bold"
+                                            fill="#1e293b">4</text>
+                                    </g>
+                                    <!-- Node 5 -->
+                                    <g id="node-5">
+                                        <circle cx="500" cy="380" r="24" fill="white" stroke="#64748b"
+                                            stroke-width="3" />
+                                        <text x="500" y="385" text-anchor="middle" font-weight="bold"
+                                            fill="#1e293b">5</text>
+                                    </g>
+                                    <!-- Node 6 -->
+                                    <g id="node-6">
+                                        <circle cx="700" cy="240" r="24" fill="white" stroke="#64748b"
+                                            stroke-width="3" />
+                                        <text x="700" y="245" text-anchor="middle" font-weight="bold"
+                                            fill="#1e293b">6</text>
+                                    </g>
+                                    <!-- Node 7 (Eindtoestand, dubbel) -->
+                                    <g id="node-7">
+                                        <circle cx="880" cy="240" r="24" fill="white" stroke="#64748b"
+                                            stroke-width="3" />
+                                        <circle cx="880" cy="240" r="18" fill="none" stroke="#64748b"
+                                            stroke-width="2" />
+                                        <text x="880" y="245" text-anchor="middle" font-weight="bold"
+                                            fill="#1e293b">7</text>
+                                    </g>
+
+                                    <!-- Labels -->
+                                    <text x="185" y="160" fill="#475569" font-size="14" font-weight="bold">A</text>
+                                    <text x="215" y="290" fill="#475569" font-size="14" font-weight="bold">B</text>
+                                    <text x="280" y="240" fill="#475569" font-size="14" font-weight="bold">A</text>
+                                    <text x="400" y="70" fill="#475569" font-size="14" font-weight="bold">B</text>
+                                    <text x="400" y="135" fill="#475569" font-size="14" font-weight="bold">B</text>
+                                    <text x="385" y="235" fill="#475569" font-size="14" font-weight="bold">A</text>
+                                    <text x="175" y="335" fill="#475569" font-size="14" font-weight="bold">A</text>
+                                    <text x="400" y="400" fill="#475569" font-size="14" font-weight="bold">B</text>
+                                    <text x="515" y="240" fill="#475569" font-size="14" font-weight="bold">B</text>
+                                    <text x="610" y="300" fill="#475569" font-size="14" font-weight="bold">A</text>
+                                    <text x="350" y="455" fill="#475569" font-size="14" font-weight="bold">A</text>
+                                    <text x="790" y="225" fill="#475569" font-size="14" font-weight="bold">B</text>
+                                </svg>
+                            </div>
+                        </div>
+
+                        <!-- Rechter kolom: Controls -->
+                        <div
+                            class="bg-white border border-slate-200 rounded-xl p-6 shadow-sm flex flex-col justify-between">
+                            <div class="space-y-4">
+                                <h3 class="font-extrabold text-slate-900 text-lg">🔧 Besturing</h3>
+
+                                <div class="p-3 bg-slate-50 rounded-xl border">
+                                    <span class="text-xs text-slate-400 block font-bold">HUIDIGE LOCATIE</span>
+                                    <span id="current-station-name"
+                                        class="text-base font-extrabold text-slate-800">Station 1 (Utrecht)</span>
+                                </div>
+
+                                <!-- Handmatig reizen -->
+                                <div class="space-y-2">
+                                    <label class="text-xs font-bold text-slate-500 uppercase">Handmatig reizen
+                                        (Klik):</label>
+                                    <div class="grid grid-cols-2 gap-2">
+                                        <button onclick="stepSimulatorManual('A')"
+                                            class="py-3 bg-teal-600 hover:bg-teal-700 text-white font-extrabold rounded-xl shadow-sm text-sm transition">Reis
+                                            via A</button>
+                                        <button onclick="stepSimulatorManual('B')"
+                                            class="py-3 bg-teal-600 hover:bg-teal-700 text-white font-extrabold rounded-xl shadow-sm text-sm transition">Reis
+                                            via B</button>
+                                    </div>
+                                </div>
+
+                                <!-- Automatische routes -->
+                                <div class="space-y-2 pt-4 border-t border-slate-100">
+                                    <label class="text-xs font-bold text-slate-500 uppercase">Voer een route in:</label>
+                                    <input type="text" id="route-string-input" placeholder="Bijv. ABABAB"
+                                        class="w-full px-4 py-2 border rounded-xl font-mono text-sm uppercase tracking-wider focus:ring-2 focus:ring-teal-500">
+                                    <div class="grid grid-cols-2 gap-2">
+                                        <button onclick="runAutoRoute()"
+                                            class="py-2.5 bg-slate-800 hover:bg-slate-900 text-white text-xs font-bold rounded-xl transition">Start
+                                            Simulatie</button>
+                                        <button onclick="resetSimulator()"
+                                            class="py-2.5 bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold rounded-xl transition">Reset</button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Uitkomst badge -->
+                            <div class="mt-6 pt-4 border-t border-slate-100">
+                                <div id="simulator-outcome-badge"
+                                    class="p-3 text-center rounded-xl text-sm font-extrabold bg-slate-100 text-slate-500">
+                                    Wacht op route...
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-white border-t border-slate-200 mt-12 py-8">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-xs text-slate-400 space-y-2">
+            <p>&copy; 2026 &bull; Lessenserie Eindige Automaten (B3) &bull; Informatica Havo/Vwo</p>
+            <p>Gebaseerd op de open-source werkvormen van <a class="underline" href="https://classic.csunplugged.org/"
+                    target="_blank">CS Unplugged</a> en Radboud Universiteit.</p>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script>
+        // State variables
+        let activeTab = 'syllabus';
+        let currentSimulatorState = 1;
+        let currentLiftState = 'BG';
+
+        // Thermostaat simulator logic
+        function triggerThermostat(action) {
+            const cvUit = document.getElementById('state-cv-uit');
+            const cvAan = document.getElementById('state-cv-aan');
+
+            if (action === 'te-laag') {
+                // Toestand wisselt naar CV AAN
+                cvUit.className = "w-24 h-24 rounded-full border-4 border-slate-200 bg-white flex flex-col items-center justify-center text-center shadow transition-all duration-300";
+                cvUit.querySelector('span:last-child').innerText = "(Inactief)";
+                cvUit.querySelector('span:last-child').className = "text-[10px] text-slate-400 font-mono mt-1";
+                cvUit.querySelector('span:first-child').className = "text-xs font-bold text-slate-400";
+
+                cvAan.className = "w-24 h-24 rounded-full border-4 border-teal-600 bg-teal-50 flex flex-col items-center justify-center text-center shadow transition-all duration-300 animate-pulse-subtle";
+                cvAan.querySelector('span:last-child').innerText = "(Actief)";
+                cvAan.querySelector('span:last-child').className = "text-[10px] text-teal-600 font-mono mt-1";
+                cvAan.querySelector('span:first-child').className = "text-xs font-bold text-teal-800";
+            } else if (action === 'te-hoog') {
+                // Toestand wisselt naar CV UIT
+                cvAan.className = "w-24 h-24 rounded-full border-4 border-slate-200 bg-white flex flex-col items-center justify-center text-center shadow transition-all duration-300";
+                cvAan.querySelector('span:last-child').innerText = "(Inactief)";
+                cvAan.querySelector('span:last-child').className = "text-[10px] text-slate-400 font-mono mt-1";
+                cvAan.querySelector('span:first-child').className = "text-xs font-bold text-slate-400";
+
+                cvUit.className = "w-24 h-24 rounded-full border-4 border-teal-600 bg-teal-50 flex flex-col items-center justify-center text-center shadow transition-all duration-300";
+                cvUit.querySelector('span:last-child').innerText = "(Actief)";
+                cvUit.querySelector('span:last-child').className = "text-[10px] text-teal-600 font-mono mt-1";
+                cvUit.querySelector('span:first-child').className = "text-xs font-bold text-teal-800";
+            }
+        }
+
+        // Lift Simulator logic
+        function triggerLift(targetState) {
+            const cabin = document.getElementById('lift-cabin');
+            const display = document.getElementById('lift-cabin-display');
+            const logText = document.getElementById('lift-log-text');
+            
+            const oldState = currentLiftState;
+            currentLiftState = targetState;
+
+            // 1. Move lift cabin visually (symmetric alignment in 270px shaft)
+            if (targetState === 'BG') {
+                cabin.style.bottom = '12px';
+            } else if (targetState === '1') {
+                cabin.style.bottom = '103px';
+            } else if (targetState === '2') {
+                cabin.style.bottom = '194px';
+            }
+
+            // 2. Update display
+            display.innerText = targetState;
+
+            // 3. Update FSM SVG nodes
+            const states = ['BG', '1', '2'];
+            states.forEach(s => {
+                const node = document.getElementById('lift-node-' + s);
+                if (node) {
+                    const circle = node.querySelector('circle');
+                    const text = node.querySelector('text');
+                    if (s === targetState) {
+                        circle.setAttribute('stroke', '#0d9488');
+                        circle.setAttribute('fill', '#ccfbf1');
+                        circle.setAttribute('stroke-width', '3');
+                        text.setAttribute('fill', '#115e59');
+                    } else {
+                        circle.setAttribute('stroke', '#94a3b8');
+                        circle.setAttribute('fill', 'white');
+                        circle.setAttribute('stroke-width', '2.5');
+                        text.setAttribute('fill', '#1e293b');
+                    }
+                }
+            });
+
+            // 4. Update FSM SVG edges
+            const allEdges = [
+                'BG-BG', '1-1', '2-2',
+                'BG-1', '1-BG', '1-2', '2-1',
+                'BG-2', '2-BG'
+            ];
+            allEdges.forEach(edgeId => {
+                const edge = document.getElementById('lift-edge-' + edgeId);
+                if (edge) {
+                    if (edgeId === `${oldState}-${targetState}`) {
+                        edge.setAttribute('stroke', '#0d9488');
+                        edge.setAttribute('stroke-width', '3.5');
+                        edge.setAttribute('marker-end', 'url(#arrow-lift-active)');
+                        edge.style.strokeDasharray = '4';
+                        edge.style.animation = 'dash 1s linear infinite';
+                    } else {
+                        edge.setAttribute('stroke', '#94a3b8');
+                        edge.setAttribute('stroke-width', '2');
+                        edge.setAttribute('marker-end', 'url(#arrow-lift)');
+                        edge.style.strokeDasharray = 'none';
+                        edge.style.animation = 'none';
+                    }
+                }
+            });
+
+            // 5. Update transitie log text
+            const formatStateName = (s) => s === 'BG' ? 'Begane Grond (BG)' : `${s}e verdieping`;
+            if (oldState === targetState) {
+                logText.innerHTML = `🔄 <strong>Zelf-loop transitie:</strong> De liftknop voor de <strong>${formatStateName(targetState)}</strong> is ingedrukt terwijl de lift daar al stond. De lift blijft op dezelfde plek.`;
+            } else {
+                const direction = (states.indexOf(targetState) > states.indexOf(oldState)) ? 'omhoog' : 'omlaag';
+                logText.innerHTML = `🚀 <strong>Toestandsovergang (Transitie):</strong> De lift beweegt <strong>${direction}</strong> van de <strong>${formatStateName(oldState)}</strong> naar de <strong>${formatStateName(targetState)}</strong>.`;
+            }
+        }
+
+        // Tab Switching Logic
+        function switchTab(tabId) {
+            // Hide all tabs
+            const tabs = ['syllabus', 'les1', 'les2', 'les3', 'les4', 'verdieping', 'simulator-tab'];
+            tabs.forEach(t => {
+                const el = document.getElementById('tab-' + t);
+                if (el) el.classList.add('hidden');
+
+                // Reset menu styles
+                const menuEl = document.getElementById('menu-' + t);
+                if (menuEl) {
+                    menuEl.className = "w-full text-left px-3 py-2.5 rounded-xl text-sm font-medium flex items-center gap-3 text-slate-600 hover:bg-slate-50 hover:text-slate-900 transition-all";
+                }
+            });
+
+            // Show current tab
+            document.getElementById('tab-' + tabId).classList.remove('hidden');
+
+            // Highlight menu
+            const activeMenu = document.getElementById('menu-' + tabId);
+            if (activeMenu) {
+                if (tabId === 'verdieping') {
+                    activeMenu.className = "w-full text-left px-3 py-2.5 rounded-xl text-sm font-semibold flex items-center gap-3 bg-indigo-600 text-white shadow-sm shadow-indigo-100 transition-all";
+                } else if (tabId === 'simulator-tab') {
+                    activeMenu.className = "w-full text-left px-3 py-2.5 rounded-xl text-sm font-semibold flex items-center gap-3 bg-teal-600 text-white shadow-sm shadow-teal-100 transition-all";
+                } else {
+                    activeMenu.className = "w-full text-left px-3 py-2.5 rounded-xl text-sm font-semibold flex items-center gap-3 bg-teal-600 text-white shadow-sm shadow-teal-100 transition-all";
+                }
+            }
+
+            // Sync top header buttons
+            const navSyllabus = document.getElementById('nav-syllabus');
+            const navSimulator = document.getElementById('nav-simulator');
+            if (tabId === 'syllabus') {
+                navSyllabus.className = "px-3 py-2 text-sm font-medium rounded-lg bg-teal-50 text-teal-700";
+                navSimulator.className = "px-3 py-2 text-sm font-medium rounded-lg text-slate-600 hover:bg-slate-100";
+            } else if (tabId === 'simulator-tab') {
+                navSyllabus.className = "px-3 py-2 text-sm font-medium rounded-lg text-slate-600 hover:bg-slate-100";
+                navSimulator.className = "px-3 py-2 text-sm font-medium rounded-lg bg-teal-50 text-teal-700";
+            } else {
+                navSyllabus.className = "px-3 py-2 text-sm font-medium rounded-lg text-slate-600 hover:bg-slate-100";
+                navSimulator.className = "px-3 py-2 text-sm font-medium rounded-lg text-slate-600 hover:bg-slate-100";
+            }
+
+            activeTab = tabId;
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // Quiz Feedback Data
+        const feedbacks = {
+            q1: {
+                correct: "Correct! Een deterministische eindige automaat (DFA) kan zich nooit in meer dan één toestand tegelijk bevinden.",
+                incorrect1: "Fout. Dat is een eigenschap van een NFA (Niet-deterministisch), maar een standaard DFA heeft er altijd exact één.",
+                incorrect2: "Fout. Er is altijd minimaal de begintoestand actief."
+            },
+            q2: {
+                correct: "Geweldig! Route ABABAB leidt stap-voor-stap keurig naar station Groningen (Toestand 7).",
+                incorrect1: "Helaas, AAB strandt op Utrecht (Toestand 5). Dat is geen eindtoestand.",
+                incorrect2: "Nee, BBBAA strandt op Den Haag (Toestand 1)."
+            },
+            q3: {
+                correct: "Klopt! Omdat er loops in de automaat zitten (zoals tussen station 2 en 3), kan een route oneindig lang worden gemaakt.",
+                incorrect1: "Fout. Vanwege de loop (bijvoorbeeld heen en weer reizen tussen station 2 en 3) is er geen limiet aan de routelengte.",
+                incorrect2: "Fout. We kunnen puur wiskundig beredeneren dat de routes oneindig lang kunnen zijn."
+            },
+            q4: {
+                correct: "Uitstekend! Het woord 'eindig' slaat uitsluitend op het aantal *toestanden* (cirkels) van de automaat, niet op de lengte of hoeveelheid van de mogelijke strings.",
+                incorrect: "Nee, de automaat kan in theorie oneindig lange strings genereren (bijv. door loops)."
+            },
+            q5: {
+                correct: "Super! Omdat een FSM geen dynamische teller of stackgeheugen heeft, kan hij niet bijhouden hoeveel haakjes hij nog moet sluiten. Hiervoor is een Pushdown Automaat (PDA) nodig.",
+                incorrect: "Nee, lengte is geen wiskundige beperking voor de theorie. Het gebrek aan geheugen is de boosdoener."
+            }
+        };
+
+        function checkAnswer(question, answer) {
+            const feedbackBox = document.getElementById('feedback-' + question);
+            feedbackBox.classList.remove('hidden');
+
+            const isCorrect = answer === 'correct';
+            feedbackBox.className = "mt-2 text-xs font-semibold p-3 rounded-lg " + (isCorrect ? "bg-emerald-50 text-emerald-800 border border-emerald-100" : "bg-red-50 text-red-800 border border-red-100");
+            feedbackBox.innerText = feedbacks[question][answer];
+
+            // Highlight selected button
+            const buttons = ['correct', 'incorrect1', 'incorrect2', 'incorrect'];
+            buttons.forEach(btn => {
+                const b = document.getElementById(`btn-${question}-${btn}`);
+                if (b) {
+                    if (btn === answer) {
+                        b.className = "p-3 text-left border rounded-xl text-sm font-bold " + (isCorrect ? "border-emerald-500 bg-emerald-50 text-emerald-900" : "border-red-500 bg-red-50 text-red-900");
+                    } else {
+                        b.className = "p-3 text-left border rounded-xl text-sm text-slate-400 border-slate-100 cursor-not-allowed";
+                    }
+                }
+            });
+        }
+
+        // Les 2: Shortest Route Check
+        function checkShortestRoute() {
+            const val = document.getElementById('shortest-route-input').value.toUpperCase().trim();
+            const feedback = document.getElementById('shortest-route-feedback');
+            feedback.classList.remove('hidden');
+
+            if (val === 'BAB' || val === 'BBA') {
+                feedback.className = "mt-2 text-xs font-semibold p-3 rounded-lg bg-emerald-50 text-emerald-800 border border-emerald-100";
+                feedback.innerText = "Helemaal goed! Zowel 'BAB' als 'BBA' brengt je in precies 3 stappen naar Groningen (Toestand 7).";
+            } else {
+                feedback.className = "mt-2 text-xs font-semibold p-3 rounded-lg bg-red-50 text-red-800 border border-red-100";
+                feedback.innerText = `Helaas, '${val}' is niet de kortste geldige route. Probeer het nog eens!`;
+            }
+        }
+
+        // Les 3: Sentence Generator Database and Logic
+        const sentenceFsm = {
+            step: 1,
+            selectedWords: [],
+            transitions: {
+                1: { label: "Kies Lidwoord", words: ["een", "de"], next: 2 },
+                2: { label: "Kies Adjectief", words: ["kleine", "jonge", "dunne"], next: 3 },
+                3: { label: "Kies Substantief", words: ["professor", "poes", "vogel", "kapitein"], next: 4 },
+                4: { label: "Kies Werkwoord", words: ["vertelde", "floot", "dronk"], next: 5 },
+                5: { label: "Kies Afronding", words: ["[Stop]", "en"], next: 6 }
+            }
+        };
+
+        function renderSentenceGenerator() {
+            const container = document.getElementById('sentence-step-container');
+            const box = document.getElementById('generated-sentence-box');
+
+            // Render sentence
+            box.innerText = sentenceFsm.selectedWords.join(" ") || "...";
+
+            if (sentenceFsm.step > 5) {
+                container.innerHTML = `
+                    <div class="col-span-full p-4 bg-emerald-50 border border-emerald-200 text-emerald-800 rounded-xl text-center text-sm font-bold">
+                        🎉 Gefeliciteerd! Je hebt een grammaticaal geldige zin gegenereerd volgens de regels van de FSM!
+                    </div>
+                `;
+                return;
+            }
+
+            const current = sentenceFsm.transitions[sentenceFsm.step];
+            let html = `
+                <div class="col-span-full text-xs font-bold text-slate-400 uppercase tracking-wider mb-1">${current.label}</div>
+            `;
+
+            current.words.forEach(word => {
+                html += `
+                    <button onclick="selectWord('${word}')" class="p-3 bg-white border border-slate-200 hover:border-teal-500 rounded-xl text-sm font-semibold text-slate-700 transition">
+                        ${word}
+                    </button>
+                `;
+            });
+
+            container.innerHTML = html;
+        }
+
+        function selectWord(word) {
+            if (word === '[Stop]') {
+                sentenceFsm.step = 6;
+            } else {
+                sentenceFsm.selectedWords.push(word);
+                if (word === 'en') {
+                    sentenceFsm.step = 1; // Loop back
+                } else {
+                    sentenceFsm.step++;
+                }
+            }
+            renderSentenceGenerator();
+        }
+
+        function resetSentenceGenerator() {
+            sentenceFsm.step = 1;
+            sentenceFsm.selectedWords = [];
+            renderSentenceGenerator();
+        }
+
+        // Les 4: Phone number validator simulation
+        function validatePhoneNumber() {
+            const input = document.getElementById('phone-test-input').value.trim().replace(/\s+/g, '');
+            const badge = document.getElementById('phone-validation-badge');
+
+            // Simplified Regex validator that mimics the FSM
+            const cleanPattern = /^(06|\+316|00316)[0-9]{8}$/;
+
+            if (input === "") {
+                badge.className = "px-4 py-2.5 rounded-xl text-sm font-bold bg-slate-200 text-slate-600";
+                badge.innerText = "Voer nummer in...";
+                return;
+            }
+
+            if (cleanPattern.test(input)) {
+                badge.className = "px-4 py-2.5 rounded-xl text-sm font-bold bg-emerald-100 text-emerald-800 border border-emerald-200";
+                badge.innerText = "✓ GELDIG NUMMER";
+            } else {
+                badge.className = "px-4 py-2.5 rounded-xl text-sm font-bold bg-red-100 text-red-800 border border-red-200";
+                badge.innerText = "✗ ONGELDIG";
+            }
+        }
+
+        // STANDALONE SPOORWEGEN SIMULATOR ENGINE
+        const stations = {
+            1: "Station 1 (Den Haag / Utrecht)",
+            2: "Station 2 (Amsterdam)",
+            3: "Station 3 (Amersfoort)",
+            4: "Station 4 (Rotterdam)",
+            5: "Station 5 (Utrecht Centraal)",
+            6: "Station 6 (Nijmegen)",
+            7: "🏁 Station 7 (Groningen - Eindtoestand)"
+        };
+
+        // Transition matrix
+        const fsmMatrix = {
+            1: { A: 2, B: 4 },
+            2: { A: 4, B: 3 },
+            3: { A: 4, B: 2 },
+            4: { A: 1, B: 5 },
+            5: { A: 6, B: 3 },
+            6: { A: 1, B: 7 },
+            7: { A: null, B: null } // Accept
+        };
+
+        function drawSimulatorActiveNode() {
+            // Reset all nodes
+            for (let i = 1; i <= 7; i++) {
+                const node = document.getElementById('node-' + i);
+                if (node) {
+                    const circle = node.querySelector('circle:first-child');
+                    circle.setAttribute('stroke', '#64748b');
+                    circle.setAttribute('fill', 'white');
+                }
+            }
+
+            // Highlight active node
+            const activeNode = document.getElementById('node-' + currentSimulatorState);
+            if (activeNode) {
+                const circle = activeNode.querySelector('circle:first-child');
+                circle.setAttribute('stroke', '#0d9488');
+                circle.setAttribute('fill', '#ccfbf1');
+            }
+
+            // Update text label
+            document.getElementById('current-station-name').innerText = stations[currentSimulatorState];
+
+            // Evaluate acceptance status
+            const outcomeBadge = document.getElementById('simulator-outcome-badge');
+            if (currentSimulatorState === 7) {
+                outcomeBadge.className = "p-3 text-center rounded-xl text-sm font-extrabold bg-emerald-100 text-emerald-800 border border-emerald-200 animate-bounce";
+                outcomeBadge.innerText = "🎉 AANGEKOMEN OP BESTEMMING (GELDIG)";
+            } else {
+                outcomeBadge.className = "p-3 text-center rounded-xl text-sm font-extrabold bg-slate-100 text-slate-500 border border-slate-200";
+                outcomeBadge.innerText = "Onderweg...";
+            }
+        }
+
+        function stepSimulatorManual(char) {
+            const next = fsmMatrix[currentSimulatorState][char];
+            if (next) {
+                currentSimulatorState = next;
+                drawSimulatorActiveNode();
+            } else {
+                // No transition possible (Dead end or already in 7)
+                const outcomeBadge = document.getElementById('simulator-outcome-badge');
+                outcomeBadge.className = "p-3 text-center rounded-xl text-sm font-extrabold bg-red-100 text-red-800 border border-red-200";
+                outcomeBadge.innerText = `Geen treinverbinding via ${char} vanaf dit station!`;
+            }
+        }
+
+        // Auto Play Route Simulation
+        async function runAutoRoute() {
+            resetSimulator();
+            const input = document.getElementById('route-string-input').value.toUpperCase().trim();
+            if (input === "") return;
+
+            const outcomeBadge = document.getElementById('simulator-outcome-badge');
+
+            for (let i = 0; i < input.length; i++) {
+                const char = input[i];
+                if (char !== 'A' && char !== 'B') {
+                    outcomeBadge.className = "p-3 text-center rounded-xl text-sm font-extrabold bg-red-100 text-red-800 border border-red-200";
+                    outcomeBadge.innerText = `Ongeldig karakter: ${char}. Gebruik alleen A of B!`;
+                    return;
+                }
+
+                await new Promise(resolve => setTimeout(resolve, 800)); // Sleep 800ms
+
+                const next = fsmMatrix[currentSimulatorState][char];
+                if (next) {
+                    currentSimulatorState = next;
+                    drawSimulatorActiveNode();
+                } else {
+                    outcomeBadge.className = "p-3 text-center rounded-xl text-sm font-extrabold bg-red-100 text-red-800 border border-red-200";
+                    outcomeBadge.innerText = `Trein ontspoord! Geen route via ${char} op station ${currentSimulatorState}.`;
+                    return;
+                }
+            }
+        }
+
+        function resetSimulator() {
+            currentSimulatorState = 1;
+            drawSimulatorActiveNode();
+        }
+
+        // Window Load
+        window.onload = function () {
+            renderSentenceGenerator();
+            drawSimulatorActiveNode();
+            triggerLift('BG');
+        }
+    </script>
+</body>
+
+</html>
