@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="nl">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactieve Verkenning: De Lift Simulator - Grondslagen (B3)</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+
+        .animate-pulse-subtle {
+            animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% {
+                opacity: 1;
+                transform: scale(1);
+            }
+            50% {
+                opacity: .85;
+                transform: scale(1.03);
+            }
+        }
+    </style>
+</head>
+
+<body class="bg-transparent text-slate-800 min-h-screen flex flex-col antialiased p-2">
+
+    <!-- Het Lift Element -->
+    <div class="bg-white rounded-2xl border border-slate-200 p-4 shadow-sm space-y-4 max-w-7xl mx-auto w-full">
+        
+        <!-- Header -->
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between border-b border-slate-100 pb-2">
+            <div>
+                <span class="text-[10px] font-bold text-teal-600 uppercase tracking-widest">Interactieve Tool &bull; Les 1</span>
+                <h2 class="text-lg font-bold text-slate-900 leading-tight">💻 Interactieve Verkenning: De Lift Simulator</h2>
+            </div>
+            <span class="text-[10px] font-semibold text-slate-400 mt-1 sm:mt-0">Bestuur de lift en bekijk de toestandsovergangen.</span>
+        </div>
+
+        <!-- Hoofdgrid: 2 kolommen vanaf sm (640px) -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+
+            <!-- Linkerkolom: Visualisatie Card (Liftschacht + SVG diagram) -->
+            <div class="bg-slate-50 border border-slate-200 rounded-xl p-3 shadow-inner flex flex-col justify-between h-[300px]">
+                <div class="text-center mb-1">
+                    <span class="text-[9px] font-bold text-slate-400 uppercase tracking-wider">Liftschacht &amp; Toestandsdiagram (FSM)</span>
+                </div>
+
+                <!-- Liftschacht en SVG naast elkaar -->
+                <div class="flex items-center justify-around flex-grow gap-2 mt-1">
+                    
+                    <!-- Liftschacht -->
+                    <div class="relative w-28 h-[220px] bg-slate-800 rounded-xl p-2 border-2 border-slate-700 shadow-inner flex flex-col justify-between items-center select-none shrink-0">
+                        <!-- Verdieping-lijnen achtergrond -->
+                        <div class="absolute inset-x-0 top-[35px] border-t border-dashed border-slate-600/30"></div>
+                        <div class="absolute inset-x-0 top-[110px] border-t border-dashed border-slate-600/30"></div>
+                        <div class="absolute inset-x-0 top-[185px] border-t border-dashed border-slate-600/30"></div>
+                        
+                        <!-- Verdieping Labels -->
+                        <div class="absolute right-2 top-[22px] text-[8px] font-extrabold text-slate-500">2e Fl.</div>
+                        <div class="absolute right-2 top-[97px] text-[8px] font-extrabold text-slate-500">1e Fl.</div>
+                        <div class="absolute right-2 top-[172px] text-[8px] font-extrabold text-slate-500">BG</div>
+
+                        <!-- De Liftcabine -->
+                        <div id="lift-cabin" class="absolute w-[calc(100%-16px)] h-12 bg-gradient-to-br from-teal-500 to-emerald-600 rounded-lg border border-teal-400 shadow-lg shadow-teal-900/30 flex flex-col items-center justify-center left-2 transition-all duration-1000 ease-in-out" style="bottom: 10px;">
+                            <!-- Deuren streep -->
+                            <div class="absolute inset-y-0 w-0.5 bg-teal-700/50"></div>
+                            <!-- Display -->
+                            <div class="w-6 h-3 bg-slate-900 rounded border border-slate-700 flex items-center justify-center text-[8px] font-mono font-bold text-teal-400 shadow-inner z-10">
+                                <span id="lift-cabin-display">BG</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- SVG Toestandsdiagram (FSM) -->
+                    <div class="relative w-44 h-[220px] bg-white rounded-xl border border-slate-200 flex items-center justify-center p-1 shrink-0 shadow-sm">
+                        <svg class="w-full h-full" viewBox="0 0 200 270" id="lift-fsm-svg">
+                            <defs>
+                                <marker id="arrow-lift" viewBox="0 0 10 10" refX="18" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                                    <path d="M 0 1.5 L 8 5 L 0 8.5 z" fill="#94a3b8" />
+                                </marker>
+                                <marker id="arrow-lift-active" viewBox="0 0 10 10" refX="18" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                                    <path d="M 0 1.5 L 8 5 L 0 8.5 z" fill="#0d9488" />
+                                </marker>
+                            </defs>
+
+                            <!-- Self-loops -->
+                            <!-- Loop 2 -->
+                            <path id="lift-edge-2-2" d="M 80,45 C 50,25 50,65 80,45" stroke="#94a3b8" stroke-width="2" fill="none" marker-end="url(#arrow-lift)" />
+                            <!-- Loop 1 -->
+                            <path id="lift-edge-1-1" d="M 80,135 C 50,115 50,155 80,135" stroke="#94a3b8" stroke-width="2" fill="none" marker-end="url(#arrow-lift)" />
+                            <!-- Loop BG -->
+                            <path id="lift-edge-BG-BG" d="M 80,225 C 50,205 50,245 80,225" stroke="#94a3b8" stroke-width="2" fill="none" marker-end="url(#arrow-lift)" />
+
+                            <!-- Directe transities -->
+                            <!-- BG -> 1 (up) -->
+                            <path id="lift-edge-BG-1" d="M 105,210 C 112,190 112,170 105,150" stroke="#94a3b8" stroke-width="2" fill="none" marker-end="url(#arrow-lift)" />
+                            <!-- 1 -> BG (down) -->
+                            <path id="lift-edge-1-BG" d="M 95,150 C 88,170 88,190 95,210" stroke="#94a3b8" stroke-width="2" fill="none" marker-end="url(#arrow-lift)" />
+
+                            <!-- 1 -> 2 (up) -->
+                            <path id="lift-edge-1-2" d="M 105,120 C 112,100 112,80 105,60" stroke="#94a3b8" stroke-width="2" fill="none" marker-end="url(#arrow-lift)" />
+                            <!-- 2 -> 1 (down) -->
+                            <path id="lift-edge-2-1" d="M 95,60 C 88,80 88,100 95,120" stroke="#94a3b8" stroke-width="2" fill="none" marker-end="url(#arrow-lift)" />
+
+                            <!-- BG -> 2 (direct up) -->
+                            <path id="lift-edge-BG-2" d="M 115,210 C 145,160 145,110 115,60" stroke="#94a3b8" stroke-width="2" fill="none" marker-end="url(#arrow-lift)" />
+                            <!-- 2 -> BG (direct down) -->
+                            <path id="lift-edge-2-BG" d="M 85,60 C 55,110 55,160 85,210" stroke="#94a3b8" stroke-width="2" fill="none" marker-end="url(#arrow-lift)" />
+
+                            <!-- Toestanden (Nodes) -->
+                            <!-- Node 2 -->
+                            <g id="lift-node-2" class="cursor-pointer" onclick="triggerLift('2')">
+                                <circle cx="100" cy="45" r="18" fill="white" stroke="#94a3b8" stroke-width="2.5" />
+                                <text x="100" y="49" text-anchor="middle" font-size="11" font-weight="bold" fill="#1e293b">2</text>
+                            </g>
+                            <!-- Node 1 -->
+                            <g id="lift-node-1" class="cursor-pointer" onclick="triggerLift('1')">
+                                <circle cx="100" cy="135" r="18" fill="white" stroke="#94a3b8" stroke-width="2.5" />
+                                <text x="100" y="139" text-anchor="middle" font-size="11" font-weight="bold" fill="#1e293b">1</text>
+                            </g>
+                            <!-- Node BG -->
+                            <g id="lift-node-BG" class="cursor-pointer" onclick="triggerLift('BG')">
+                                <circle cx="100" cy="225" r="18" fill="#ccfbf1" stroke="#0d9488" stroke-width="2.5" />
+                                <text x="100" y="229" text-anchor="middle" font-size="11" font-weight="bold" fill="#115e59">BG</text>
+                            </g>
+                        </svg>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Rechterkolom: Controls, Info-blok & Logboek -->
+            <div class="bg-white border border-slate-200 rounded-xl p-4 shadow-sm flex flex-col space-y-3 h-[300px] justify-between">
+                <div class="space-y-3">
+                    <h3 class="font-extrabold text-slate-900 text-sm flex items-center gap-1.5">🔧 Besturing &amp; Werking</h3>
+
+                    <!-- Triggers -->
+                    <div class="flex flex-col gap-1.5">
+                        <span class="text-[9px] font-bold text-slate-400 uppercase tracking-wider">Invoer (Knop indrukken):</span>
+                        <div class="grid grid-cols-3 gap-2">
+                            <button onclick="triggerLift('2')"
+                                class="px-3 py-2 bg-teal-600 hover:bg-teal-700 text-white text-[11px] font-extrabold rounded-lg transition active:scale-95 text-center shadow shadow-teal-700/10">
+                                Knop 2
+                            </button>
+                            <button onclick="triggerLift('1')"
+                                class="px-3 py-2 bg-teal-600 hover:bg-teal-700 text-white text-[11px] font-extrabold rounded-lg transition active:scale-95 text-center shadow shadow-teal-700/10">
+                                Knop 1
+                            </button>
+                            <button onclick="triggerLift('BG')"
+                                class="px-3 py-2 bg-teal-600 hover:bg-teal-700 text-white text-[11px] font-extrabold rounded-lg transition active:scale-95 text-center shadow shadow-teal-700/10">
+                                Knop BG
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Uitleg 'Toestand' & 'Transitie' (Uiterst compact) -->
+                    <div class="p-2.5 bg-slate-50 border border-slate-100 rounded-lg">
+                        <p class="text-[10px] text-slate-500 leading-normal">
+                            De <strong>toestanden</strong> (cirkels) representeren de verdiepingen. De <strong>transities</strong> (pijlen) zijn de acties na het indrukken van een knop. Drukkracht op de verdieping waar je al staat, vormt een <em>self-loop</em>.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Status Logboek -->
+                <div class="pt-2 border-t border-slate-100">
+                    <div class="p-2 bg-slate-50 border rounded-lg flex flex-col justify-center min-h-[58px]">
+                        <span class="text-[9px] font-extrabold text-slate-400 uppercase tracking-wider">Transitie Logboek</span>
+                        <div id="lift-log-text" class="text-[10px] font-semibold text-slate-700 mt-1 leading-normal">
+                            De lift staat stil op de **Begane Grond** (BG). Druk op een knop om te starten.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Info-blok: Wat betekent 'Deterministisch'? -->
+        <div class="bg-teal-50 border border-teal-100 rounded-xl p-3 text-xs text-teal-800 space-y-1.5">
+            <strong class="text-teal-900 font-bold flex items-center gap-1.5">💡 Wat betekent 'Deterministisch'?</strong>
+            <p class="leading-relaxed text-teal-700 font-medium">
+                Een eindige automaat is <strong>deterministisch</strong> als er vanuit elke toestand voor elke mogelijke invoer <strong>precies één</strong> eenduidige transitie (pijl) bestaat. Er is geen sprake van toeval of twijfel: bevindt de lift zich in toestand <code>BG</code> en druk je op knop <code>1</code>, dan beweegt deze <em>altijd</em> naar toestand <code>1</code> en nergens anders heen. Het gedrag is 100% voorspelbaar!
+            </p>
+        </div>
+
+        <!-- Zelf-test: Vragen & Oefeningen -->
+        <div class="border-t border-slate-100 pt-3">
+            <h3 class="text-sm font-bold text-slate-900 mb-3 flex items-center gap-1">✏️ Zelf-test: Les 1</h3>
+            
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                
+                <!-- Linker kolom: Vraag 1 & 2 -->
+                <div class="space-y-3">
+                    <!-- Vraag 1 -->
+                    <div class="bg-slate-50 border border-slate-200 rounded-xl p-3 shadow-inner">
+                        <span class="text-[9px] font-bold text-teal-600 uppercase tracking-widest block mb-1">Vraag 1</span>
+                        <p class="text-[11px] font-semibold text-slate-700 mb-2 leading-tight">Hoeveel actieve toestanden kan een deterministische eindige automaat op elk willekeurig moment hebben?</p>
+                        <div class="grid grid-cols-3 gap-1">
+                            <button onclick="checkAnswer('q1', 'incorrect1')" id="btn-q1-incorrect1" class="py-1.5 px-2 bg-white border border-slate-200 rounded-lg text-[10px] hover:bg-slate-100 transition text-center font-medium">A) Meerdere</button>
+                            <button onclick="checkAnswer('q1', 'correct')" id="btn-q1-correct" class="py-1.5 px-2 bg-white border border-slate-200 rounded-lg text-[10px] hover:bg-slate-100 transition text-center font-medium">B) Precies één</button>
+                            <button onclick="checkAnswer('q1', 'incorrect2')" id="btn-q1-incorrect2" class="py-1.5 px-2 bg-white border border-slate-200 rounded-lg text-[10px] hover:bg-slate-100 transition text-center font-medium">C) Geen</button>
+                        </div>
+                        <div id="feedback-q1" class="mt-2 text-[9px] font-semibold hidden"></div>
+                    </div>
+
+                    <!-- Vraag 2 -->
+                    <div class="bg-slate-50 border border-slate-200 rounded-xl p-3 shadow-inner">
+                        <span class="text-[9px] font-bold text-teal-600 uppercase tracking-widest block mb-1">Vraag 2</span>
+                        <p class="text-[11px] font-semibold text-slate-700 mb-2 leading-tight">De lift staat op toestand 1 en men drukt op 'Knop 1'. Wat gebeurt er wiskundig gezien?</p>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-1">
+                            <button onclick="checkAnswer('q2', 'incorrect1')" id="btn-q2-incorrect1" class="py-1.5 px-2 bg-white border border-slate-200 rounded-lg text-[10px] hover:bg-slate-100 transition text-left font-medium">A) Geen transitie (geen beweging)</button>
+                            <button onclick="checkAnswer('q2', 'correct')" id="btn-q2-correct" class="py-1.5 px-2 bg-white border border-slate-200 rounded-lg text-[10px] hover:bg-slate-100 transition text-left font-medium">B) Een 'self-loop' transitie naar zichzelf</button>
+                        </div>
+                        <div id="feedback-q2" class="mt-2 text-[9px] font-semibold hidden"></div>
+                    </div>
+                </div>
+
+                <!-- Rechter kolom: Vraag 3 & Oefening 4 -->
+                <div class="space-y-3">
+                    <!-- Vraag 3 -->
+                    <div class="bg-slate-50 border border-slate-200 rounded-xl p-3 shadow-inner">
+                        <span class="text-[9px] font-bold text-teal-600 uppercase tracking-widest block mb-1">Vraag 3</span>
+                        <p class="text-[11px] font-semibold text-slate-700 mb-2 leading-tight">Hoeveel verschillende toestanden en transities (inclusief self-loops) kent dit diagram?</p>
+                        <div class="grid grid-cols-3 gap-1">
+                            <button onclick="checkAnswer('q3', 'incorrect1')" id="btn-q3-incorrect1" class="py-1.5 px-2 bg-white border border-slate-200 rounded-lg text-[10px] hover:bg-slate-100 transition text-center font-medium">A) 3 en 6</button>
+                            <button onclick="checkAnswer('q3', 'correct')" id="btn-q3-correct" class="py-1.5 px-2 bg-white border border-slate-200 rounded-lg text-[10px] hover:bg-slate-100 transition text-center font-medium">B) 3 en 9</button>
+                            <button onclick="checkAnswer('q3', 'incorrect2')" id="btn-q3-incorrect2" class="py-1.5 px-2 bg-white border border-slate-200 rounded-lg text-[10px] hover:bg-slate-100 transition text-center font-medium">C) 4 en 8</button>
+                        </div>
+                        <div id="feedback-q3" class="mt-2 text-[9px] font-semibold hidden"></div>
+                    </div>
+
+                    <!-- Oefening 4 -->
+                    <div class="bg-slate-50 border border-slate-200 rounded-xl p-3 shadow-inner flex flex-col justify-between h-[106px]">
+                        <div>
+                            <span class="text-[9px] font-bold text-teal-600 uppercase tracking-widest block mb-0.5">Oefening 4</span>
+                            <p class="text-[10px] font-semibold text-slate-700 leading-tight mb-1.5">Reis vanaf BG via 2 en eindig direct daarna op 1. Wat is de kortste knoppenreeks (cijfers achter elkaar)?</p>
+                            
+                            <div class="flex gap-2">
+                                <input type="text" id="lift-oefening-input" placeholder="Bijv. 21"
+                                    class="w-full px-2.5 py-1 border border-slate-200 rounded-lg text-xs uppercase font-mono focus:ring-2 focus:ring-teal-500 focus:outline-none">
+                                <button onclick="checkLiftOefening()"
+                                    class="px-2.5 py-1 bg-teal-600 hover:bg-teal-700 text-white text-xs font-bold rounded-lg transition shrink-0">Controleer</button>
+                            </div>
+                        </div>
+                        <div id="lift-oefening-feedback" class="text-[9px] font-semibold hidden mt-1"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script>
+        let currentLiftState = 'BG';
+
+        const liftStates = {
+            'BG': { bottom: '10px', label: 'BG', name: 'Begane Grond' },
+            '1': { bottom: '85px', label: '1', name: 'Eerste Verdieping' },
+            '2': { bottom: '160px', label: '2', name: 'Tweede Verdieping' }
+        };
+
+        const liftFeedbacks = {
+            q1: {
+                correct: "Geweldig! Een deterministische eindige automaat (DFA) bevindt zich op ieder moment in precies één actieve toestand.",
+                incorrect1: "Helaas. Hoewel een automaat veel mogelijke toestanden kent, kan er op elk moment slechts één tegelijk actief zijn.",
+                incorrect2: "Nee, er is altijd exact één actieve toestand, beginnend bij de begintoestand."
+            },
+            q2: {
+                correct: "Helemaal goed! Dit noemen we een self-loop. Er vindt wel degelijk een transitie plaats, maar de begin- en eindtoestand van deze transitie zijn gelijk (1 ➔ 1).",
+                incorrect1: "Niet helemaal. Hoewel de fysieke lift niet beweegt, verwerkt de automaat wel de invoer en doorloopt wiskundig een transitie (pijl) terug naar zichzelf."
+            },
+            q3: {
+                correct: "Helemaal goed! Er zijn 3 toestanden (BG, 1 en 2). Omdat je vanaf elke verdieping naar elk van de drie verdiepingen kunt reizen (inclusief de verdieping waar je al staat, wat leidt tot een self-loop), zijn er in totaal 3 × 3 = 9 transities.",
+                incorrect1: "Nee. Er zijn inderdaad 3 toestanden, maar vergeet niet de 3 self-loops mee te tellen! Vanaf elke toestand zijn er 3 mogelijke transities.",
+                incorrect2: "Nee. Er zijn 3 toestanden en 9 mogelijke transities (3 toestanden × 3 mogelijke knoppen)."
+            }
+        };
+
+        function triggerLift(targetState) {
+            const cabin = document.getElementById('lift-cabin');
+            const display = document.getElementById('lift-cabin-display');
+            const logText = document.getElementById('lift-log-text');
+            const oldState = currentLiftState;
+
+            currentLiftState = targetState;
+
+            // 1. Move lift cabin visually using bottom offset
+            if (cabin && liftStates[targetState]) {
+                cabin.style.bottom = liftStates[targetState].bottom;
+                display.innerText = liftStates[targetState].label;
+            }
+
+            // 2. Highlight active node in SVG
+            const states = ['BG', '1', '2'];
+            states.forEach(s => {
+                const node = document.getElementById('lift-node-' + s);
+                if (node) {
+                    const circle = node.querySelector('circle');
+                    const text = node.querySelector('text');
+                    if (s === targetState) {
+                        circle.setAttribute('stroke', '#0d9488');
+                        circle.setAttribute('fill', '#ccfbf1');
+                        text.setAttribute('fill', '#115e59');
+                    } else {
+                        circle.setAttribute('stroke', '#94a3b8');
+                        circle.setAttribute('fill', 'white');
+                        text.setAttribute('fill', '#1e293b');
+                    }
+                }
+            });
+
+            // 3. Highlight the active edge path in SVG
+            const edges = [
+                'BG-BG', '1-1', '2-2',
+                'BG-1', '1-BG', '1-2', '2-1', 'BG-2', '2-BG'
+            ];
+            const activeEdgeId = `${oldState}-${targetState}`;
+
+            edges.forEach(edgeId => {
+                const edge = document.getElementById('lift-edge-' + edgeId);
+                if (edge) {
+                    if (edgeId === activeEdgeId) {
+                        edge.setAttribute('stroke', '#0d9488');
+                        edge.setAttribute('stroke-width', '3');
+                        edge.setAttribute('marker-end', 'url(#arrow-lift-active)');
+                    } else {
+                        edge.setAttribute('stroke', '#94a3b8');
+                        edge.setAttribute('stroke-width', '2');
+                        edge.setAttribute('marker-end', 'url(#arrow-lift)');
+                    }
+                }
+            });
+
+            // 4. Update the log text
+            if (oldState === targetState) {
+                logText.innerHTML = `Self-loop gedetecteerd! Lift blijft op de **${liftStates[targetState].name}** via trigger \`Knop ${targetState}\`.`;
+            } else {
+                logText.innerHTML = `Transitie: **${liftStates[oldState].name}** &rarr; **${liftStates[targetState].name}** via trigger \`Knop ${targetState}\`.`;
+            }
+        }
+
+        // Quiz Logic
+        function checkAnswer(question, answer) {
+            const feedbackBox = document.getElementById('feedback-' + question);
+            feedbackBox.classList.remove('hidden');
+
+            const isCorrect = answer === 'correct';
+            feedbackBox.className = "mt-2 text-[10px] font-semibold p-2 rounded-lg " + (isCorrect ? "bg-emerald-50 text-emerald-800 border border-emerald-100" : "bg-red-50 text-red-800 border border-red-100");
+            feedbackBox.innerText = liftFeedbacks[question][answer];
+
+            // Highlight selected button
+            const buttons = ['correct', 'incorrect1', 'incorrect2'];
+            buttons.forEach(btn => {
+                const b = document.getElementById(`btn-${question}-${btn}`);
+                if (b) {
+                    if (btn === answer) {
+                        b.className = "py-1.5 px-2 border rounded-lg text-[10px] text-center font-bold " + (isCorrect ? "border-emerald-500 bg-emerald-50 text-emerald-900" : "border-red-500 bg-red-50 text-red-900");
+                    } else {
+                        b.className = "py-1.5 px-2 border rounded-lg text-[10px] text-center text-slate-400 border-slate-100 cursor-not-allowed";
+                    }
+                }
+            });
+        }
+
+        function checkLiftOefening() {
+            const val = document.getElementById('lift-oefening-input').value.trim();
+            const feedback = document.getElementById('lift-oefening-feedback');
+            feedback.classList.remove('hidden');
+
+            if (val === '21') {
+                feedback.className = "text-[9px] font-semibold text-emerald-800 mt-1 bg-emerald-50 p-1.5 border border-emerald-100 rounded-lg";
+                feedback.innerText = "Perfect! Knop '2' brengt je direct naar verdieping 2, en Knop '1' brengt je direct naar verdieping 1. Reeks: '21'.";
+            } else {
+                feedback.className = "text-[9px] font-semibold text-red-800 mt-1 bg-red-50 p-1.5 border border-red-100 rounded-lg";
+                feedback.innerText = `Helaas, '${val}' is niet de kortste reeks om deze reis te maken. Probeer het nog eens!`;
+            }
+        }
+
+        window.onload = function () {
+            // Self-resizing logic when hosted on the same domain as the parent page (Moodle)
+            if (window.parent && window.parent !== window) {
+                try {
+                    const iframe = window.frameElement;
+                    if (iframe) {
+                        const resizeObserver = new ResizeObserver(() => {
+                            iframe.style.height = document.documentElement.scrollHeight + 'px';
+                        });
+                        resizeObserver.observe(document.body);
+                    }
+                } catch (e) {
+                    console.log("Cross-origin restriction: falling back to static CSS iframe height.");
+                }
+            }
+        }
+    </script>
+</body>
+
+</html>
