@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="nl">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Praktische Opdracht: Game-Bewaker Modelleren - Grondslagen (B3)</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+    </style>
+</head>
+
+<body class="bg-transparent text-slate-800 min-h-screen flex flex-col antialiased p-2">
+
+    <!-- Het Opdracht Element -->
+    <div class="bg-white rounded-2xl border border-slate-200 p-4 md:p-6 shadow-sm space-y-6 max-w-7xl mx-auto w-full">
+
+        <!-- Header -->
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between border-b border-slate-100 pb-3">
+            <div>
+                <span class="text-[10px] font-bold text-teal-600 uppercase tracking-widest">Praktische Opdracht</span>
+                <h2 class="text-lg font-bold text-slate-900 leading-tight">🎮 Opdracht: Gedrag van een Game-Bewaker
+                    Modelleren</h2>
+            </div>
+            <span class="text-[10px] font-semibold text-slate-400 mt-1 sm:mt-0">Observeer de video en teken het
+                toestandsdiagram</span>
+        </div>
+
+        <!-- Bovenkant: Video en Instructies naast elkaar -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <!-- Video Card -->
+            <div class="bg-slate-50 border border-slate-200 rounded-xl p-3 shadow-inner">
+                <span class="text-[9px] font-bold text-slate-400 uppercase tracking-wider block mb-2">Video-fragment:
+                    Automaat bewaker</span>
+                <div
+                    class="relative aspect-video rounded-lg overflow-hidden bg-slate-950 shadow border border-slate-300">
+                    <iframe class="absolute inset-0 w-full h-full" src="https://www.youtube.com/embed/it9t0whAyPg"
+                        title="Automaat bewaker gameplay" frameborder="0"
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                        allowfullscreen></iframe>
+                </div>
+            </div>
+
+            <!-- Instructies Card -->
+            <div
+                class="p-4 bg-white border border-slate-200 rounded-xl shadow-sm space-y-3 flex flex-col justify-between">
+                <div>
+                    <h3 class="font-extrabold text-slate-800 text-xs uppercase tracking-wider mb-2">📝
+                        Opdrachtbeschrijving</h3>
+                    <p class="text-xs text-slate-600 leading-relaxed mb-3">
+                        In stealth-games wordt het gedrag van bewakers (AI) bijna altijd gemodelleerd met een
+                        <strong>eindige automaat</strong>. Bekijk het bijgevoegde filmpje goed en let op hoe de bewaker
+                        reageert op de aanwezigheid en acties van de speler.
+                    </p>
+                    <div
+                        class="p-3 bg-teal-50 border border-teal-100 rounded-lg text-[11px] text-teal-800 leading-relaxed mb-3">
+                        <strong>Jouw opdracht:</strong> Teken in de tool hieronder een compleet toestandsdiagram dat het
+                        gedrag van de bewaker modelleert. Denk eerst zelf heel goed na over welke verschillende
+                        toestanden (statussen) de bewaker kan aannemen en welke gebeurtenissen (triggers) zorgen voor
+                        een overgang.
+                    </div>
+
+                    <!-- Tip Box -->
+                    <div class="mt-3">
+                        <button onclick="toggleTip()" id="tip-btn"
+                            class="px-3 py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-700 text-[11px] font-bold rounded-lg transition active:scale-95 flex items-center gap-1 focus:outline-none select-none">
+                            💡 Klik hier voor een tip
+                        </button>
+                        <div id="tip-content"
+                            class="hidden mt-2 p-3 bg-slate-50 border border-slate-200 rounded-lg text-[11px] text-slate-600 leading-relaxed space-y-2">
+                            <p>
+                                Begin bij het startpunt van de bewaker. Dit is zijn normale patrouille-toestand:
+                                <strong>Scanning (ruststand)</strong>.
+                            </p>
+                            <p>
+                                Vanuit deze toestand kun je verder redeneren: wat gebeurt er als de bewaker de speler
+                                spot? Of wat gebeurt er als hij onverwacht wordt geraakt? In totaal zijn er <strong>5
+                                    toestanden</strong> te ontdekken!
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Onderkant: Tool op volledige breedte -->
+        <div class="bg-slate-50 border border-slate-200 rounded-xl p-3 shadow-inner">
+            <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-1 mb-2">
+                <span class="text-[9px] font-bold text-slate-400 uppercase tracking-wider">FSM Designer Tool</span>
+                <span class="text-[9px] text-teal-700 font-bold bg-teal-50 px-2 py-0.5 rounded border border-teal-100">
+                    💡 Klik eerst in het tekenveld &bull; Shift + slepen = pijl &bull; Backspace/Delete = verwijderen
+                </span>
+            </div>
+
+            <!-- FSM Tool Iframe -->
+            <div onclick="focusIframe()"
+                class="w-full h-[550px] rounded-lg overflow-hidden border border-slate-300 shadow bg-white relative cursor-pointer">
+                <iframe id="fsm-iframe" src="fsm-designer.html" class="w-full h-full" title="FSM Tool"></iframe>
+            </div>
+
+            <!-- Fallback Link -->
+            <div class="mt-3 flex flex-col sm:flex-row gap-2 items-center justify-between">
+                <span class="text-[10px] text-slate-500">Werkt de tool niet goed in je leersysteem? Klik op de knop om
+                    hem in een nieuw tabblad te openen.</span>
+                <a href="fsm-designer.html" target="_blank"
+                    class="px-4 py-2 bg-teal-600 hover:bg-teal-700 text-white text-xs font-bold rounded-lg transition active:scale-95 text-center shadow shadow-teal-700/10 whitespace-nowrap">
+                    🔗 Open tool in nieuw tabblad
+                </a>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Scripts -->
+    <script>
+        function toggleTip() {
+            const tipContent = document.getElementById('tip-content');
+            const tipBtn = document.getElementById('tip-btn');
+            if (tipContent.classList.contains('hidden')) {
+                tipContent.classList.remove('hidden');
+                tipBtn.innerHTML = "💡 Verberg tip";
+            } else {
+                tipContent.classList.add('hidden');
+                tipBtn.innerHTML = "💡 Klik hier voor een tip";
+            }
+            triggerResize();
+        }
+
+        function focusIframe() {
+            const iframe = document.getElementById('fsm-iframe');
+            if (iframe) {
+                try {
+                    iframe.focus();
+                    if (iframe.contentWindow) {
+                        iframe.contentWindow.focus();
+                    }
+                } catch (e) {
+                    console.log("Could not focus iframe window:", e);
+                }
+            }
+        }
+
+        // Keyboard Event Forwarder to the same-origin iframe
+        function forwardKeyEvent(e, eventType) {
+            const iframe = document.getElementById('fsm-iframe');
+            if (iframe && iframe.contentWindow) {
+                if (document.activeElement === document.body || document.activeElement.tagName === 'BODY') {
+                    try {
+                        const iframeDoc = iframe.contentWindow.document;
+                        const event = new KeyboardEvent(eventType, {
+                            key: e.key,
+                            code: e.code,
+                            keyCode: e.keyCode,
+                            which: e.which,
+                            shiftKey: e.shiftKey,
+                            ctrlKey: e.ctrlKey,
+                            metaKey: e.metaKey,
+                            altKey: e.altKey,
+                            bubbles: true
+                        });
+
+                        // Dispatch standard event
+                        iframeDoc.dispatchEvent(event);
+
+                        // Direct fallback call for old-school document.onkey property bindings
+                        const handlerName = 'on' + eventType;
+                        if (typeof iframeDoc[handlerName] === 'function') {
+                            iframeDoc[handlerName](event);
+                        }
+                    } catch (err) {
+                        console.log("Could not forward key event:", err);
+                    }
+                }
+            }
+        }
+
+        document.addEventListener('keydown', (e) => forwardKeyEvent(e, 'keydown'));
+        document.addEventListener('keyup', (e) => forwardKeyEvent(e, 'keyup'));
+        document.addEventListener('keypress', (e) => forwardKeyEvent(e, 'keypress'));
+
+        function triggerResize() {
+            if (window.parent && window.parent !== window) {
+                try {
+                    const iframe = window.frameElement;
+                    if (iframe) {
+                        iframe.style.height = document.documentElement.scrollHeight + 'px';
+                    }
+                } catch (e) {
+                    console.log("Cross-origin restriction: falling back to static CSS iframe height.");
+                }
+            }
+        }
+
+        window.onload = function () {
+            triggerResize();
+        }
+    </script>
+</body>
+
+</html>

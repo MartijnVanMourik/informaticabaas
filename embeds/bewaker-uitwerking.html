@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="nl">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Uitwerking: Game-Bewaker Modelleren - Grondslagen (B3)</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+    </style>
+</head>
+
+<body class="bg-transparent text-slate-800 min-h-screen flex flex-col antialiased p-2">
+
+    <!-- Het Uitwerking Element -->
+    <div class="bg-white rounded-2xl border border-slate-200 p-4 md:p-6 shadow-sm space-y-6 max-w-7xl mx-auto w-full">
+
+        <!-- Header -->
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between border-b border-slate-100 pb-3">
+            <div>
+                <span class="text-[10px] font-bold text-teal-600 uppercase tracking-widest">Uitwerking praktische
+                    opdracht</span>
+                <h2 class="text-lg font-bold text-slate-900 leading-tight">🔓 Uitwerking: Game-Bewaker Toestandsdiagram
+                </h2>
+            </div>
+            <span class="text-[10px] font-semibold text-slate-400 mt-1 sm:mt-0">Interactief diagram en
+                transitietabel</span>
+        </div>
+
+        <!-- Visualisatie SVG en detail paneel -->
+        <div class="space-y-4">
+            <p class="text-xs text-slate-500">
+                Klik op de toestanden (cirkels) in het onderstaande diagram om te zien wat er gebeurt en welke
+                transities actief zijn:
+            </p>
+
+            <div
+                class="bg-slate-50 border border-slate-200 rounded-xl p-3 flex flex-col md:flex-row items-center justify-center gap-6">
+                <!-- SVG Diagram -->
+                <div
+                    class="relative w-full max-w-[620px] h-[340px] bg-white rounded-lg border border-slate-150 shadow-inner overflow-hidden shrink-0">
+                    <svg class="w-full h-full" viewBox="0 0 600 350" id="guard-fsm-svg">
+                        <defs>
+                            <!-- UserSpaceOnUse markers for pixel-perfect arrowhead size and alignment -->
+                            <marker id="arrow" viewBox="0 0 50 40" refX="42" refY="20" markerWidth="50"
+                                markerHeight="40" markerUnits="userSpaceOnUse" orient="auto">
+                                <path d="M 2 13 L 14 20 L 2 27 z" fill="#64748b" />
+                            </marker>
+                            <marker id="arrow-active" viewBox="0 0 50 40" refX="42" refY="20" markerWidth="50"
+                                markerHeight="40" markerUnits="userSpaceOnUse" orient="auto">
+                                <path d="M 2 13 L 14 20 L 2 27 z" fill="#0d9488" />
+                            </marker>
+                        </defs>
+
+                        <!-- Startpijl (wijst naar Scanning center 100,100; tip stopt op de rand van de cirkel bij x=72) -->
+                        <line x1="20" y1="100" x2="100" y2="100" stroke="#64748b" stroke-width="2.5"
+                            marker-end="url(#arrow)" />
+
+                        <!-- TRANSITIE PIJLEN (EDGES) -->
+                        <!-- Scanning -> Speler gezien -->
+                        <path id="edge-scan-seen" d="M 100,100 Q 200,50 300,100" stroke="#64748b" stroke-width="2"
+                            fill="none" marker-end="url(#arrow)" />
+                        <!-- Speler gezien -> Scanning (speler kwijt) -->
+                        <path id="edge-seen-scan" d="M 300,100 Q 200,150 100,100" stroke="#64748b" stroke-width="2"
+                            fill="none" marker-end="url(#arrow)" />
+
+                        <!-- Scanning -> Gewond / verward (direct geraakt in stealth) -->
+                        <path id="edge-scan-hurt" d="M 100,100 Q 220,230 410,265" stroke="#64748b" stroke-width="2"
+                            fill="none" marker-end="url(#arrow)" />
+
+                        <!-- Speler gezien -> Achtervolging -->
+                        <path id="edge-seen-chase" d="M 300,100 Q 400,60 500,120" stroke="#64748b" stroke-width="2"
+                            fill="none" marker-end="url(#arrow)" />
+                        <!-- Achtervolging -> Speler gezien (speler kwijt) -->
+                        <path id="edge-chase-seen" d="M 500,120 Q 400,160 300,100" stroke="#64748b" stroke-width="2"
+                            fill="none" marker-end="url(#arrow)" />
+
+                        <!-- Achtervolging -> Gewond -->
+                        <path id="edge-chase-hurt" d="M 500,120 Q 480,210 410,265" stroke="#64748b" stroke-width="2"
+                            fill="none" marker-end="url(#arrow)" />
+                        <!-- Gewond -> Achtervolging -->
+                        <path id="edge-hurt-chase" d="M 410,265 Q 430,170 500,120" stroke="#64748b" stroke-width="2"
+                            fill="none" marker-end="url(#arrow)" />
+
+                        <!-- Gewond -> Dood -->
+                        <path id="edge-hurt-dead" d="M 410,265 L 150,265" stroke="#64748b" stroke-width="2" fill="none"
+                            marker-end="url(#arrow)" />
+
+                        <!-- TOESTANDEN (NODES) -->
+                        <!-- Scanning (ruststand) -->
+                        <g id="node-scan" class="cursor-pointer font-semibold" onclick="selectGuardNode('scan')">
+                            <circle cx="100" cy="100" r="28" fill="#ccfbf1" stroke="#0d9488" stroke-width="3" />
+                            <text x="100" y="104" text-anchor="middle" font-size="9" font-weight="bold"
+                                fill="#115e59">Scanning</text>
+                        </g>
+
+                        <!-- Speler gezien (waakstand) -->
+                        <g id="node-seen" class="cursor-pointer font-semibold" onclick="selectGuardNode('seen')">
+                            <circle cx="300" cy="100" r="28" fill="white" stroke="#94a3b8" stroke-width="2.5" />
+                            <text x="300" y="104" text-anchor="middle" font-size="9" fill="#1e293b">Waakstand</text>
+                        </g>
+
+                        <!-- Achtervolging (renstand) -->
+                        <g id="node-chase" class="cursor-pointer font-semibold" onclick="selectGuardNode('chase')">
+                            <circle cx="500" cy="120" r="28" fill="white" stroke="#94a3b8" stroke-width="2.5" />
+                            <text x="500" y="124" text-anchor="middle" font-size="9" fill="#1e293b">Achtervolg</text>
+                        </g>
+
+                        <!-- Gewond / verward -->
+                        <g id="node-hurt" class="cursor-pointer font-semibold" onclick="selectGuardNode('hurt')">
+                            <circle cx="410" cy="265" r="28" fill="white" stroke="#94a3b8" stroke-width="2.5" />
+                            <text x="410" y="269" text-anchor="middle" font-size="9" fill="#1e293b">Gewond</text>
+                        </g>
+
+                        <!-- Dood (Eindtoestand) -->
+                        <g id="node-dead" class="cursor-pointer font-semibold" onclick="selectGuardNode('dead')">
+                            <circle cx="150" cy="265" r="28" fill="white" stroke="#94a3b8" stroke-width="2.5" />
+                            <circle cx="150" cy="265" r="22" fill="none" stroke="#94a3b8" stroke-width="1.5" />
+                            <text x="150" y="269" text-anchor="middle" font-size="9" fill="#1e293b">Dood</text>
+                        </g>
+
+                        <!-- Labels -->
+                        <text x="200" y="66" text-anchor="middle" fill="#64748b" font-size="8" font-weight="bold">speler
+                            gezien</text>
+                        <text x="200" y="138" text-anchor="middle" fill="#64748b" font-size="8"
+                            font-weight="bold">speler kwijt</text>
+                        <text x="235" y="212" text-anchor="middle" fill="#64748b" font-size="8"
+                            font-weight="bold">geraakt</text>
+                        <text x="400" y="76" text-anchor="middle" fill="#64748b" font-size="8"
+                            font-weight="bold">achtervolging start</text>
+                        <text x="400" y="147" text-anchor="middle" fill="#64748b" font-size="8"
+                            font-weight="bold">speler kwijt</text>
+                        <text x="480" y="208" text-anchor="middle" fill="#64748b" font-size="8"
+                            font-weight="bold">geraakt</text>
+                        <text x="430" y="175" text-anchor="middle" fill="#64748b" font-size="8"
+                            font-weight="bold">hersteld</text>
+                        <text x="280" y="256" text-anchor="middle" fill="#64748b" font-size="8"
+                            font-weight="bold">nogmaals geraakt</text>
+                    </svg>
+                </div>
+
+                <!-- Informatie Paneel -->
+                <div
+                    class="bg-white border border-slate-200 rounded-xl p-4 shadow-sm w-full md:max-w-[280px] h-[340px] flex flex-col justify-between overflow-y-auto">
+                    <div>
+                        <span class="text-[9px] font-bold text-teal-600 uppercase block mb-1">Toelichting
+                            toestand</span>
+                        <h4 id="detail-title" class="font-extrabold text-slate-800 text-sm">Scanning (ruststand)</h4>
+                        <p id="detail-desc" class="text-[11px] text-slate-500 mt-2 leading-relaxed">
+                            Dit is de start- en rusttoestand van de bewaker. Hij patrouilleert rustig zijn vaste route.
+                            Zodra hij de speler ziet via de trigger `speler gezien`, gaat hij over naar de
+                            <strong>Waakstand</strong>. Wordt hij onverwacht van achteren aangevallen (trigger
+                            `geraakt`), dan raakt hij direct <strong>Gewond / verward</strong>.
+                        </p>
+                    </div>
+                    <div class="pt-3 border-t border-slate-100 text-[10px] text-slate-400">
+                        💡 Klik op de cirkels in het diagram om de logica per toestand te bekijken.
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Transitie Tabel -->
+        <div class="space-y-3">
+            <h3 class="font-bold text-slate-800 text-xs uppercase tracking-wider">📋 Transitietabel van het gedrag</h3>
+            <div class="overflow-x-auto rounded-xl border border-slate-200 shadow-sm bg-white">
+                <table class="w-full text-[11px] text-left border-collapse">
+                    <thead>
+                        <tr class="bg-slate-50 text-slate-500 font-extrabold uppercase border-b border-slate-200">
+                            <th class="p-3">Huidige Toestand</th>
+                            <th class="p-3">Invoer / Trigger</th>
+                            <th class="p-3">Nieuwe Toestand</th>
+                            <th class="p-3">Fysieke betekenis in de game</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-slate-150 text-slate-600 font-medium">
+                        <tr>
+                            <td class="p-3 font-semibold text-slate-900">Scanning (ruststand)</td>
+                            <td class="p-3 font-mono text-teal-700">speler gezien</td>
+                            <td class="p-3">Speler gezien (waakstand)</td>
+                            <td class="p-3">De bewaker spot de speler in zijn blikveld en stopt met lopen.</td>
+                        </tr>
+                        <tr>
+                            <td class="p-3 font-semibold text-slate-900">Scanning (ruststand)</td>
+                            <td class="p-3 font-mono text-teal-700">geraakt</td>
+                            <td class="p-3">Gewond / verward</td>
+                            <td class="p-3">De bewaker wordt vanuit zijn patrouille onverwachts van achteren aangevallen
+                                (stealth-aanval).</td>
+                        </tr>
+                        <tr>
+                            <td class="p-3 font-semibold text-slate-900">Speler gezien (waakstand)</td>
+                            <td class="p-3 font-mono text-teal-700">speler kwijt</td>
+                            <td class="p-3">Scanning (ruststand)</td>
+                            <td class="p-3">De speler trekt zich snel terug; de bewaker keert terug naar rustpatrouille.
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="p-3 font-semibold text-slate-900">Speler gezien (waakstand)</td>
+                            <td class="p-3 font-mono text-teal-700">achtervolging start</td>
+                            <td class="p-3">Achtervolging (renstand)</td>
+                            <td class="p-3">De speler blijft in het zicht; de bewaker trekt zijn wapen en zet de
+                                achtervolging in.</td>
+                        </tr>
+                        <tr>
+                            <td class="p-3 font-semibold text-slate-900">Achtervolging (renstand)</td>
+                            <td class="p-3 font-mono text-teal-700">speler kwijt</td>
+                            <td class="p-3">Speler gezien (waakstand)</td>
+                            <td class="p-3">De speler kruipt om een hoekje; de bewaker stopt met rennen en zoekt ter
+                                plekke.</td>
+                        </tr>
+                        <tr>
+                            <td class="p-3 font-semibold text-slate-900">Achtervolging (renstand)</td>
+                            <td class="p-3 font-mono text-teal-700">geraakt</td>
+                            <td class="p-3">Gewond / verward</td>
+                            <td class="p-3">De speler valt de bewaker aan en raakt hem; de bewaker is tijdelijk
+                                verdoofd.</td>
+                        </tr>
+                        <tr>
+                            <td class="p-3 font-semibold text-slate-900">Gewond / verward</td>
+                            <td class="p-3 font-mono text-teal-700">hersteld (timer)</td>
+                            <td class="p-3">Achtervolging (renstand)</td>
+                            <td class="p-3">De verdoving is uitgewerkt; de bewaker hervat direct de achtervolging.</td>
+                        </tr>
+                        <tr>
+                            <td class="p-3 font-semibold text-slate-900">Gewond / verward</td>
+                            <td class="p-3 font-mono text-teal-700">nogmaals geraakt</td>
+                            <td class="p-3 text-red-600 font-bold">Dood (eindtoestand)</td>
+                            <td class="p-3">De speler valt de gewonde bewaker nog eens aan; de bewaker is definitief
+                                uitgeschakeld.</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Scripts -->
+    <script>
+        const guardNodeDetails = {
+            scan: {
+                title: "Scanning (ruststand)",
+                desc: "Dit is de start- en rusttoestand van de bewaker. Hij patrouilleert rustig zijn vaste route. Zodra hij de speler ziet via de trigger `speler gezien`, gaat hij over naar de <strong>Waakstand</strong>. Wordt hij onverwacht van achteren aangevallen (trigger `geraakt`), dan raakt hij direct <strong>Gewond / verward</strong>."
+            },
+            seen: {
+                title: "Speler gezien (waakstand)",
+                desc: "De bewaker heeft de speler opgemerkt. Als de speler binnen het zicht blijft, start hij de `achtervolging` (renstand). Verdwijnt de speler direct uit het zicht (`speler kwijt`), dan keert de bewaker terug naar de <strong>ruststand</strong> (Scanning)."
+            },
+            chase: {
+                title: "Achtervolging (renstand)",
+                desc: "De bewaker rent achter de speler aan om deze te stoppen. Als de speler uit het zicht raakt (`speler kwijt`), stopt de bewaker met rennen (terug naar <strong>Waakstand</strong>). Wordt de bewaker aangevallen door de speler, dan raakt hij <strong>Gewond</strong> (`geraakt`)."
+            },
+            hurt: {
+                title: "Gewond / verward",
+                desc: "De bewaker is geraakt en is tijdelijk verdoofd of gedesoriënteerd. Als de speler hem na een tijdje met rust laat, herstelt hij (`hersteld`) en rent weer achter de speler aan. Wordt de bewaker echter nogmaals geraakt, dan gaat hij naar de toestand <strong>Dood</strong>."
+            },
+            dead: {
+                title: "Dood (eindtoestand)",
+                desc: "De bewaker is definitief uitgeschakeld en beweegt niet meer. Omdat dit een <strong>eindtoestand</strong> is (dubbele cirkel), zijn er vanaf hier geen pijlen (transities) meer mogelijk. De automaat stopt hier."
+            }
+        };
+
+        function selectGuardNode(nodeKey) {
+            // Update node colors in SVG
+            const nodes = ['scan', 'seen', 'chase', 'hurt', 'dead'];
+            nodes.forEach(n => {
+                const nodeEl = document.getElementById('node-' + n);
+                if (nodeEl) {
+                    const mainCircle = nodeEl.querySelector('circle:first-child');
+                    const textEl = nodeEl.querySelector('text');
+
+                    if (n === nodeKey) {
+                        mainCircle.setAttribute('stroke', '#0d9488');
+                        mainCircle.setAttribute('fill', '#ccfbf1');
+                        mainCircle.setAttribute('stroke-width', '3');
+                        textEl.setAttribute('fill', '#115e59');
+                        textEl.setAttribute('font-weight', 'bold');
+                    } else {
+                        mainCircle.setAttribute('stroke', '#94a3b8');
+                        mainCircle.setAttribute('fill', 'white');
+                        mainCircle.setAttribute('stroke-width', '2.5');
+                        textEl.setAttribute('fill', '#1e293b');
+                        textEl.removeAttribute('font-weight');
+                    }
+                }
+            });
+
+            // Update edge colors (transities)
+            const edges = {
+                scan: ['scan-seen', 'scan-hurt'],
+                seen: ['seen-scan', 'seen-chase'],
+                chase: ['chase-seen', 'chase-hurt'],
+                hurt: ['hurt-chase', 'hurt-dead'],
+                dead: []
+            };
+
+            const allEdges = ['scan-seen', 'seen-scan', 'seen-chase', 'chase-seen', 'chase-hurt', 'hurt-chase', 'hurt-dead', 'scan-hurt'];
+            allEdges.forEach(e => {
+                const edgeEl = document.getElementById('edge-' + e);
+                if (edgeEl) {
+                    if (edges[nodeKey].includes(e)) {
+                        edgeEl.setAttribute('stroke', '#0d9488');
+                        edgeEl.setAttribute('stroke-width', '3.5');
+                        edgeEl.setAttribute('marker-end', 'url(#arrow-active)');
+                    } else {
+                        edgeEl.setAttribute('stroke', '#64748b');
+                        edgeEl.setAttribute('stroke-width', '2');
+                        edgeEl.setAttribute('marker-end', 'url(#arrow)');
+                    }
+                }
+            });
+
+            // Update description panel
+            document.getElementById('detail-title').innerText = guardNodeDetails[nodeKey].title;
+            document.getElementById('detail-desc').innerHTML = guardNodeDetails[nodeKey].desc;
+        }
+
+        function triggerResize() {
+            if (window.parent && window.parent !== window) {
+                try {
+                    const iframe = window.frameElement;
+                    if (iframe) {
+                        iframe.style.height = document.documentElement.scrollHeight + 'px';
+                    }
+                } catch (e) {
+                    console.log("Cross-origin restriction: falling back to static CSS iframe height.");
+                }
+            }
+        }
+
+        window.onload = function () {
+            triggerResize();
+        }
+    </script>
+</body>
+
+</html>
