@@ -272,40 +272,9 @@
                         </div>
                     </div>
 
-                    <!-- Interactieve Thermostaat Widget -->
-                    <div class="bg-teal-50 border border-teal-100 rounded-2xl p-6 my-6">
-                        <h3 class="text-lg font-bold text-teal-900 mb-2">🧠 Interactieve Verkenning: Slimme Thermostaat
-                        </h3>
-                        <p class="text-sm text-teal-700 mb-4">Klik op de knoppen om invoer aan te leveren aan de
-                            thermostaat-automaat en bekijk hoe de toestand verandert.</p>
-
-                        <div
-                            class="flex flex-col sm:flex-row items-center justify-around gap-6 p-4 bg-white rounded-xl border border-teal-100">
-                            <!-- Visualisatie van de 2 toestanden -->
-                            <div class="flex items-center gap-4">
-                                <div id="state-cv-uit"
-                                    class="w-24 h-24 rounded-full border-4 border-teal-600 bg-teal-50 flex flex-col items-center justify-center text-center shadow transition-all duration-300">
-                                    <span class="text-xs font-bold text-teal-800">CV UIT</span>
-                                    <span class="text-[10px] text-teal-600 font-mono mt-1">(Actief)</span>
-                                </div>
-                                <div class="text-slate-400 font-bold">&harr;</div>
-                                <div id="state-cv-aan"
-                                    class="w-24 h-24 rounded-full border-4 border-slate-200 bg-white flex flex-col items-center justify-center text-center shadow transition-all duration-300">
-                                    <span class="text-xs font-bold text-slate-400">CV AAN</span>
-                                    <span class="text-[10px] text-slate-400 font-mono mt-1">(Inactief)</span>
-                                </div>
-                            </div>
-
-                            <!-- Triggers -->
-                            <div class="flex flex-col gap-2">
-                                <button onclick="triggerThermostat('te-laag')"
-                                    class="px-4 py-2 bg-teal-600 text-white text-sm font-bold rounded-lg hover:bg-teal-700 transition">Invoer:
-                                    "Temperatuur te laag"</button>
-                                <button onclick="triggerThermostat('te-hoog')"
-                                    class="px-4 py-2 bg-slate-600 text-white text-sm font-bold rounded-lg hover:bg-slate-700 transition">Invoer:
-                                    "Temperatuur te hoog"</button>
-                            </div>
-                        </div>
+                    <!-- Interactieve Thermostaat Widget Embed -->
+                    <div class="my-6">
+                        <iframe src="embeds/thermostaat.html" class="w-full border-0 rounded-2xl shadow-sm h-[740px] md:h-[460px] lg:h-[390px]" style="background: transparent;" title="Slimme Thermostaat Simulator"></iframe>
                     </div>
                 </div>
 
@@ -1069,35 +1038,6 @@
         let currentSimulatorState = 1;
         let currentLiftState = 'BG';
 
-        // Thermostaat simulator logic
-        function triggerThermostat(action) {
-            const cvUit = document.getElementById('state-cv-uit');
-            const cvAan = document.getElementById('state-cv-aan');
-
-            if (action === 'te-laag') {
-                // Toestand wisselt naar CV AAN
-                cvUit.className = "w-24 h-24 rounded-full border-4 border-slate-200 bg-white flex flex-col items-center justify-center text-center shadow transition-all duration-300";
-                cvUit.querySelector('span:last-child').innerText = "(Inactief)";
-                cvUit.querySelector('span:last-child').className = "text-[10px] text-slate-400 font-mono mt-1";
-                cvUit.querySelector('span:first-child').className = "text-xs font-bold text-slate-400";
-
-                cvAan.className = "w-24 h-24 rounded-full border-4 border-teal-600 bg-teal-50 flex flex-col items-center justify-center text-center shadow transition-all duration-300 animate-pulse-subtle";
-                cvAan.querySelector('span:last-child').innerText = "(Actief)";
-                cvAan.querySelector('span:last-child').className = "text-[10px] text-teal-600 font-mono mt-1";
-                cvAan.querySelector('span:first-child').className = "text-xs font-bold text-teal-800";
-            } else if (action === 'te-hoog') {
-                // Toestand wisselt naar CV UIT
-                cvAan.className = "w-24 h-24 rounded-full border-4 border-slate-200 bg-white flex flex-col items-center justify-center text-center shadow transition-all duration-300";
-                cvAan.querySelector('span:last-child').innerText = "(Inactief)";
-                cvAan.querySelector('span:last-child').className = "text-[10px] text-slate-400 font-mono mt-1";
-                cvAan.querySelector('span:first-child').className = "text-xs font-bold text-slate-400";
-
-                cvUit.className = "w-24 h-24 rounded-full border-4 border-teal-600 bg-teal-50 flex flex-col items-center justify-center text-center shadow transition-all duration-300";
-                cvUit.querySelector('span:last-child').innerText = "(Actief)";
-                cvUit.querySelector('span:last-child').className = "text-[10px] text-teal-600 font-mono mt-1";
-                cvUit.querySelector('span:first-child').className = "text-xs font-bold text-teal-800";
-            }
-        }
 
         // Lift Simulator logic
         function triggerLift(targetState) {
