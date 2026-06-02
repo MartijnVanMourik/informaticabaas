@@ -44,6 +44,47 @@
             <span class="text-[10px] font-semibold text-slate-400 mt-1 sm:mt-0">Bestuur de lift en bekijk de toestandsovergangen.</span>
         </div>
 
+        <!-- Introductie & Basiselementen -->
+        <div class="space-y-3">
+            <p class="text-xs text-slate-500 leading-relaxed">
+                Een toestandsdiagram (FSM) is een wiskundig model om het gedrag van systemen met een eindig aantal toestanden te beschrijven. Laten we kijken naar een <strong>lift</strong> die 3 verdiepingen bedient: de begane grond (<strong>BG</strong>), de eerste verdieping (<strong>1</strong>) en de tweede verdieping (<strong>2</strong>). Dit zijn de toestanden van ons systeem.
+            </p>
+            
+            <!-- De 2 Basiselementen Cards -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                <!-- De Toestand Card -->
+                <div class="p-3 bg-slate-50/50 border border-slate-200 rounded-xl flex items-start gap-3">
+                    <div class="w-10 h-10 shrink-0 bg-white border border-slate-200 rounded-lg flex items-center justify-center text-teal-600 shadow-sm">
+                        <svg class="w-6 h-6" viewBox="0 0 100 100">
+                            <circle cx="50" cy="50" r="32" stroke="currentColor" stroke-width="6" fill="none" />
+                        </svg>
+                    </div>
+                    <div>
+                        <h4 class="font-bold text-slate-800 text-xs">De Toestand (Cirkel)</h4>
+                        <p class="text-[10px] text-slate-500 mt-0.5 leading-normal">
+                            Dit is de cirkel in het schema. Het geeft de huidige status van het systeem of apparaat aan. Bij de lift is de toestand de verdieping waar de lift stilstaat (BG, 1 of 2).
+                        </p>
+                    </div>
+                </div>
+
+                <!-- De Transitie Card -->
+                <div class="p-3 bg-slate-50/50 border border-slate-200 rounded-xl flex items-start gap-3">
+                    <div class="w-10 h-10 shrink-0 bg-white border border-slate-200 rounded-lg flex items-center justify-center text-teal-600 shadow-sm">
+                        <svg class="w-8 h-8" viewBox="0 0 100 100">
+                            <line x1="15" y1="50" x2="70" y2="50" stroke="currentColor" stroke-width="6" />
+                            <polygon points="70,42 85,50 70,58" fill="currentColor" />
+                        </svg>
+                    </div>
+                    <div>
+                        <h4 class="font-bold text-slate-800 text-xs">De Transitie (Gerichte Pijl)</h4>
+                        <p class="text-[10px] text-slate-500 mt-0.5 leading-normal">
+                            De gerichte pijl. Deze geeft de overgang aan van de ene toestand naar de andere door een trigger (invoer). Bij de lift is dit de beweging na het indrukken van een knop.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <!-- Hoofdgrid: 2 kolommen vanaf sm (640px) -->
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
 
