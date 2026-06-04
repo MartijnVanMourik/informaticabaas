@@ -48,7 +48,7 @@
 
                 <!-- Live FSM visualisatie voor Telefoonnummer-Validator -->
                 <div class="mt-6 p-4 bg-white border border-slate-200 rounded-xl overflow-x-auto">
-                    <svg class="w-full min-w-[750px] h-[210px] mx-auto" viewBox="0 0 760 220">
+                    <svg class="w-full min-w-[590px] h-[210px] mx-auto" viewBox="0 0 590 210">
                         <defs>
                             <marker id="p-arrow" viewBox="0 0 10 10" refX="18" refY="5" markerWidth="6" markerHeight="6"
                                 orient="auto-start-reverse">
@@ -64,163 +64,152 @@
                             </marker>
                         </defs>
 
-                        <!-- Transities (Edges) -->
-                        <!-- +316 Tak -->
-                        <line id="p-edge-0-1" x1="35" y1="110" x2="95" y2="45" stroke="#94a3b8" stroke-width="2"
+                        <!-- +316 Tak (boven, y=55) -->
+                        <line id="p-edge-0-1" x1="25" y1="110" x2="80" y2="55" stroke="#94a3b8" stroke-width="2"
                             marker-end="url(#p-arrow)" />
-                        <line id="p-edge-1-3" x1="95" y1="45" x2="155" y2="45" stroke="#94a3b8" stroke-width="2"
+                        <line id="p-edge-1-3" x1="80" y1="55" x2="150" y2="55" stroke="#94a3b8" stroke-width="2"
                             marker-end="url(#p-arrow)" />
-                        <line id="p-edge-3-4" x1="155" y1="45" x2="215" y2="45" stroke="#94a3b8" stroke-width="2"
+                        <line id="p-edge-3-4" x1="150" y1="55" x2="215" y2="55" stroke="#94a3b8" stroke-width="2"
                             marker-end="url(#p-arrow)" />
-                        <line id="p-edge-4-5" x1="215" y1="45" x2="320" y2="110" stroke="#94a3b8" stroke-width="2"
-                            marker-end="url(#p-arrow)" />
-
-                        <!-- 06 Tak -->
-                        <line id="p-edge-0-2" x1="35" y1="110" x2="115" y2="110" stroke="#94a3b8" stroke-width="2"
-                            marker-end="url(#p-arrow)" />
-                        <line id="p-edge-2-5" x1="115" y1="110" x2="320" y2="110" stroke="#94a3b8" stroke-width="2"
+                        <line id="p-edge-4-5" x1="215" y1="55" x2="275" y2="110" stroke="#94a3b8" stroke-width="2"
                             marker-end="url(#p-arrow)" />
 
-                        <!-- 00316 Tak -->
-                        <line id="p-edge-2-6" x1="115" y1="110" x2="170" y2="175" stroke="#94a3b8" stroke-width="2"
+                        <!-- 06 Tak (midden, y=110) -->
+                        <line id="p-edge-0-2" x1="25" y1="110" x2="95" y2="110" stroke="#94a3b8" stroke-width="2"
                             marker-end="url(#p-arrow)" />
-                        <line id="p-edge-6-7" x1="170" y1="175" x2="220" y2="175" stroke="#94a3b8" stroke-width="2"
-                            marker-end="url(#p-arrow)" />
-                        <line id="p-edge-7-8" x1="220" y1="175" x2="270" y2="175" stroke="#94a3b8" stroke-width="2"
-                            marker-end="url(#p-arrow)" />
-                        <line id="p-edge-8-5" x1="270" y1="175" x2="320" y2="110" stroke="#94a3b8" stroke-width="2"
+                        <line id="p-edge-2-5" x1="95" y1="110" x2="275" y2="110" stroke="#94a3b8" stroke-width="2"
                             marker-end="url(#p-arrow)" />
 
-                        <!-- Cijfer Reeks (8 cijfers) -->
-                        <line id="p-edge-5-9" x1="320" y1="110" x2="400" y2="110" stroke="#94a3b8" stroke-width="2"
+                        <!-- 00316 Tak (onder-links, y=165) -->
+                        <line id="p-edge-2-6" x1="95" y1="110" x2="145" y2="165" stroke="#94a3b8" stroke-width="2"
                             marker-end="url(#p-arrow)" />
-                        <line id="p-edge-9-10" x1="400" y1="110" x2="480" y2="110" stroke="#94a3b8" stroke-width="2"
+                        <line id="p-edge-6-7" x1="145" y1="165" x2="200" y2="165" stroke="#94a3b8" stroke-width="2"
                             marker-end="url(#p-arrow)" />
-                        <line id="p-edge-10-11" x1="480" y1="110" x2="560" y2="110" stroke="#94a3b8" stroke-width="2"
+                        <line id="p-edge-7-8" x1="200" y1="165" x2="255" y2="165" stroke="#94a3b8" stroke-width="2"
                             marker-end="url(#p-arrow)" />
-                        <line id="p-edge-11-12" x1="560" y1="110" x2="640" y2="110" stroke="#94a3b8" stroke-width="2"
+                        <line id="p-edge-8-5" x1="255" y1="165" x2="275" y2="110" stroke="#94a3b8" stroke-width="2"
                             marker-end="url(#p-arrow)" />
-                        <line id="p-edge-12-13" x1="640" y1="110" x2="720" y2="110" stroke="#94a3b8" stroke-width="2"
+
+                        <!-- Cijferreeks boven (y=110): S5→S9→S10→S11→S12 -->
+                        <line id="p-edge-5-9" x1="275" y1="110" x2="345" y2="110" stroke="#94a3b8" stroke-width="2"
                             marker-end="url(#p-arrow)" />
-                        <line id="p-edge-13-14" x1="720" y1="110" x2="720" y2="175" stroke="#94a3b8" stroke-width="2"
+                        <line id="p-edge-9-10" x1="345" y1="110" x2="415" y2="110" stroke="#94a3b8" stroke-width="2"
                             marker-end="url(#p-arrow)" />
-                        <line id="p-edge-14-15" x1="720" y1="175" x2="640" y2="175" stroke="#94a3b8" stroke-width="2"
+                        <line id="p-edge-10-11" x1="415" y1="110" x2="485" y2="110" stroke="#94a3b8" stroke-width="2"
                             marker-end="url(#p-arrow)" />
-                        <line id="p-edge-15-16" x1="640" y1="175" x2="560" y2="175" stroke="#94a3b8" stroke-width="2"
+                        <line id="p-edge-11-12" x1="485" y1="110" x2="555" y2="110" stroke="#94a3b8" stroke-width="2"
+                            marker-end="url(#p-arrow)" />
+
+                        <!-- Knik omlaag bij S12 -->
+                        <line id="p-edge-12-13" x1="555" y1="110" x2="555" y2="165" stroke="#94a3b8" stroke-width="2"
+                            marker-end="url(#p-arrow)" />
+
+                        <!-- Zigzag terugweg (y=165), rechts→links: S13→S14→S15→S16 -->
+                        <line id="p-edge-13-14" x1="555" y1="165" x2="485" y2="165" stroke="#94a3b8" stroke-width="2"
+                            marker-end="url(#p-arrow)" />
+                        <line id="p-edge-14-15" x1="485" y1="165" x2="415" y2="165" stroke="#94a3b8" stroke-width="2"
+                            marker-end="url(#p-arrow)" />
+                        <line id="p-edge-15-16" x1="415" y1="165" x2="345" y2="165" stroke="#94a3b8" stroke-width="2"
                             marker-end="url(#p-arrow)" />
 
                         <!-- Toestanden (Cirkels) -->
                         <g id="p-node-0">
-                            <circle cx="35" cy="110" r="16" fill="#ccfbf1" stroke="#0d9488" stroke-width="2.5" />
-                            <text x="35" y="113.5" text-anchor="middle" font-size="9" font-weight="bold"
-                                fill="#115e59">S₀</text>
+                            <circle cx="25" cy="110" r="16" fill="#ccfbf1" stroke="#0d9488" stroke-width="2.5" />
+                            <text x="25" y="113.5" text-anchor="middle" font-size="9" font-weight="bold" fill="#115e59">S₀</text>
                         </g>
                         <g id="p-node-1">
-                            <circle cx="95" cy="45" r="16" fill="white" stroke="#94a3b8" stroke-width="2" />
-                            <text x="95" y="48.5" text-anchor="middle" font-size="9" fill="#1e293b">S₁</text>
+                            <circle cx="80" cy="55" r="16" fill="white" stroke="#94a3b8" stroke-width="2" />
+                            <text x="80" y="58.5" text-anchor="middle" font-size="9" fill="#1e293b">S₁</text>
                         </g>
                         <g id="p-node-2">
-                            <circle cx="115" cy="110" r="16" fill="white" stroke="#94a3b8" stroke-width="2" />
-                            <text x="115" y="113.5" text-anchor="middle" font-size="9" fill="#1e293b">S₂</text>
+                            <circle cx="95" cy="110" r="16" fill="white" stroke="#94a3b8" stroke-width="2" />
+                            <text x="95" y="113.5" text-anchor="middle" font-size="9" fill="#1e293b">S₂</text>
                         </g>
                         <g id="p-node-3">
-                            <circle cx="155" cy="45" r="16" fill="white" stroke="#94a3b8" stroke-width="2" />
-                            <text x="155" y="48.5" text-anchor="middle" font-size="9" fill="#1e293b">S₃</text>
+                            <circle cx="150" cy="55" r="16" fill="white" stroke="#94a3b8" stroke-width="2" />
+                            <text x="150" y="58.5" text-anchor="middle" font-size="9" fill="#1e293b">S₃</text>
                         </g>
                         <g id="p-node-4">
-                            <circle cx="215" cy="45" r="16" fill="white" stroke="#94a3b8" stroke-width="2" />
-                            <text x="215" y="48.5" text-anchor="middle" font-size="9" fill="#1e293b">S₄</text>
+                            <circle cx="215" cy="55" r="16" fill="white" stroke="#94a3b8" stroke-width="2" />
+                            <text x="215" y="58.5" text-anchor="middle" font-size="9" fill="#1e293b">S₄</text>
                         </g>
                         <g id="p-node-6">
-                            <circle cx="170" cy="175" r="16" fill="white" stroke="#94a3b8" stroke-width="2" />
-                            <text x="170" y="178.5" text-anchor="middle" font-size="9" fill="#1e293b">S₆</text>
+                            <circle cx="145" cy="165" r="16" fill="white" stroke="#94a3b8" stroke-width="2" />
+                            <text x="145" y="168.5" text-anchor="middle" font-size="9" fill="#1e293b">S₆</text>
                         </g>
                         <g id="p-node-7">
-                            <circle cx="220" cy="175" r="16" fill="white" stroke="#94a3b8" stroke-width="2" />
-                            <text x="220" y="178.5" text-anchor="middle" font-size="9" fill="#1e293b">S₇</text>
+                            <circle cx="200" cy="165" r="16" fill="white" stroke="#94a3b8" stroke-width="2" />
+                            <text x="200" y="168.5" text-anchor="middle" font-size="9" fill="#1e293b">S₇</text>
                         </g>
                         <g id="p-node-8">
-                            <circle cx="270" cy="175" r="16" fill="white" stroke="#94a3b8" stroke-width="2" />
-                            <text x="270" y="178.5" text-anchor="middle" font-size="9" fill="#1e293b">S₈</text>
+                            <circle cx="255" cy="165" r="16" fill="white" stroke="#94a3b8" stroke-width="2" />
+                            <text x="255" y="168.5" text-anchor="middle" font-size="9" fill="#1e293b">S₈</text>
                         </g>
                         <g id="p-node-5">
-                            <circle cx="320" cy="110" r="16" fill="white" stroke="#94a3b8" stroke-width="2" />
-                            <text x="320" y="113.5" text-anchor="middle" font-size="9" fill="#1e293b">S₅</text>
+                            <circle cx="275" cy="110" r="16" fill="white" stroke="#94a3b8" stroke-width="2" />
+                            <text x="275" y="113.5" text-anchor="middle" font-size="9" fill="#1e293b">S₅</text>
                         </g>
                         <g id="p-node-9">
-                            <circle cx="400" cy="110" r="16" fill="white" stroke="#94a3b8" stroke-width="2" />
-                            <text x="400" y="113.5" text-anchor="middle" font-size="9" fill="#1e293b">S₉</text>
+                            <circle cx="345" cy="110" r="16" fill="white" stroke="#94a3b8" stroke-width="2" />
+                            <text x="345" y="113.5" text-anchor="middle" font-size="9" fill="#1e293b">S₉</text>
                         </g>
                         <g id="p-node-10">
-                            <circle cx="480" cy="110" r="16" fill="white" stroke="#94a3b8" stroke-width="2" />
-                            <text x="480" y="113.5" text-anchor="middle" font-size="9" fill="#1e293b">S₁₀</text>
+                            <circle cx="415" cy="110" r="16" fill="white" stroke="#94a3b8" stroke-width="2" />
+                            <text x="415" y="113.5" text-anchor="middle" font-size="9" fill="#1e293b">S₁₀</text>
                         </g>
                         <g id="p-node-11">
-                            <circle cx="560" cy="110" r="16" fill="white" stroke="#94a3b8" stroke-width="2" />
-                            <text x="560" y="113.5" text-anchor="middle" font-size="9" fill="#1e293b">S₁₁</text>
+                            <circle cx="485" cy="110" r="16" fill="white" stroke="#94a3b8" stroke-width="2" />
+                            <text x="485" y="113.5" text-anchor="middle" font-size="9" fill="#1e293b">S₁₁</text>
                         </g>
                         <g id="p-node-12">
-                            <circle cx="640" cy="110" r="16" fill="white" stroke="#94a3b8" stroke-width="2" />
-                            <text x="640" y="113.5" text-anchor="middle" font-size="9" fill="#1e293b">S₁₂</text>
+                            <circle cx="555" cy="110" r="16" fill="white" stroke="#94a3b8" stroke-width="2" />
+                            <text x="555" y="113.5" text-anchor="middle" font-size="9" fill="#1e293b">S₁₂</text>
                         </g>
+                        <!-- Onderste zigzag-rij, rechts → links -->
                         <g id="p-node-13">
-                            <circle cx="720" cy="110" r="16" fill="white" stroke="#94a3b8" stroke-width="2" />
-                            <text x="720" y="113.5" text-anchor="middle" font-size="9" fill="#1e293b">S₁₃</text>
+                            <circle cx="555" cy="165" r="16" fill="white" stroke="#94a3b8" stroke-width="2" />
+                            <text x="555" y="168.5" text-anchor="middle" font-size="9" fill="#1e293b">S₁₃</text>
                         </g>
                         <g id="p-node-14">
-                            <circle cx="720" cy="175" r="16" fill="white" stroke="#94a3b8" stroke-width="2" />
-                            <text x="720" y="178.5" text-anchor="middle" font-size="9" fill="#1e293b">S₁₄</text>
+                            <circle cx="485" cy="165" r="16" fill="white" stroke="#94a3b8" stroke-width="2" />
+                            <text x="485" y="168.5" text-anchor="middle" font-size="9" fill="#1e293b">S₁₄</text>
                         </g>
                         <g id="p-node-15">
-                            <circle cx="640" cy="175" r="16" fill="white" stroke="#94a3b8" stroke-width="2" />
-                            <text x="640" y="178.5" text-anchor="middle" font-size="9" fill="#1e293b">S₁₅</text>
+                            <circle cx="415" cy="165" r="16" fill="white" stroke="#94a3b8" stroke-width="2" />
+                            <text x="415" y="168.5" text-anchor="middle" font-size="9" fill="#1e293b">S₁₅</text>
                         </g>
+                        <!-- S₁₆ = eindtoestand (dubbele cirkel) -->
                         <g id="p-node-16">
-                            <circle cx="560" cy="175" r="16" fill="white" stroke="#94a3b8" stroke-width="2" />
-                            <circle cx="560" cy="175" r="12" fill="none" stroke="#94a3b8" stroke-width="1.5" />
-                            <text x="560" y="178.5" text-anchor="middle" font-size="9" fill="#1e293b">S₁₆</text>
+                            <circle cx="345" cy="165" r="16" fill="white" stroke="#94a3b8" stroke-width="2" />
+                            <circle cx="345" cy="165" r="12" fill="none" stroke="#94a3b8" stroke-width="1.5" />
+                            <text x="345" y="168.5" text-anchor="middle" font-size="9" fill="#1e293b">S₁₆</text>
                         </g>
 
                         <!-- Transitielabels -->
-                        <text x="65" y="70" text-anchor="middle" font-size="9" font-weight="bold"
-                            fill="#64748b">+</text>
-                        <text x="125" y="38" text-anchor="middle" font-size="9" font-weight="bold"
-                            fill="#64748b">3</text>
-                        <text x="185" y="38" text-anchor="middle" font-size="9" font-weight="bold"
-                            fill="#64748b">1</text>
-                        <text x="270" y="70" text-anchor="middle" font-size="9" font-weight="bold"
-                            fill="#64748b">6</text>
-
-                        <text x="75" y="105" text-anchor="middle" font-size="9" font-weight="bold"
-                            fill="#64748b">0</text>
-                        <text x="215" y="105" text-anchor="middle" font-size="9" font-weight="bold"
-                            fill="#64748b">6</text>
-
-                        <text x="142" y="150" text-anchor="middle" font-size="9" font-weight="bold"
-                            fill="#64748b">0</text>
-                        <text x="195" y="170" text-anchor="middle" font-size="9" font-weight="bold"
-                            fill="#64748b">3</text>
-                        <text x="245" y="170" text-anchor="middle" font-size="9" font-weight="bold"
-                            fill="#64748b">1</text>
-                        <text x="295" y="150" text-anchor="middle" font-size="9" font-weight="bold"
-                            fill="#64748b">6</text>
-
-                        <text x="360" y="102" text-anchor="middle" font-size="8" font-weight="bold"
-                            fill="#64748b">[0-9]</text>
-                        <text x="440" y="102" text-anchor="middle" font-size="8" font-weight="bold"
-                            fill="#64748b">[0-9]</text>
-                        <text x="520" y="102" text-anchor="middle" font-size="8" font-weight="bold"
-                            fill="#64748b">[0-9]</text>
-                        <text x="600" y="102" text-anchor="middle" font-size="8" font-weight="bold"
-                            fill="#64748b">[0-9]</text>
-                        <text x="680" y="102" text-anchor="middle" font-size="8" font-weight="bold"
-                            fill="#64748b">[0-9]</text>
-                        <text x="740" y="147" text-anchor="middle" font-size="8" font-weight="bold"
-                            fill="#64748b">[0-9]</text>
-                        <text x="680" y="190" text-anchor="middle" font-size="8" font-weight="bold"
-                            fill="#64748b">[0-9]</text>
-                        <text x="600" y="190" text-anchor="middle" font-size="8" font-weight="bold"
-                            fill="#64748b">[0-9]</text>
+                        <!-- +316 tak -->
+                        <text x="47" y="76" text-anchor="middle" font-size="9" font-weight="bold" fill="#64748b">+</text>
+                        <text x="115" y="47" text-anchor="middle" font-size="9" font-weight="bold" fill="#64748b">3</text>
+                        <text x="182" y="47" text-anchor="middle" font-size="9" font-weight="bold" fill="#64748b">1</text>
+                        <text x="248" y="76" text-anchor="middle" font-size="9" font-weight="bold" fill="#64748b">6</text>
+                        <!-- 06 tak -->
+                        <text x="60" y="103" text-anchor="middle" font-size="9" font-weight="bold" fill="#64748b">0</text>
+                        <text x="185" y="103" text-anchor="middle" font-size="9" font-weight="bold" fill="#64748b">6</text>
+                        <!-- 00316 tak -->
+                        <text x="113" y="145" text-anchor="middle" font-size="9" font-weight="bold" fill="#64748b">0</text>
+                        <text x="172" y="160" text-anchor="middle" font-size="9" font-weight="bold" fill="#64748b">3</text>
+                        <text x="227" y="160" text-anchor="middle" font-size="9" font-weight="bold" fill="#64748b">1</text>
+                        <text x="267" y="145" text-anchor="middle" font-size="9" font-weight="bold" fill="#64748b">6</text>
+                        <!-- Cijfers bovenste rij -->
+                        <text x="310" y="102" text-anchor="middle" font-size="8" font-weight="bold" fill="#64748b">[0-9]</text>
+                        <text x="380" y="102" text-anchor="middle" font-size="8" font-weight="bold" fill="#64748b">[0-9]</text>
+                        <text x="450" y="102" text-anchor="middle" font-size="8" font-weight="bold" fill="#64748b">[0-9]</text>
+                        <text x="520" y="102" text-anchor="middle" font-size="8" font-weight="bold" fill="#64748b">[0-9]</text>
+                        <!-- Knik label -->
+                        <text x="570" y="137" text-anchor="start" font-size="8" font-weight="bold" fill="#64748b">[0-9]</text>
+                        <!-- Cijfers onderste rij (rechts→links) -->
+                        <text x="520" y="185" text-anchor="middle" font-size="8" font-weight="bold" fill="#64748b">[0-9]</text>
+                        <text x="450" y="185" text-anchor="middle" font-size="8" font-weight="bold" fill="#64748b">[0-9]</text>
+                        <text x="380" y="185" text-anchor="middle" font-size="8" font-weight="bold" fill="#64748b">[0-9]</text>
                     </svg>
                 </div>
             </div>
