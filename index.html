@@ -110,15 +110,22 @@
                     class="w-full text-left px-3 py-2.5 rounded-xl text-sm font-medium flex items-center gap-3 text-slate-600 hover:bg-slate-50 hover:text-slate-900 transition-all">
                     <span
                         class="w-5 h-5 shrink-0 bg-slate-100 rounded-md text-xs font-bold flex items-center justify-center text-slate-500">4</span>
-                    <span>Les 4: Controle &amp; Beperking</span>
+                    <span>Les 4: De Validator</span>
+                </button>
+
+                <button onclick="switchTab('les5')" id="menu-les5"
+                    class="w-full text-left px-3 py-2.5 rounded-xl text-sm font-medium flex items-center gap-3 text-slate-600 hover:bg-slate-50 hover:text-slate-900 transition-all">
+                    <span
+                        class="w-5 h-5 shrink-0 bg-slate-100 rounded-md text-xs font-bold flex items-center justify-center text-slate-500">5</span>
+                    <span>Les 5: Beperkingen</span>
                 </button>
 
                 <div class="pt-4 border-t border-slate-100 mt-4">
                     <p class="text-xs font-bold text-slate-400 px-3 uppercase tracking-wider mb-2">Extra &amp;
                         Verdieping</p>
                     <button onclick="switchTab('verdieping')" id="menu-verdieping"
-                        class="w-full text-left px-3 py-2.5 rounded-xl text-sm font-medium flex items-center gap-3 text-indigo-600 hover:bg-indigo-50 transition-all">
-                        <svg class="w-5 h-5 text-indigo-500 shrink-0" fill="none" viewBox="0 0 24 24"
+                        class="w-full text-left px-3 py-2.5 rounded-xl text-sm font-medium flex items-center gap-3 text-teal-600 hover:bg-teal-50 transition-all">
+                        <svg class="w-5 h-5 text-teal-500 shrink-0" fill="none" viewBox="0 0 24 24"
                             stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                 d="M13 10V3L4 14h7v7l9-11h-7z" />
@@ -519,164 +526,107 @@
                     </div>
                 </div>
             </section>
-
             <!-- TAB 4: LES 3 -->
             <section id="tab-les3" class="space-y-6 hidden">
+                <!-- Header -->
                 <div class="bg-white rounded-2xl border border-slate-200 p-6 shadow-sm">
-                    <span class="text-xs font-bold text-teal-600 uppercase tracking-widest">Les 3 &bull; Theorie</span>
-                    <h2 class="text-2xl font-bold text-slate-900 mt-1 mb-4">De Eindige Automaat als Generator</h2>
-                    <p class="text-slate-600 mb-4">
-                        Een eindige automaat hoeft niet alleen invoer te <em>controleren</em>. We kunnen een automaat
-                        ook gebruiken om patronen, zinnen of geldige postcodes te <strong>genereren</strong>. Door
-                        simpelweg de transities in een diagram te volgen en de bijbehorende tekst bij te houden,
-                        ontstaat er automatisch geldige output.
+                    <span class="text-xs font-bold text-teal-600 uppercase tracking-widest">Les 3 &bull; De Generator</span>
+                    <h2 class="text-2xl font-bold text-slate-900 mt-1 mb-2">Automaten in actie: De Generator</h2>
+                    <p class="text-slate-600 text-sm leading-relaxed">
+                        In deze les leer je hoe een eindige automaat ingezet kan worden als generator om geldige data te maken. Lees de theorie, probeer het interactieve postcode- en zinnengenerator voorbeeld en los daarna de opdrachten op in de live editor.
                     </p>
-
-                    <h3 class="text-lg font-bold text-slate-950 mt-6 mb-2">⚙️ Postcode-generator (Nederlandse ZIP-code)
-                    </h3>
-                    <p class="text-sm text-slate-600 mb-4">
-                        Een Nederlandse postcode is streng genormeerd. We kunnen een automaat bouwen die enkel postcodes
-                        genereert die voldoen aan het format:
-                        <code>4 cijfers (begint niet met 0) + spatie + 2 letters</code>.
-                    </p>
-
-                    <!-- Spoor van Postcode-automaat -->
-                    <div
-                        class="p-4 bg-slate-50 border border-slate-100 rounded-xl flex items-center justify-around flex-wrap gap-2 text-center">
-                        <div class="p-2 border rounded bg-white font-mono text-xs">Start</div>
-                        <div class="text-slate-400">&rarr;</div>
-                        <div class="p-2 border rounded bg-white text-xs font-bold">Cijfer 1-9</div>
-                        <div class="text-slate-400">&rarr;</div>
-                        <div class="p-2 border rounded bg-white text-xs">Cijfer 0-9 (x3)</div>
-                        <div class="text-slate-400">&rarr;</div>
-                        <div class="p-2 border rounded bg-white text-xs">Spatie</div>
-                        <div class="text-slate-400">&rarr;</div>
-                        <div class="p-2 border rounded bg-white text-xs">Letter A-Z (x2)</div>
-                        <div class="text-slate-400">&rarr;</div>
-                        <div class="p-2 border rounded bg-teal-50 border-teal-200 text-teal-800 text-xs font-bold">Eind
-                        </div>
-                    </div>
                 </div>
 
-                <!-- Interactieve Zinnengenerator Widget -->
-                <div class="bg-white rounded-2xl border border-slate-200 p-6 shadow-sm">
-                    <h3 class="text-xl font-bold text-slate-900 mb-2">🎭 Interactief: De Zinnengenerator</h3>
-                    <p class="text-sm text-slate-600 mb-4">
-                        Klik op de opeenvolgende knoppen om een grammaticaal correcte zin op te bouwen aan de hand van
-                        het diagram van de Radboud-lesbrief.
-                    </p>
-
-                    <div class="p-4 bg-slate-50 border rounded-2xl mb-4 text-center">
-                        <span class="text-xs text-slate-400 block mb-1">Gegenereerde zin:</span>
-                        <div id="generated-sentence-box"
-                            class="text-lg font-bold text-teal-700 font-mono tracking-tight min-h-[1.75rem]">&nbsp;
-                        </div>
-                    </div>
-
-                    <!-- Flow van het bouwen -->
-                    <div id="sentence-step-container" class="grid grid-cols-1 sm:grid-cols-3 gap-3">
-                        <!-- Wordt dynamisch gevuld door JS -->
-                    </div>
-
-                    <button onclick="resetSentenceGenerator()"
-                        class="mt-4 px-4 py-2 bg-slate-200 hover:bg-slate-300 text-slate-700 text-xs font-bold rounded-lg transition">Opnieuw</button>
+                <!-- Standalone Module Embed (Theorie & Opdrachten) -->
+                <div class="my-4">
+                    <iframe src="embeds/generators.html" style="width: 100%; border: none; border-radius: 16px; box-shadow: 0 1px 3px rgba(0,0,0,0.1), 0 1px 2px rgba(0,0,0,0.1); background: transparent; height: 1600px; overflow: hidden;" onload="try { this.style.height = this.contentWindow.document.documentElement.scrollHeight + 'px'; } catch(e) {}" title="Generatoren Theorie en Oefeningen"></iframe>
                 </div>
 
-                <!-- Quiz Les 3 -->
+                <!-- Docent Knop voor Uitwerking -->
+                <div class="bg-white rounded-2xl border border-slate-200 p-6 shadow-sm space-y-4">
+                    <div class="flex flex-col sm:flex-row items-center justify-between gap-4">
+                        <p class="text-xs text-slate-500">Heb je beide generatoren getekend? Klik op de knop om de interactieve uitwerkingen te bekijken.</p>
+                        <button onclick="toggleGeneratorSolution()" id="gen-solution-btn" class="px-4 py-2 bg-teal-600 hover:bg-teal-700 text-white text-xs font-bold rounded-lg shadow transition active:scale-95">
+                            🔓 Toon Uitwerkingen
+                        </button>
+                    </div>
+
+                    <!-- Generator Uitwerking Embed (gehidet) -->
+                    <div id="generators-solution-container" class="hidden mt-4 pt-4 border-t border-slate-100">
+                        <iframe src="embeds/generators-uitwerking.html" style="width: 100%; border: none; border-radius: 16px; box-shadow: 0 1px 3px rgba(0,0,0,0.1), 0 1px 2px rgba(0,0,0,0.1); background: transparent; height: 520px; overflow: hidden;" onload="try { this.style.height = this.contentWindow.document.documentElement.scrollHeight + 'px'; } catch(e) {}" title="Generatoren Uitwerkingen"></iframe>
+                    </div>
+                </div>
+            </section>
+            <!-- TAB 5: LES 4 -->
+            <section id="tab-les4" class="space-y-6 hidden">
+                <!-- Header -->
                 <div class="bg-white rounded-2xl border border-slate-200 p-6 shadow-sm">
-                    <h3 class="text-xl font-bold text-slate-900 mb-4">✏️ Zelf-test: Les 3</h3>
-                    <div class="space-y-4">
-                        <div>
-                            <p class="text-sm font-semibold text-slate-700 mb-2">Vraag 1: Waarom noemen we een automaat
-                                die een oneindig aantal verschillende klasnamen (zoals 1m1, 2h4, 3v12, enz.) kan
-                                genereren, toch een *eindige* automaat?</p>
-                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
-                                <button onclick="checkAnswer('q4', 'incorrect')" id="btn-q4-incorrect"
-                                    class="p-3 text-left border rounded-xl text-sm hover:bg-slate-50 transition">A)
-                                    Omdat de lengte van een gegenereerde zin altijd eindig is.</button>
-                                <button onclick="checkAnswer('q4', 'correct')" id="btn-q4-correct"
-                                    class="p-3 text-left border rounded-xl text-sm hover:bg-slate-50 transition">B)
-                                    Omdat de automaat een *eindig* aantal wiskundige toestanden heeft.</button>
-                            </div>
-                            <div id="feedback-q4" class="mt-2 text-xs font-medium hidden"></div>
-                        </div>
+                    <span class="text-xs font-bold text-teal-600 uppercase tracking-widest">Les 4 &bull; De Validator</span>
+                    <h2 class="text-2xl font-bold text-slate-900 mt-1 mb-2">Automaten in actie: De Validator</h2>
+                    <p class="text-slate-600 text-sm leading-relaxed">
+                        In deze les leer je hoe een eindige automaat gebruikt kan worden als controlemiddel (validator) om te bepalen of invoer klopt. Lees de theorie, probeer het telefoonnummer-validator voorbeeld en modelleer daarna de opdrachten in de editor.
+                    </p>
+                </div>
+
+                <!-- Standalone Module Embed (Theorie & Opdrachten) -->
+                <div class="my-4">
+                    <iframe src="embeds/validators.html" style="width: 100%; border: none; border-radius: 16px; box-shadow: 0 1px 3px rgba(0,0,0,0.1), 0 1px 2px rgba(0,0,0,0.1); background: transparent; height: 1300px; overflow: hidden;" onload="try { this.style.height = this.contentWindow.document.documentElement.scrollHeight + 'px'; } catch(e) {}" title="Validators Theorie en Oefeningen"></iframe>
+                </div>
+
+                <!-- Docent Knop voor Uitwerking -->
+                <div class="bg-white rounded-2xl border border-slate-200 p-6 shadow-sm space-y-4">
+                    <div class="pt-4 border-t border-slate-100 flex flex-col sm:flex-row items-center justify-between gap-4">
+                        <p class="text-xs text-slate-500">Heb je beide validators getekend? Klik op de knop om de interactieve uitwerkingen te bekijken.</p>
+                        <button onclick="toggleValidatorSolution()" id="val-solution-btn" class="px-4 py-2 bg-teal-600 hover:bg-teal-700 text-white text-xs font-bold rounded-lg shadow transition active:scale-95">
+                            🔓 Toon Uitwerkingen
+                        </button>
+                    </div>
+
+                    <!-- Validator Uitwerking Embed (gehidet) -->
+                    <div id="validators-solution-container" class="hidden mt-4 pt-4 border-t border-slate-100">
+                        <iframe src="embeds/validators-uitwerking.html" style="width: 100%; border: none; border-radius: 16px; box-shadow: 0 1px 3px rgba(0,0,0,0.1), 0 1px 2px rgba(0,0,0,0.1); background: transparent; height: 520px; overflow: hidden;" onload="try { this.style.height = this.contentWindow.document.documentElement.scrollHeight + 'px'; } catch(e) {}" title="Validators Uitwerkingen"></iframe>
                     </div>
                 </div>
             </section>
 
-            <!-- TAB 5: LES 4 -->
-            <section id="tab-les4" class="space-y-6 hidden">
+            <!-- TAB 6: LES 5 (Nieuw) -->
+            <section id="tab-les5" class="space-y-6 hidden">
                 <div class="bg-white rounded-2xl border border-slate-200 p-6 shadow-sm">
-                    <span class="text-xs font-bold text-teal-600 uppercase tracking-widest">Les 4 &bull; Theorie</span>
-                    <h2 class="text-2xl font-bold text-slate-900 mt-1 mb-4">De Automaat als Controlemiddel &amp;
-                        Beperkingen</h2>
-                    <p class="text-slate-600 mb-4">
-                        Wanneer je in een webshop je e-mailadres of telefoonnummer invoert, wordt dit live
-                        gecontroleerd. Een eindige automaat is perfect geschikt als <strong>controlemiddel</strong>
-                        (validator) om te bepalen of de input voldoet aan een bepaald format.
+                    <span class="text-xs font-bold text-teal-600 uppercase tracking-widest">Les 5 &bull; Theorie &amp; Beperking</span>
+                    <h2 class="text-2xl font-bold text-slate-900 mt-1 mb-4">De Beperkingen van Eindige Automaten</h2>
+                    <p class="text-slate-600 text-sm leading-relaxed mb-4">
+                        Hoewel eindige automaten krachtig zijn voor het genereren en controleren van gestructureerde patronen (zoals postcodes of telefoonnummers), hebben ze één fundamentele zwakte: <strong>een eindige automaat heeft geen extern geheugen</strong>. Hij 'weet' alleen in welke toestand hij zich op dit moment bevindt; hij kan niet onthouden hoe vaak hij ergens is geweest of wat hij eerder heeft verwerkt.
                     </p>
 
-                    <!-- Live validator demo -->
-                    <div class="bg-indigo-50 border border-indigo-100 rounded-2xl p-6 my-6">
-                        <h3 class="text-lg font-bold text-indigo-900 mb-1">📱 Live Demo: Telefoonnummer-Validator</h3>
-                        <p class="text-xs text-indigo-700 mb-4">Typ een mobiel nummer. De validator checkt of het start
-                            met <code>06</code>, <code>+316</code> of <code>00316</code>, gevolgd door precies 8
-                            cijfers.</p>
-
-                        <div class="flex flex-col sm:flex-row items-center gap-4">
-                            <input oninput="validatePhoneNumber()" type="text" id="phone-test-input"
-                                placeholder="Bijv. 0612345678"
-                                class="px-4 py-2.5 border rounded-xl text-base font-mono w-full sm:max-w-xs focus:ring-2 focus:ring-indigo-500">
-                            <div id="phone-validation-badge"
-                                class="px-4 py-2.5 rounded-xl text-sm font-bold bg-slate-200 text-slate-600">Voer nummer
-                                in...</div>
-                        </div>
-                    </div>
-
-                    <h3 class="text-xl font-bold text-slate-900 mt-6 mb-2">⚠️ De Beperkingen: Waarom geen HTML of
-                        Wiskunde?</h3>
-                    <p class="text-slate-600 mb-4">
-                        Hoewel eindige automaten krachtig zijn, hebben ze één fundamentele zwakte: <strong>een eindige
-                            automaat heeft geen extern geheugen</strong>. Hij 'weet' alleen in welke toestand hij zich
-                        op dit moment bevindt; hij kan niet onthouden hoe vaak hij ergens is geweest.
-                    </p>
-
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        <div class="p-4 border rounded-xl">
-                            <h4 class="font-bold text-slate-900 text-sm">❌ Geen HTML-parsing</h4>
-                            <p class="text-xs text-slate-500 mt-1 leading-relaxed">
-                                Een automaat kan controleren of tags openen en sluiten (zoals
-                                <code>&lt;h1&gt; tekst &lt;/h1&gt;</code>). Maar hij kan niet <em>onthouden</em> welke
-                                tag hij heeft geopend om te verifiëren of de sluitingstag dezelfde is.
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 my-6">
+                        <div class="p-4 border border-slate-200 rounded-xl bg-slate-50">
+                            <h4 class="font-bold text-slate-950 text-sm">❌ Geen HTML-parsing</h4>
+                            <p class="text-xs text-slate-600 mt-1 leading-relaxed">
+                                Een automaat kan controleren of simpele HTML-tags openen en sluiten (zoals <code>&lt;h1&gt; tekst &lt;/h1&gt;</code>). Maar hij kan niet <em>onthouden</em> welke tag hij als eerste heeft geopend om te verifiëren of de sluitingstag exact dezelfde is. Hij kan geen willekeurige HTML valideren.
                             </p>
                         </div>
-                        <div class="p-4 border rounded-xl">
-                            <h4 class="font-bold text-slate-900 text-sm">❌ Geen recursieve berekeningen</h4>
-                            <p class="text-xs text-slate-500 mt-1 leading-relaxed">
-                                Controleren of de haakjes in een rekensom sluiten, bijv. <code>( ( 4 + 2 ) * 3 )</code>,
-                                is onmogelijk voor een FSM omdat de automaat moet onthouden hoeveel haakjes er nog
-                                "open" staan.
+                        <div class="p-4 border border-slate-200 rounded-xl bg-slate-50">
+                            <h4 class="font-bold text-slate-950 text-sm">❌ Geen recursieve berekeningen</h4>
+                            <p class="text-xs text-slate-600 mt-1 leading-relaxed">
+                                Controleren of de haakjes in een rekensom sluiten, bijv. <code>( ( 4 + 2 ) * 3 )</code>, is onmogelijk voor een FSM omdat de automaat moet onthouden hoe vaak hij een openend haakje heeft gezien om te matchen met een sluitend haakje. Hiervoor moet hij oneindig ver kunnen tellen, wat niet kan met een eindig aantal toestanden.
                             </p>
                         </div>
                     </div>
                 </div>
 
-                <!-- Quiz Les 4 -->
+                <!-- Quiz Les 5 -->
                 <div class="bg-white rounded-2xl border border-slate-200 p-6 shadow-sm">
-                    <h3 class="text-xl font-bold text-slate-900 mb-4">✏️ Zelf-test: Les 4</h3>
+                    <h3 class="text-xl font-bold text-slate-900 mb-4">✏️ Zelf-test: Les 5</h3>
                     <div class="space-y-4">
                         <div>
-                            <p class="text-sm font-semibold text-slate-700 mb-2">Vraag 1: Waarom kan een eindige
-                                automaat *niet* controleren of de haakjes in een ingewikkelde wiskundige vergelijking
-                                correct sluiten?</p>
+                            <p class="text-sm font-semibold text-slate-700 mb-2">Vraag 1: Waarom kan een eindige automaat *niet* controleren of de haakjes in een ingewikkelde wiskundige vergelijking correct sluiten?</p>
                             <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
                                 <button onclick="checkAnswer('q5', 'incorrect')" id="btn-q5-incorrect"
                                     class="p-3 text-left border rounded-xl text-sm hover:bg-slate-50 transition">A)
                                     Omdat wiskundige vergelijkingen te lang zijn.</button>
                                 <button onclick="checkAnswer('q5', 'correct')" id="btn-q5-correct"
                                     class="p-3 text-left border rounded-xl text-sm hover:bg-slate-50 transition">B)
-                                    Omdat de automaat niet kan tellen of dynamisch onthouden hoeveel haakjes geopend
-                                    zijn.</button>
+                                    Omdat de automaat niet kan tellen of dynamisch onthouden hoeveel haakjes geopend zijn.</button>
                             </div>
                             <div id="feedback-q5" class="mt-2 text-xs font-medium hidden"></div>
                         </div>
@@ -686,18 +636,18 @@
 
             <!-- TAB 6: VWO VERDIEPING -->
             <section id="tab-verdieping" class="space-y-6 hidden">
-                <div class="bg-indigo-50 border border-indigo-100 rounded-2xl p-6 shadow-sm">
-                    <span class="text-xs font-bold text-indigo-700 uppercase tracking-widest">🎓 Vwo Verdieping &bull;
+                <div class="bg-teal-50 border border-teal-100 rounded-2xl p-6 shadow-sm">
+                    <span class="text-xs font-bold text-teal-700 uppercase tracking-widest">🎓 Vwo Verdieping &bull;
                         Academisch</span>
-                    <h2 class="text-2xl font-bold text-indigo-950 mt-1 mb-4">DFA versus NFA</h2>
-                    <p class="text-indigo-900 mb-4 leading-relaxed">
+                    <h2 class="text-2xl font-bold text-teal-950 mt-1 mb-4">DFA versus NFA</h2>
+                    <p class="text-teal-900 mb-4 leading-relaxed">
                         Voor de vwo-leerling die dieper wil gaan dan de basis: binnen de theoretische informatica
                         verdelen we eindige automaten in twee hoofdcategorieën:
                     </p>
 
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6 my-6">
-                        <div class="bg-white p-5 rounded-xl border border-indigo-100 shadow-sm">
-                            <h4 class="font-extrabold text-indigo-950 mb-2">DFA (Deterministisch)</h4>
+                        <div class="bg-white p-5 rounded-xl border border-teal-100 shadow-sm">
+                            <h4 class="font-extrabold text-teal-950 mb-2">DFA (Deterministisch)</h4>
                             <p class="text-xs text-slate-600 leading-relaxed mb-3">
                                 <strong>Deterministic Finite Automaton:</strong> Vanuit elke toestand leidt een
                                 specifieke invoer naar exact één unieke volgende toestand. Er is geen onduidelijkheid of
@@ -707,21 +657,21 @@
                                 class="inline-block px-2 py-1 bg-teal-50 text-teal-700 text-[10px] font-bold rounded-md">Simpel
                                 te bouwen in hardware</span>
                         </div>
-                        <div class="bg-white p-5 rounded-xl border border-indigo-100 shadow-sm">
-                            <h4 class="font-extrabold text-indigo-950 mb-2">NFA (Niet-deterministisch)</h4>
+                        <div class="bg-white p-5 rounded-xl border border-teal-100 shadow-sm">
+                            <h4 class="font-extrabold text-teal-950 mb-2">NFA (Niet-deterministisch)</h4>
                             <p class="text-xs text-slate-600 leading-relaxed mb-3">
                                 <strong>Nondeterministic Finite Automaton:</strong> Vanuit een toestand kan dezelfde
                                 invoer naar meerdere verschillende toestanden leiden. Ook zijn er spontane transities
                                 (epsilon-transities) mogelijk zonder invoer.
                             </p>
                             <span
-                                class="inline-block px-2 py-1 bg-indigo-50 text-indigo-700 text-[10px] font-bold rounded-md">Vaak
+                                class="inline-block px-2 py-1 bg-teal-50 text-teal-700 text-[10px] font-bold rounded-md">Vaak
                                 veel compacter te tekenen</span>
                         </div>
                     </div>
 
-                    <h3 class="text-lg font-bold text-indigo-950 mb-2">Equivalente Kracht</h3>
-                    <p class="text-xs text-indigo-900 leading-relaxed">
+                    <h3 class="text-lg font-bold text-teal-950 mb-2">Equivalente Kracht</h3>
+                    <p class="text-xs text-teal-900 leading-relaxed">
                         Hoewel een NFA flexibeler lijkt, is de theoretische rekenkracht exact gelijk aan die van een
                         DFA! Met de zogeheten <strong>subsetconstructie</strong> (of powersetconstructie) kunnen we elke
                         NFA wiskundig omschrijven naar een gelijkwaardige DFA.
@@ -946,7 +896,7 @@
         // Tab Switching Logic
         function switchTab(tabId) {
             // Hide all tabs
-            const tabs = ['syllabus', 'les1', 'les2', 'les3', 'les4', 'verdieping', 'simulator-tab'];
+            const tabs = ['syllabus', 'les1', 'les2', 'les3', 'les4', 'les5', 'verdieping', 'simulator-tab'];
             tabs.forEach(t => {
                 const el = document.getElementById('tab-' + t);
                 if (el) el.classList.add('hidden');
@@ -965,7 +915,7 @@
             const activeMenu = document.getElementById('menu-' + tabId);
             if (activeMenu) {
                 if (tabId === 'verdieping') {
-                    activeMenu.className = "w-full text-left px-3 py-2.5 rounded-xl text-sm font-semibold flex items-center gap-3 bg-indigo-600 text-white shadow-sm shadow-indigo-100 transition-all";
+                    activeMenu.className = "w-full text-left px-3 py-2.5 rounded-xl text-sm font-semibold flex items-center gap-3 bg-teal-600 text-white shadow-sm shadow-teal-100 transition-all";
                 } else if (tabId === 'simulator-tab') {
                     activeMenu.className = "w-full text-left px-3 py-2.5 rounded-xl text-sm font-semibold flex items-center gap-3 bg-teal-600 text-white shadow-sm shadow-teal-100 transition-all";
                 } else {
@@ -1055,93 +1005,7 @@
             }
         }
 
-        // Les 3: Sentence Generator Database and Logic
-        const sentenceFsm = {
-            step: 1,
-            selectedWords: [],
-            transitions: {
-                1: { label: "Kies Lidwoord", words: ["een", "de"], next: 2 },
-                2: { label: "Kies Adjectief", words: ["kleine", "jonge", "dunne"], next: 3 },
-                3: { label: "Kies Substantief", words: ["professor", "poes", "vogel", "kapitein"], next: 4 },
-                4: { label: "Kies Werkwoord", words: ["vertelde", "floot", "dronk"], next: 5 },
-                5: { label: "Kies Afronding", words: ["[Stop]", "en"], next: 6 }
-            }
-        };
-
-        function renderSentenceGenerator() {
-            const container = document.getElementById('sentence-step-container');
-            const box = document.getElementById('generated-sentence-box');
-
-            // Render sentence
-            box.innerText = sentenceFsm.selectedWords.join(" ") || "...";
-
-            if (sentenceFsm.step > 5) {
-                container.innerHTML = `
-                    <div class="col-span-full p-4 bg-emerald-50 border border-emerald-200 text-emerald-800 rounded-xl text-center text-sm font-bold">
-                        🎉 Gefeliciteerd! Je hebt een grammaticaal geldige zin gegenereerd volgens de regels van de FSM!
-                    </div>
-                `;
-                return;
-            }
-
-            const current = sentenceFsm.transitions[sentenceFsm.step];
-            let html = `
-                <div class="col-span-full text-xs font-bold text-slate-400 uppercase tracking-wider mb-1">${current.label}</div>
-            `;
-
-            current.words.forEach(word => {
-                html += `
-                    <button onclick="selectWord('${word}')" class="p-3 bg-white border border-slate-200 hover:border-teal-500 rounded-xl text-sm font-semibold text-slate-700 transition">
-                        ${word}
-                    </button>
-                `;
-            });
-
-            container.innerHTML = html;
-        }
-
-        function selectWord(word) {
-            if (word === '[Stop]') {
-                sentenceFsm.step = 6;
-            } else {
-                sentenceFsm.selectedWords.push(word);
-                if (word === 'en') {
-                    sentenceFsm.step = 1; // Loop back
-                } else {
-                    sentenceFsm.step++;
-                }
-            }
-            renderSentenceGenerator();
-        }
-
-        function resetSentenceGenerator() {
-            sentenceFsm.step = 1;
-            sentenceFsm.selectedWords = [];
-            renderSentenceGenerator();
-        }
-
-        // Les 4: Phone number validator simulation
-        function validatePhoneNumber() {
-            const input = document.getElementById('phone-test-input').value.trim().replace(/\s+/g, '');
-            const badge = document.getElementById('phone-validation-badge');
-
-            // Simplified Regex validator that mimics the FSM
-            const cleanPattern = /^(06|\+316|00316)[0-9]{8}$/;
-
-            if (input === "") {
-                badge.className = "px-4 py-2.5 rounded-xl text-sm font-bold bg-slate-200 text-slate-600";
-                badge.innerText = "Voer nummer in...";
-                return;
-            }
-
-            if (cleanPattern.test(input)) {
-                badge.className = "px-4 py-2.5 rounded-xl text-sm font-bold bg-emerald-100 text-emerald-800 border border-emerald-200";
-                badge.innerText = "✓ GELDIG NUMMER";
-            } else {
-                badge.className = "px-4 py-2.5 rounded-xl text-sm font-bold bg-red-100 text-red-800 border border-red-200";
-                badge.innerText = "✗ ONGELDIG";
-            }
-        }
+        // stand-alone generator/validator components are now encapsulated in embeds/generators.html and embeds/validators.html.
 
         // STANDALONE SPOORWEGEN SIMULATOR ENGINE
         const stations = {
@@ -1246,9 +1110,40 @@
             drawSimulatorActiveNode();
         }
 
+        function toggleGeneratorSolution() {
+            const container = document.getElementById('generators-solution-container');
+            const btn = document.getElementById('gen-solution-btn');
+            if (container.classList.contains('hidden')) {
+                container.classList.remove('hidden');
+                btn.innerText = "🔒 Verberg Uitwerkingen";
+                btn.classList.replace('bg-teal-600', 'bg-slate-600');
+                btn.classList.replace('hover:bg-teal-700', 'hover:bg-slate-700');
+            } else {
+                container.classList.add('hidden');
+                btn.innerText = "🔓 Toon Uitwerkingen";
+                btn.classList.replace('bg-slate-600', 'bg-teal-600');
+                btn.classList.replace('hover:bg-slate-700', 'hover:bg-teal-700');
+            }
+        }
+
+        function toggleValidatorSolution() {
+            const container = document.getElementById('validators-solution-container');
+            const btn = document.getElementById('val-solution-btn');
+            if (container.classList.contains('hidden')) {
+                container.classList.remove('hidden');
+                btn.innerText = "🔒 Verberg Uitwerkingen";
+                btn.classList.replace('bg-teal-600', 'bg-slate-600');
+                btn.classList.replace('hover:bg-teal-700', 'hover:bg-slate-700');
+            } else {
+                container.classList.add('hidden');
+                btn.innerText = "🔓 Toon Uitwerkingen";
+                btn.classList.replace('bg-slate-600', 'bg-teal-600');
+                btn.classList.replace('hover:bg-slate-700', 'hover:bg-teal-700');
+            }
+        }
+
         // Window Load
         window.onload = function () {
-            renderSentenceGenerator();
             drawSimulatorActiveNode();
         }
     </script>

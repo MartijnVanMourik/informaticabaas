@@ -572,13 +572,26 @@ TemporaryLink.prototype.draw = function(c) {
 	drawArrow(c, this.to.x, this.to.y, Math.atan2(this.to.y - this.from.y, this.to.x - this.from.x));
 };
 
+function getStorageKey() {
+	if (typeof window !== 'undefined' && window.location) {
+		var urlParams = new URLSearchParams(window.location.search);
+		var id = urlParams.get('id');
+		return id ? 'fsm_' + id : 'fsm';
+	}
+	return 'fsm';
+}
+
 function restoreBackup() {
 	if(!localStorage || !JSON) {
 		return;
 	}
 
 	try {
-		var backup = JSON.parse(localStorage['fsm']);
+		var backupKey = getStorageKey();
+		if (!localStorage[backupKey]) {
+			return; // Empty state by default on first load
+		}
+		var backup = JSON.parse(localStorage[backupKey]);
 
 		for(var i = 0; i < backup.nodes.length; i++) {
 			var backupNode = backup.nodes[i];
@@ -611,7 +624,7 @@ function restoreBackup() {
 			}
 		}
 	} catch(e) {
-		localStorage['fsm'] = '';
+		localStorage[getStorageKey()] = '';
 	}
 }
 
@@ -668,7 +681,7 @@ function saveBackup() {
 		}
 	}
 
-	localStorage['fsm'] = JSON.stringify(backup);
+	localStorage[getStorageKey()] = JSON.stringify(backup);
 }
 
 function det(a, b, c, d, e, f, g, h, i) {

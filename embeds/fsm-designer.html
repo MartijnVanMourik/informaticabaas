@@ -86,6 +86,17 @@
             }
         }
 
+        function clearCanvas() {
+            if (confirm("Weet je zeker dat je het hele tekenbord wilt leegmaken?")) {
+                nodes = [];
+                links = [];
+                selectedObject = null;
+                if (typeof draw === 'function') {
+                    draw();
+                }
+            }
+        }
+
         function showHelpModal() {
             document.getElementById('help-modal').classList.remove('hidden');
         }
@@ -111,6 +122,10 @@
             <button onclick="downloadPNG()"
                 class="px-3 py-1.5 bg-white hover:bg-slate-100 text-slate-700 border border-slate-200 rounded-lg transition shadow-sm active:scale-95 flex items-center gap-1.5 focus:outline-none">
                 📸 Opslaan als PNG
+            </button>
+            <button onclick="clearCanvas()"
+                class="px-3 py-1.5 bg-red-50 hover:bg-red-100 text-red-700 border border-red-200 rounded-lg transition shadow-sm active:scale-95 flex items-center gap-1.5 focus:outline-none">
+                🗑️ Wis Tekenbord
             </button>
             <button onclick="showHelpModal()"
                 class="px-3 py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-700 border border-slate-200 rounded-lg transition shadow-sm active:scale-95 flex items-center gap-1.5 focus:outline-none">

@@ -1,0 +1,803 @@
+<!DOCTYPE html>
+<html lang="nl">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Opdracht: Generatoren Modelleren - Grondslagen (B3)</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+    </style>
+</head>
+
+<body class="bg-transparent text-slate-800 min-h-screen flex flex-col antialiased p-2">
+
+    <!-- Het Opdracht Element -->
+    <div class="bg-white rounded-2xl border border-slate-200 p-4 md:p-6 shadow-sm space-y-6 max-w-7xl mx-auto w-full">
+
+        <!-- Theorie-sectie -->
+        <div class="space-y-4">
+            <span class="text-xs font-bold text-teal-600 uppercase tracking-widest">Les 3 &bull; Theorie</span>
+            <h2 class="text-2xl font-bold text-slate-900 mt-1 mb-4">De Eindige Automaat als Generator</h2>
+            <p class="text-slate-600 mb-4 text-sm leading-relaxed">
+                Een eindige automaat hoeft niet alleen invoer te <em>controleren</em>. We kunnen een automaat
+                ook gebruiken om patronen, zinnen of geldige postcodes te <strong>genereren</strong>. Door
+                simpelweg de transities in een diagram te volgen en de bijbehorende tekst bij te houden,
+                ontstaat er automatisch geldige output.
+            </p>
+
+            <h3 class="text-lg font-bold text-slate-950 mt-6 mb-2">⚙️ Postcode-generator (Nederlandse ZIP-code)</h3>
+            <p class="text-xs text-slate-600 mb-4 leading-relaxed">
+                Een Nederlandse postcode is streng genormeerd. We kunnen een automaat bouwen die enkel postcodes
+                genereert die voldoen aan het format:
+                <code>4 cijfers (begint niet met 0) + spatie + 2 letters</code>.
+            </p>
+
+            <!-- Spoor van Postcode-automaat -->
+            <div class="p-4 bg-slate-50 border border-slate-100 rounded-xl flex items-center justify-around flex-wrap gap-2 text-center">
+                <div class="p-2 border rounded bg-white font-mono text-[11px]">Start</div>
+                <div class="text-slate-400 text-xs">&rarr;</div>
+                <div class="p-2 border rounded bg-white text-[11px] font-bold">Cijfer 1-9</div>
+                <div class="text-slate-400 text-xs">&rarr;</div>
+                <div class="p-2 border rounded bg-white text-[11px]">Cijfer 0-9 (x3)</div>
+                <div class="text-slate-400 text-xs">&rarr;</div>
+                <div class="p-2 border rounded bg-white text-[11px]">Spatie</div>
+                <div class="text-slate-400 text-xs">&rarr;</div>
+                <div class="p-2 border rounded bg-white text-[11px]">Letter A-Z (x2)</div>
+                <div class="text-slate-400 text-xs">&rarr;</div>
+                <div class="p-2 border rounded bg-teal-50 border-teal-200 text-teal-800 text-[11px] font-bold">Eind</div>
+            </div>
+
+            <!-- Toestandsdiagram van de Postcode-generator (SVG) -->
+            <div class="my-8 p-6 bg-slate-50 rounded-2xl border border-slate-200">
+                <h3 class="text-sm font-bold text-slate-500 uppercase tracking-wider mb-4 text-center">Toestandsdiagram: Nederlandse Postcode Generator</h3>
+                <div class="overflow-x-auto">
+                    <svg class="w-full min-w-[700px] h-[160px]" viewBox="0 0 850 160">
+                        <!-- Definieer pijlen -->
+                        <defs>
+                            <marker id="arrow-gray" viewBox="0 0 10 10" refX="22" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                                <path d="M 0 0 L 10 5 L 0 10 z" fill="#94a3b8" />
+                            </marker>
+                        </defs>
+
+                        <!-- Transities -->
+                        <line x1="20" y1="80" x2="60" y2="80" stroke="#94a3b8" stroke-width="2" marker-end="url(#arrow-gray)" />
+                        <line x1="100" y1="80" x2="180" y2="80" stroke="#94a3b8" stroke-width="2" marker-end="url(#arrow-gray)" />
+                        <line x1="220" y1="80" x2="300" y2="80" stroke="#94a3b8" stroke-width="2" marker-end="url(#arrow-gray)" />
+                        <line x1="340" y1="80" x2="420" y2="80" stroke="#94a3b8" stroke-width="2" marker-end="url(#arrow-gray)" />
+                        <line x1="460" y1="80" x2="540" y2="80" stroke="#94a3b8" stroke-width="2" marker-end="url(#arrow-gray)" />
+                        <line x1="580" y1="80" x2="660" y2="80" stroke="#94a3b8" stroke-width="2" marker-end="url(#arrow-gray)" />
+                        <line x1="700" y1="80" x2="780" y2="80" stroke="#94a3b8" stroke-width="2" marker-end="url(#arrow-gray)" />
+
+                        <!-- Toestanden (Cirkels) -->
+                        <g>
+                            <circle cx="80" cy="80" r="20" fill="white" stroke="#64748b" stroke-width="2" />
+                            <text x="80" y="84" text-anchor="middle" font-size="10" font-weight="bold" fill="#334155">S₀</text>
+                        </g>
+                        <g>
+                            <circle cx="200" cy="80" r="20" fill="white" stroke="#64748b" stroke-width="2" />
+                            <text x="200" y="84" text-anchor="middle" font-size="10" font-weight="bold" fill="#334155">S₁</text>
+                        </g>
+                        <g>
+                            <circle cx="320" cy="80" r="20" fill="white" stroke="#64748b" stroke-width="2" />
+                            <text x="320" y="84" text-anchor="middle" font-size="10" font-weight="bold" fill="#334155">S₂</text>
+                        </g>
+                        <g>
+                            <circle cx="440" cy="80" r="20" fill="white" stroke="#64748b" stroke-width="2" />
+                            <text x="440" y="84" text-anchor="middle" font-size="10" font-weight="bold" fill="#334155">S₃</text>
+                        </g>
+                        <g>
+                            <circle cx="560" cy="80" r="20" fill="white" stroke="#64748b" stroke-width="2" />
+                            <text x="560" y="84" text-anchor="middle" font-size="10" font-weight="bold" fill="#334155">S₄</text>
+                        </g>
+                        <g>
+                            <circle cx="680" cy="80" r="20" fill="white" stroke="#64748b" stroke-width="2" />
+                            <text x="680" y="84" text-anchor="middle" font-size="10" font-weight="bold" fill="#334155">S₅</text>
+                        </g>
+                        <g>
+                            <circle cx="800" cy="80" r="20" fill="white" stroke="#64748b" stroke-width="2" />
+                            <circle cx="800" cy="80" r="16" fill="none" stroke="#64748b" stroke-width="1.5" />
+                            <text x="800" y="84" text-anchor="middle" font-size="10" font-weight="bold" fill="#334155">S₆</text>
+                        </g>
+
+                        <!-- Transitielabels -->
+                        <text x="140" y="70" text-anchor="middle" font-size="10" font-weight="bold" fill="#0d9488">[1-9]</text>
+                        <text x="260" y="70" text-anchor="middle" font-size="10" font-weight="bold" fill="#0d9488">[0-9]</text>
+                        <text x="380" y="70" text-anchor="middle" font-size="10" font-weight="bold" fill="#0d9488">[0-9]</text>
+                        <text x="500" y="70" text-anchor="middle" font-size="10" font-weight="bold" fill="#0d9488">[0-9]</text>
+                        <text x="620" y="70" text-anchor="middle" font-size="10" font-weight="bold" fill="#0d9488">[A-Z]</text>
+                        <text x="740" y="70" text-anchor="middle" font-size="10" font-weight="bold" fill="#0d9488">[A-Z]</text>
+                    </svg>
+                </div>
+                <p class="text-[11px] text-slate-500 mt-2 italic text-center">
+                    De automaat dwingt de exacte volgorde af: start bij S₀, kies een cijfer 1 t/m 9, daarna drie opeenvolgende cijfers 0 t/m 9, en sluit af met twee letters van A t/m Z om te eindigen in acceptatietoestand S₆.
+                </p>
+            </div>
+        </div>
+
+        <!-- Interactieve Zinnengenerator Widget -->
+        <div class="bg-slate-50 border border-slate-200 rounded-2xl p-4 md:p-6 space-y-4">
+            <div>
+                <h3 class="text-lg font-bold text-slate-900 mb-1">🎭 Interactief: De Zinnengenerator</h3>
+                <p class="text-xs text-slate-600 leading-relaxed">
+                    Klik op de opeenvolgende knoppen om een grammaticaal correcte zin op te bouwen. Zie hoe de actieve toestand en transities live oplichten op het wiskundige FSM-diagram eronder terwijl je keuzes maakt!
+                </p>
+            </div>
+
+            <!-- SVG Diagram van de Zinnengenerator -->
+            <div class="p-4 bg-white border border-slate-200 rounded-xl overflow-x-auto">
+                <svg class="w-full min-w-[700px] h-[160px] mx-auto" viewBox="0 0 720 160">
+                    <!-- Definieer pijlen -->
+                    <defs>
+                        <marker id="z-arrow" viewBox="0 0 10 10" refX="22" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                            <path d="M 0 0 L 10 5 L 0 10 z" fill="#94a3b8" />
+                        </marker>
+                        <marker id="z-arrow-active" viewBox="0 0 10 10" refX="22" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                            <path d="M 0 0 L 10 5 L 0 10 z" fill="#0d9488" />
+                        </marker>
+                    </defs>
+
+                    <!-- Startpijl naar S0 -->
+                    <line x1="15" y1="80" x2="60" y2="80" stroke="#94a3b8" stroke-width="2" marker-end="url(#z-arrow)" />
+
+                    <!-- Transities -->
+                    <line id="z-edge-0" x1="60" y1="80" x2="180" y2="80" stroke="#94a3b8" stroke-width="2" marker-end="url(#z-arrow)" />
+                    <line id="z-edge-1" x1="180" y1="80" x2="300" y2="80" stroke="#94a3b8" stroke-width="2" marker-end="url(#z-arrow)" />
+                    <line id="z-edge-2" x1="300" y1="80" x2="420" y2="80" stroke="#94a3b8" stroke-width="2" marker-end="url(#z-arrow)" />
+                    <line id="z-edge-3" x1="420" y1="80" x2="540" y2="80" stroke="#94a3b8" stroke-width="2" marker-end="url(#z-arrow)" />
+                    <line id="z-edge-4" x1="540" y1="80" x2="660" y2="80" stroke="#94a3b8" stroke-width="2" marker-end="url(#z-arrow)" />
+                    
+                    <!-- Loopback van S4 naar S0 -->
+                    <path id="z-edge-loop" d="M 540,80 Q 300,155 60,80" stroke="#94a3b8" stroke-width="2" fill="none" marker-end="url(#z-arrow)" />
+
+                    <!-- Toestanden (Cirkels) -->
+                    <g id="z-node-0">
+                        <circle cx="60" cy="80" r="20" fill="#ccfbf1" stroke="#0d9488" stroke-width="2.5" />
+                        <text x="60" y="84" text-anchor="middle" font-size="10" font-weight="bold" fill="#115e59">S₀</text>
+                    </g>
+                    <g id="z-node-1">
+                        <circle cx="180" cy="80" r="20" fill="white" stroke="#94a3b8" stroke-width="2" />
+                        <text x="180" y="84" text-anchor="middle" font-size="10" fill="#1e293b">S₁</text>
+                    </g>
+                    <g id="z-node-2">
+                        <circle cx="300" cy="80" r="20" fill="white" stroke="#94a3b8" stroke-width="2" />
+                        <text x="300" y="84" text-anchor="middle" font-size="10" fill="#1e293b">S₂</text>
+                    </g>
+                    <g id="z-node-3">
+                        <circle cx="420" cy="80" r="20" fill="white" stroke="#94a3b8" stroke-width="2" />
+                        <text x="420" y="84" text-anchor="middle" font-size="10" fill="#1e293b">S₃</text>
+                    </g>
+                    <g id="z-node-4">
+                        <circle cx="540" cy="80" r="20" fill="white" stroke="#94a3b8" stroke-width="2" />
+                        <text x="540" y="84" text-anchor="middle" font-size="10" fill="#1e293b">S₄</text>
+                    </g>
+                    <g id="z-node-5">
+                        <circle cx="660" cy="80" r="20" fill="white" stroke="#94a3b8" stroke-width="2" />
+                        <circle cx="660" cy="80" r="16" fill="none" stroke="#94a3b8" stroke-width="1.5" />
+                        <text x="660" y="84" text-anchor="middle" font-size="10" fill="#1e293b">S₅</text>
+                    </g>
+
+                    <!-- Transitielabels -->
+                    <text x="120" y="70" text-anchor="middle" font-size="8" font-weight="bold" fill="#64748b">Lidwoord</text>
+                    <text x="240" y="70" text-anchor="middle" font-size="8" font-weight="bold" fill="#64748b">Adjectief</text>
+                    <text x="360" y="70" text-anchor="middle" font-size="8" font-weight="bold" fill="#64748b">Substantief</text>
+                    <text x="480" y="70" text-anchor="middle" font-size="8" font-weight="bold" fill="#64748b">Werkwoord</text>
+                    <text x="600" y="70" text-anchor="middle" font-size="8" font-weight="bold" fill="#64748b">[Stop]</text>
+                    <text x="300" y="146" text-anchor="middle" font-size="9" font-weight="bold" fill="#64748b">en</text>
+                </svg>
+            </div>
+
+            <div class="p-4 bg-white border border-slate-200 rounded-xl text-center">
+                <span class="text-xs text-slate-400 block mb-1">Gegenereerde zin:</span>
+                <div id="generated-sentence-box" class="text-lg font-bold text-teal-700 font-mono tracking-tight min-h-[1.75rem]">&nbsp;</div>
+            </div>
+
+            <!-- Flow van het bouwen -->
+            <div id="sentence-step-container" class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                <!-- Wordt dynamisch gevuld door JS -->
+            </div>
+
+            <div class="flex justify-center">
+                <button onclick="resetSentenceGenerator()" class="px-4 py-2 bg-slate-200 hover:bg-slate-300 text-slate-700 text-xs font-bold rounded-lg transition active:scale-95">Opnieuw</button>
+            </div>
+        </div>
+
+        <hr class="border-slate-200 my-8">
+
+        <!-- Oefeningen Deel -->
+        <div class="space-y-4">
+            <span class="text-xs font-bold text-teal-600 uppercase tracking-widest">Praktische Opdracht &bull; Les 3</span>
+            <h2 class="text-2xl font-bold text-slate-900 mt-1 mb-2">✏️ Oefeningen: Zelf een Generator Modelleren</h2>
+            <p class="text-slate-600 leading-relaxed text-sm">
+                Ontwerp zelf twee verschillende automaten die data genereren: een <strong>kentekengenerator</strong> en een <strong>wachtwoordengenerator</strong>.
+            </p>
+        </div>
+
+        <!-- Oefeningen Tabs & Tekenbord Container -->
+        <div class="space-y-3">
+            <!-- Tabs Navigatie -->
+            <div class="flex border-b border-slate-200">
+                <button onclick="switchTab('kenteken')" id="tab-btn-kenteken"
+                    class="px-4 py-2 text-xs font-bold border-b-2 border-teal-600 text-teal-600 transition focus:outline-none select-none flex items-center gap-1.5">
+                    🚗 1. Kentekengenerator
+                </button>
+                <button onclick="switchTab('wachtwoord')" id="tab-btn-wachtwoord"
+                    class="px-4 py-2 text-xs font-semibold border-b-2 border-transparent text-slate-500 hover:text-slate-700 transition focus:outline-none select-none flex items-center gap-1.5">
+                    🔑 2. Wachtwoordengenerator
+                </button>
+            </div>
+
+            <!-- TAB 1: KENTEKEN -->
+            <div id="tab-kenteken" class="space-y-4">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <!-- Links: Uitleg & Simulator -->
+                    <div class="bg-slate-50 border border-slate-200 rounded-xl p-4 flex flex-col justify-between space-y-4">
+                        <div class="space-y-2">
+                            <h3 class="font-extrabold text-slate-800 text-xs uppercase tracking-wider">📝 Kentekens Genereren</h3>
+                            <p class="text-xs text-slate-600 leading-relaxed">
+                                Ontwerp een eindige automaat die geldige kentekens genereert volgens het formaat: 
+                                <strong>2 letters, een koppelteken, 3 cijfers, een koppelteken, 1 letter</strong> (bijv. <code>XX-999-X</code>).
+                            </p>
+                            <div class="p-3 bg-teal-50 border border-teal-150 rounded-lg text-[11px] text-teal-800 leading-relaxed">
+                                <strong>Specificaties:</strong>
+                                <ul class="list-disc list-inside mt-1 space-y-0.5 ml-1">
+                                    <li><strong>Starttoestand:</strong> S₀.</li>
+                                    <li><strong>Transities:</strong> Gebruik <code>letter</code>, <code>-</code> (koppelteken) en <code>cijfer</code> als invoersymbolen.</li>
+                                    <li><strong>Eindtoestand:</strong> S₈ (acceptatietoestand, getekend met dubbele cirkel).</li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <!-- Simulator -->
+                        <div class="bg-white border border-slate-150 rounded-lg p-3 space-y-3 shadow-sm">
+                            <span class="text-[10px] font-bold text-slate-400 uppercase block">Simulator: Automaat in Werking</span>
+                            <div class="flex items-center gap-2">
+                                <button onclick="startKentekenGen()" class="px-3 py-1.5 bg-teal-600 hover:bg-teal-700 active:scale-95 text-white text-[11px] font-bold rounded-lg transition">
+                                    ⚡ Genereer kenteken
+                                </button>
+                                <button onclick="nextKentekenStep()" id="kenteken-next-btn" disabled class="px-3 py-1.5 bg-slate-100 hover:bg-slate-200 disabled:opacity-50 active:scale-95 text-slate-700 text-[11px] font-bold rounded-lg transition">
+                                    Volgende stap &rarr;
+                                </button>
+                            </div>
+                            <div class="bg-slate-900 rounded-lg p-2.5 font-mono text-[11px] text-teal-400 space-y-1.5 min-h-[90px] flex flex-col justify-center">
+                                <div class="flex justify-between border-b border-slate-800 pb-1 text-slate-500">
+                                    <span>Output string</span>
+                                    <span>Toestand</span>
+                                </div>
+                                <div class="flex justify-between items-center text-xs font-bold pt-1">
+                                    <span id="kenteken-output" class="text-white tracking-widest">-</span>
+                                    <span id="kenteken-state" class="bg-teal-950 text-teal-300 border border-teal-800 px-2 py-0.5 rounded">S₀</span>
+                                </div>
+                                <div id="kenteken-step-log" class="text-[10px] text-slate-400 italic mt-1">-</div>
+                            </div>
+                        </div>
+
+                        <!-- Tip -->
+                        <div>
+                            <button onclick="toggleTip('tip-kenteken')" id="btn-tip-kenteken"
+                                class="px-2.5 py-1 bg-slate-200 hover:bg-slate-300 text-slate-700 text-[10px] font-bold rounded-lg transition active:scale-95 focus:outline-none">
+                                💡 Toon Tip
+                            </button>
+                            <div id="tip-kenteken" class="hidden mt-2 p-2.5 bg-slate-100 border border-slate-200 rounded-lg text-[10px] text-slate-600 leading-normal">
+                                Teken een opeenvolgende keten van transities van links naar rechts. Start in S₀. Gebruik S₁ en S₂ voor de eerste twee letters. Vanaf S₂ teken je een transitie met <code>-</code> naar S₃. Vervolgens loop je via drie transities met <code>cijfer</code> door naar S₆. Teken vanaf S₆ een <code>-</code> naar S₇, en eindig met een <code>letter</code> in de eindtoestand S₈.
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Rechts: Didactische context & Handleiding -->
+                    <div class="bg-slate-50 border border-slate-200 rounded-xl p-4 flex flex-col justify-start space-y-4">
+                        <div class="space-y-2">
+                            <h3 class="font-extrabold text-slate-800 text-xs uppercase tracking-wider">💡 Hoe FSM Generatoren Werken</h3>
+                            <p class="text-xs text-slate-600 leading-relaxed">
+                                Bij een generator start je in de begintoestand en volg je willekeurige geldige transities. Elk symbool dat je passeert, voeg je toe aan de output-string. Zodra je een eindtoestand bereikt, mag de automaat stoppen. 
+                            </p>
+                            <p class="text-xs text-slate-600 leading-relaxed">
+                                Doordat de automaat alleen transities heeft voor geldige opeenvolgingen, is het resultaat wiskundig gegarandeerd correct. Er kan nooit een kenteken uitrollen met letters op de verkeerde plek!
+                            </p>
+                        </div>
+                        <div class="p-3 bg-white border border-slate-150 rounded-lg text-[11px] text-slate-500 leading-relaxed shadow-sm">
+                            <strong>Teken-instructies:</strong>
+                            <ul class="list-disc list-inside mt-1 space-y-0.5 ml-1">
+                                <li>Dubbelklik op het witte bord hieronder om een toestand toe te voegen.</li>
+                                <li>Shift-slepen tussen toestanden om een pijl (transitie) te tekenen.</li>
+                                <li>Klik op een toestand/pijl en druk op <strong>Backspace/Delete</strong> om deze te wissen.</li>
+                                <li>Dubbelklik op een bestaande toestand om er een eindtoestand van te maken.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- FSM Designer Canvas (Kenteken) -->
+                <div class="bg-slate-50 border border-slate-200 rounded-xl p-3 shadow-inner">
+                    <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-1 mb-2">
+                        <span class="text-[9px] font-bold text-slate-400 uppercase tracking-wider">Tekenbord: Ontwerp jouw Kentekengenerator</span>
+                        <span class="text-[9px] text-teal-700 font-bold bg-teal-50 px-2 py-0.5 rounded border border-teal-100">
+                            💡 Klik in het tekenbord &bull; Shift + slepen = pijl &bull; Backspace/Delete = verwijderen
+                        </span>
+                    </div>
+
+                    <!-- FSM Tool Iframe -->
+                    <div onclick="focusIframe()"
+                        class="w-full h-[550px] rounded-lg overflow-hidden border border-slate-300 shadow bg-white relative cursor-pointer">
+                        <iframe id="fsm-iframe-kenteken" src="fsm-designer.html?id=kenteken" class="w-full h-full" title="FSM Tool Kenteken"></iframe>
+                    </div>
+
+                    <!-- Fallback Link -->
+                    <div class="mt-3 flex flex-col sm:flex-row gap-2 items-center justify-between">
+                        <span class="text-[10px] text-slate-500">Werkt het tekenen niet goed? Klik op de knop om het bord in een los tabblad te openen.</span>
+                        <a href="fsm-designer.html?id=kenteken" target="_blank"
+                            class="px-4 py-2 bg-teal-600 hover:bg-teal-700 text-white text-xs font-bold rounded-lg transition active:scale-95 text-center shadow shadow-teal-700/10 whitespace-nowrap">
+                            🔗 Open tekenbord in nieuw tabblad
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TAB 2: WACHTWOORD -->
+            <div id="tab-wachtwoord" class="space-y-4 hidden">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <!-- Links: Uitleg & Simulator -->
+                    <div class="bg-slate-50 border border-slate-200 rounded-xl p-4 flex flex-col justify-between space-y-4">
+                        <div class="space-y-2">
+                            <h3 class="font-extrabold text-slate-800 text-xs uppercase tracking-wider">📝 Wachtwoorden Genereren</h3>
+                            <p class="text-xs text-slate-600 leading-relaxed">
+                                Ontwerp een FSM die veilige wachtwoorden genereert. Het wachtwoord moet voldoen aan:
+                                <strong>exact 1 hoofdletter, gevolgd door minimaal 3 kleine letters, en eindigend met exact 1 cijfer óf 1 speciaal teken (<code>!</code> of <code>?</code>)</strong> (bijv. <code>Password1</code> of <code>Jelly!</code>).
+                            </p>
+                            <div class="p-3 bg-teal-50 border border-teal-150 rounded-lg text-[11px] text-teal-800 leading-relaxed">
+                                <strong>Specificaties:</strong>
+                                <ul class="list-disc list-inside mt-1 space-y-0.5 ml-1">
+                                    <li><strong>Starttoestand:</strong> S₀.</li>
+                                    <li><strong>Transities:</strong> Gebruik de invoersymbolen: <code>hoofdletter</code>, <code>kleine letter</code>, <code>cijfer</code>, en <code>speciaal</code>.</li>
+                                    <li><strong>Eindtoestand:</strong> S₅ (acceptatietoestand, getekend met dubbele cirkel).</li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <!-- Simulator -->
+                        <div class="bg-white border border-slate-150 rounded-lg p-3 space-y-3 shadow-sm">
+                            <span class="text-[10px] font-bold text-slate-400 uppercase block">Simulator: Automaat in Werking</span>
+                            <div class="flex items-center gap-2">
+                                <button onclick="startWachtwoordGen()" class="px-3 py-1.5 bg-teal-600 hover:bg-teal-700 active:scale-95 text-white text-[11px] font-bold rounded-lg transition">
+                                    ⚡ Genereer wachtwoord
+                                </button>
+                                <button onclick="nextWachtwoordStep()" id="wachtwoord-next-btn" disabled class="px-3 py-1.5 bg-slate-100 hover:bg-slate-200 disabled:opacity-50 active:scale-95 text-slate-700 text-[11px] font-bold rounded-lg transition">
+                                    Volgende stap &rarr;
+                                </button>
+                            </div>
+                            <div class="bg-slate-900 rounded-lg p-2.5 font-mono text-[11px] text-teal-400 space-y-1.5 min-h-[90px] flex flex-col justify-center">
+                                <div class="flex justify-between border-b border-slate-800 pb-1 text-slate-500">
+                                    <span>Output string</span>
+                                    <span>Toestand</span>
+                                </div>
+                                <div class="flex justify-between items-center text-xs font-bold pt-1">
+                                    <span id="wachtwoord-output" class="text-white tracking-widest">-</span>
+                                    <span id="wachtwoord-state" class="bg-teal-950 text-teal-300 border border-teal-800 px-2 py-0.5 rounded">S₀</span>
+                                </div>
+                                <div id="wachtwoord-step-log" class="text-[10px] text-slate-400 italic mt-1">-</div>
+                            </div>
+                        </div>
+
+                        <!-- Tip -->
+                        <div>
+                            <button onclick="toggleTip('tip-wachtwoord')" id="btn-tip-wachtwoord"
+                                class="px-2.5 py-1 bg-slate-200 hover:bg-slate-300 text-slate-700 text-[10px] font-bold rounded-lg transition active:scale-95 focus:outline-none">
+                                💡 Toon Tip
+                            </button>
+                            <div id="tip-wachtwoord" class="hidden mt-2 p-2.5 bg-slate-100 border border-slate-200 rounded-lg text-[10px] text-slate-600 leading-normal">
+                                Het wachtwoord vereist minimaal 3 kleine letters. Teken transities van S₀ naar S₁ via <code>hoofdletter</code>. Loop van S₁ → S₂ → S₃ → S₄ telkens via <code>kleine letter</code>. Om meer dan 3 kleine letters toe te staan, geef je S₄ een self-loop met de transitie <code>kleine letter</code>. Teken ten slotte vanaf S₄ twee transities (een met <code>cijfer</code> en een met <code>speciaal</code>) die naar de eindtoestand S₅ leiden.
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Rechts: Didactische context -->
+                    <div class="bg-slate-50 border border-slate-200 rounded-xl p-4 flex flex-col justify-start space-y-4">
+                        <div class="space-y-2">
+                            <h3 class="font-extrabold text-slate-800 text-xs uppercase tracking-wider">💡 Oneindige Talen met Eindige Automaten</h3>
+                            <p class="text-xs text-slate-600 leading-relaxed">
+                                Hoewel de FSM een *eindig* aantal toestanden heeft, kan hij met behulp van een <strong>self-loop</strong> (een transitie die terugkeert naar dezelfde toestand) strings van *oneindige* lengtes genereren!
+                            </p>
+                            <p class="text-xs text-slate-600 leading-relaxed">
+                                In deze oefening zorgt de self-loop voor `kleine letter` op de toestand S₄ ervoor dat wachtwoorden zoals <code>Paaaaaaassword1</code> ook geldig zijn, terwijl de drie voorgaande stappen garanderen dat er altijd minstens 3 kleine letters aanwezig zijn.
+                            </p>
+                        </div>
+                        <div class="p-3 bg-white border border-slate-150 rounded-lg text-[11px] text-slate-500 leading-relaxed shadow-sm">
+                            <strong>Teken-instructies:</strong>
+                            <ul class="list-disc list-inside mt-1 space-y-0.5 ml-1">
+                                <li>Typ een underscores <code>_</code> om indices te maken (bijv. <code>S_0</code> wordt S₀).</li>
+                                <li>Teken een self-loop door een pijl te slepen en op dezelfde toestand los te laten.</li>
+                                <li>Noem transities bijv. <code>hoofdletter</code> of <code>kleine letter</code> door op de pijl te klikken en te typen.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- FSM Designer Canvas (Wachtwoord) -->
+                <div class="bg-slate-50 border border-slate-200 rounded-xl p-3 shadow-inner">
+                    <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-1 mb-2">
+                        <span class="text-[9px] font-bold text-slate-400 uppercase tracking-wider">Tekenbord: Ontwerp jouw Wachtwoordengenerator</span>
+                        <span class="text-[9px] text-teal-700 font-bold bg-teal-50 px-2 py-0.5 rounded border border-teal-100">
+                            💡 Klik in het tekenbord &bull; Shift + slepen = pijl &bull; Backspace/Delete = verwijderen
+                        </span>
+                    </div>
+
+                    <!-- FSM Tool Iframe -->
+                    <div onclick="focusIframe()"
+                        class="w-full h-[550px] rounded-lg overflow-hidden border border-slate-300 shadow bg-white relative cursor-pointer">
+                        <iframe id="fsm-iframe-wachtwoord" src="fsm-designer.html?id=wachtwoord" class="w-full h-full" title="FSM Tool Wachtwoord"></iframe>
+                    </div>
+
+                    <!-- Fallback Link -->
+                    <div class="mt-3 flex flex-col sm:flex-row gap-2 items-center justify-between">
+                        <span class="text-[10px] text-slate-500">Werkt het tekenen niet goed? Klik op de knop om het bord in een los tabblad te openen.</span>
+                        <a href="fsm-designer.html?id=wachtwoord" target="_blank"
+                            class="px-4 py-2 bg-teal-600 hover:bg-teal-700 text-white text-xs font-bold rounded-lg transition active:scale-95 text-center shadow shadow-teal-700/10 whitespace-nowrap">
+                            🔗 Open tekenbord in nieuw tabblad
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Scripts -->
+    <script>
+        // Tab switching
+        function switchTab(tabId) {
+            const tabs = ['kenteken', 'wachtwoord'];
+            tabs.forEach(t => {
+                const contentEl = document.getElementById('tab-' + t);
+                const btnEl = document.getElementById('tab-btn-' + t);
+                if (t === tabId) {
+                    contentEl.classList.remove('hidden');
+                    btnEl.classList.add('border-teal-600', 'text-teal-600');
+                    btnEl.classList.remove('border-transparent', 'text-slate-500');
+                } else {
+                    contentEl.classList.add('hidden');
+                    btnEl.classList.remove('border-teal-600', 'text-teal-600');
+                    btnEl.classList.add('border-transparent', 'text-slate-500');
+                }
+            });
+            triggerResize();
+        }
+
+        // Toggle tip
+        function toggleTip(tipId) {
+            const tipEl = document.getElementById(tipId);
+            const btnEl = document.getElementById('btn-' + tipId);
+            if (tipEl.classList.contains('hidden')) {
+                tipEl.classList.remove('hidden');
+                btnEl.innerText = "💡 Verberg Tip";
+            } else {
+                tipEl.classList.add('hidden');
+                btnEl.innerText = "💡 Toon Tip";
+            }
+            triggerResize();
+        }
+
+        // Helper to get active iframe based on active tab
+        function getActiveIframe() {
+            const iframeKenteken = document.getElementById('fsm-iframe-kenteken');
+            const iframeWachtwoord = document.getElementById('fsm-iframe-wachtwoord');
+            if (iframeKenteken && !iframeKenteken.closest('#tab-kenteken').classList.contains('hidden')) {
+                return iframeKenteken;
+            }
+            return iframeWachtwoord;
+        }
+
+        // Focus iframe helper
+        function focusIframe() {
+            const iframe = getActiveIframe();
+            if (iframe) {
+                try {
+                    iframe.focus();
+                    if (iframe.contentWindow) {
+                        iframe.contentWindow.focus();
+                    }
+                } catch (e) {}
+            }
+        }
+
+        // Key forwarding to same-origin iframe
+        function forwardKeyEvent(e, eventType) {
+            const iframe = getActiveIframe();
+            if (iframe && iframe.contentWindow) {
+                if (document.activeElement === document.body || document.activeElement.tagName === 'BODY') {
+                    try {
+                        const iframeDoc = iframe.contentWindow.document;
+                        const event = new KeyboardEvent(eventType, {
+                            key: e.key,
+                            code: e.code,
+                            keyCode: e.keyCode,
+                            which: e.which,
+                            shiftKey: e.shiftKey,
+                            ctrlKey: e.ctrlKey,
+                            metaKey: e.metaKey,
+                            altKey: e.altKey,
+                            bubbles: true
+                        });
+                        iframeDoc.dispatchEvent(event);
+                        const handlerName = 'on' + eventType;
+                        if (typeof iframeDoc[handlerName] === 'function') {
+                            iframeDoc[handlerName](event);
+                        }
+                    } catch (err) {}
+                }
+            }
+        }
+        document.addEventListener('keydown', (e) => forwardKeyEvent(e, 'keydown'));
+        document.addEventListener('keyup', (e) => forwardKeyEvent(e, 'keyup'));
+        document.addEventListener('keypress', (e) => forwardKeyEvent(e, 'keypress'));
+
+        // Same-origin dynamic height resizer
+        function triggerResize() {
+            if (window.parent && window.parent !== window) {
+                try {
+                    const iframe = window.frameElement;
+                    if (iframe) {
+                        iframe.style.height = document.documentElement.scrollHeight + 'px';
+                    }
+                } catch (e) {}
+            }
+        }
+
+        // --- Sentence Generator State & Logic ---
+        const sentenceFsm = {
+            step: 0,
+            selectedWords: [],
+            transitions: {
+                0: { label: "Kies Lidwoord", words: ["de", "een", "het"], next: 1 },
+                1: { label: "Kies Adjectief", words: ["slaperige", "dappere", "groene", "stoute"], next: 2 },
+                2: { label: "Kies Substantief", words: ["robot", "astronaut", "dino", "bakker", "meisje", "monster"], next: 3 },
+                3: { label: "Kies Werkwoord", words: ["danst", "zoekt", "eet", "lacht"], next: 4 },
+                4: { label: "Kies Afronding / Verbinding", words: ["[Stop]", "en"], next: 5 }
+            }
+        };
+
+        let lastSentenceEdge = null;
+
+        function highlightSentenceFsm(step, lastEdge = null) {
+            // Reset all nodes
+            for (let i = 0; i <= 5; i++) {
+                const node = document.getElementById(`z-node-${i}`);
+                if (!node) continue;
+                const circle = node.querySelector('circle');
+                const text = node.querySelector('text');
+                if (i === step) {
+                    circle.setAttribute('stroke', '#0d9488');
+                    circle.setAttribute('fill', '#ccfbf1');
+                    circle.setAttribute('stroke-width', '2.5');
+                    if (text) {
+                        text.setAttribute('fill', '#115e59');
+                        text.setAttribute('font-weight', 'bold');
+                    }
+                } else {
+                    circle.setAttribute('stroke', i === 0 ? '#64748b' : '#94a3b8');
+                    circle.setAttribute('fill', 'white');
+                    circle.setAttribute('stroke-width', i === 0 ? '2.5' : '2');
+                    if (text) {
+                        text.setAttribute('fill', '#1e293b');
+                        text.removeAttribute('font-weight');
+                    }
+                }
+            }
+
+            // Reset all edges
+            for (let i = 0; i <= 4; i++) {
+                const edge = document.getElementById(`z-edge-${i}`);
+                if (edge) {
+                    edge.setAttribute('stroke', '#94a3b8');
+                    edge.setAttribute('stroke-width', '2');
+                    edge.setAttribute('marker-end', 'url(#z-arrow)');
+                }
+            }
+            const loopEdge = document.getElementById('z-edge-loop');
+            if (loopEdge) {
+                loopEdge.setAttribute('stroke', '#94a3b8');
+                loopEdge.setAttribute('stroke-width', '2');
+                loopEdge.setAttribute('marker-end', 'url(#z-arrow)');
+            }
+
+            // Highlight active edge
+            if (lastEdge) {
+                const edgeEl = document.getElementById(lastEdge);
+                if (edgeEl) {
+                    edgeEl.setAttribute('stroke', '#0d9488');
+                    edgeEl.setAttribute('stroke-width', '3.5');
+                    edgeEl.setAttribute('marker-end', 'url(#z-arrow-active)');
+                }
+            }
+        }
+
+        function renderSentenceGenerator() {
+            const container = document.getElementById('sentence-step-container');
+            const box = document.getElementById('generated-sentence-box');
+
+            if (!container || !box) return;
+
+            // Render sentence
+            box.innerText = sentenceFsm.selectedWords.join(" ") || "...";
+
+            // Highlight FSM diagram
+            highlightSentenceFsm(sentenceFsm.step, lastSentenceEdge);
+
+            if (sentenceFsm.step > 4) {
+                container.innerHTML = `
+                    <div class="col-span-full p-4 bg-emerald-50 border border-emerald-200 text-emerald-800 rounded-xl text-center text-sm font-bold">
+                        🎉 Gefeliciteerd! Je hebt een grammaticaal geldige zin gegenereerd volgens de regels van de FSM!
+                    </div>
+                `;
+                triggerResize();
+                return;
+            }
+
+            const current = sentenceFsm.transitions[sentenceFsm.step];
+            let html = `
+                <div class="col-span-full text-xs font-bold text-slate-400 uppercase tracking-wider mb-1">${current.label}</div>
+            `;
+
+            current.words.forEach(word => {
+                html += `
+                    <button onclick="selectWord('${word}')" class="p-3 bg-white border border-slate-200 hover:border-teal-500 rounded-xl text-sm font-semibold text-slate-700 transition">
+                        ${word}
+                    </button>
+                `;
+            });
+
+            container.innerHTML = html;
+            triggerResize();
+        }
+
+        function selectWord(word) {
+            if (word === '[Stop]') {
+                sentenceFsm.step = 5;
+                lastSentenceEdge = 'z-edge-4';
+            } else {
+                sentenceFsm.selectedWords.push(word);
+                if (word === 'en') {
+                    sentenceFsm.step = 0; // Loop back
+                    lastSentenceEdge = 'z-edge-loop';
+                } else {
+                    lastSentenceEdge = `z-edge-${sentenceFsm.step}`;
+                    sentenceFsm.step++;
+                }
+            }
+            renderSentenceGenerator();
+        }
+
+        function resetSentenceGenerator() {
+            sentenceFsm.step = 0;
+            sentenceFsm.selectedWords = [];
+            lastSentenceEdge = null;
+            renderSentenceGenerator();
+        }
+
+        window.onload = function() {
+            renderSentenceGenerator();
+            triggerResize();
+        };
+
+        // --- Simulator: Kentekengenerator ---
+        const letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+        const digits = "0123456789";
+        let kentekenState = 0;
+        let kentekenString = "";
+        let kentekenSteps = [];
+        let kentekenCurrentStepIdx = 0;
+
+        function startKentekenGen() {
+            // Generate steps for a random valid license plate
+            const l1 = letters[Math.floor(Math.random() * letters.length)];
+            const l2 = letters[Math.floor(Math.random() * letters.length)];
+            const d1 = digits[Math.floor(Math.random() * digits.length)];
+            const d2 = digits[Math.floor(Math.random() * digits.length)];
+            const d3 = digits[Math.floor(Math.random() * digits.length)];
+            const l3 = letters[Math.floor(Math.random() * letters.length)];
+
+            kentekenSteps = [
+                { state: "S_0", output: "-", log: "Start in de begintoestand S₀." },
+                { state: "S_1", output: l1, log: `Kies letter '${l1}' -> transitie naar S₁.` },
+                { state: "S_2", output: l1 + l2, log: `Kies letter '${l2}' -> transitie naar S₂.` },
+                { state: "S_3", output: l1 + l2 + "-", log: "Volg het koppelteken '-' -> transitie naar S₃." },
+                { state: "S_4", output: l1 + l2 + "-" + d1, log: `Kies cijfer '${d1}' -> transitie naar S₄.` },
+                { state: "S_5", output: l1 + l2 + "-" + d1 + d2, log: `Kies cijfer '${d2}' -> transitie naar S₅.` },
+                { state: "S_6", output: l1 + l2 + "-" + d1 + d2 + d3, log: `Kies cijfer '${d3}' -> transitie naar S₆.` },
+                { state: "S_7", output: l1 + l2 + "-" + d1 + d2 + d3 + "-", log: "Volg het koppelteken '-' -> transitie naar S₇." },
+                { state: "S_8", output: l1 + l2 + "-" + d1 + d2 + d3 + "-" + l3, log: `Kies letter '${l3}' -> transitie naar S₈ (Eindtoestand!).` }
+            ];
+
+            kentekenCurrentStepIdx = 0;
+            updateKentekenUI();
+            document.getElementById('kenteken-next-btn').disabled = false;
+        }
+
+        function nextKentekenStep() {
+            if (kentekenCurrentStepIdx < kentekenSteps.length - 1) {
+                kentekenCurrentStepIdx++;
+                updateKentekenUI();
+                if (kentekenCurrentStepIdx === kentekenSteps.length - 1) {
+                    document.getElementById('kenteken-next-btn').disabled = true;
+                }
+            }
+        }
+
+        function updateKentekenUI() {
+            const step = kentekenSteps[kentekenCurrentStepIdx];
+            document.getElementById('kenteken-output').innerText = step.output;
+            document.getElementById('kenteken-state').innerText = step.state.replace("_", "");
+            document.getElementById('kenteken-step-log').innerText = step.log;
+        }
+
+        // --- Simulator: Wachtwoordengenerator ---
+        const lowerLetters = "abcdefghijklmnopqrstuvwxyz";
+        const specials = "!?";
+        let wachtwoordSteps = [];
+        let wachtwoordCurrentStepIdx = 0;
+
+        function startWachtwoordGen() {
+            // Generate steps for a random password
+            const u1 = letters[Math.floor(Math.random() * letters.length)];
+            const len = 3 + Math.floor(Math.random() * 4); // 3 to 6 lowercase letters
+            let lowers = [];
+            for (let i = 0; i < len; i++) {
+                lowers.push(lowerLetters[Math.floor(Math.random() * lowerLetters.length)]);
+            }
+            const useDigit = Math.random() > 0.5;
+            const endChar = useDigit ? digits[Math.floor(Math.random() * digits.length)] : specials[Math.floor(Math.random() * specials.length)];
+            const endType = useDigit ? "cijfer" : "speciaal";
+
+            wachtwoordSteps = [
+                { state: "S_0", output: "-", log: "Start in de begintoestand S₀." },
+                { state: "S_1", output: u1, log: `Kies hoofdletter '${u1}' -> transitie naar S₁.` },
+                { state: "S_2", output: u1 + lowers[0], log: `Kies kleine letter '${lowers[0]}' -> transitie naar S₂.` },
+                { state: "S_3", output: u1 + lowers[0] + lowers[1], log: `Kies kleine letter '${lowers[1]}' -> transitie naar S₃.` },
+                { state: "S_4", output: u1 + lowers[0] + lowers[1] + lowers[2], log: `Kies kleine letter '${lowers[2]}' -> transitie naar S₄.` }
+            ];
+
+            let curStr = u1 + lowers[0] + lowers[1] + lowers[2];
+            for (let i = 3; i < len; i++) {
+                curStr += lowers[i];
+                wachtwoordSteps.push({
+                    state: "S_4",
+                    output: curStr,
+                    log: `Self-loop S₄: kies kleine letter '${lowers[i]}' -> blijft in S₄.`
+                });
+            }
+
+            wachtwoordSteps.push({
+                state: "S_5",
+                output: curStr + endChar,
+                log: `Kies ${endType} '${endChar}' -> transitie naar S₅ (Eindtoestand!).`
+            });
+
+            wachtwoordCurrentStepIdx = 0;
+            updateWachtwoordUI();
+            document.getElementById('wachtwoord-next-btn').disabled = false;
+        }
+
+        function nextWachtwoordStep() {
+            if (wachtwoordCurrentStepIdx < wachtwoordSteps.length - 1) {
+                wachtwoordCurrentStepIdx++;
+                updateWachtwoordUI();
+                if (wachtwoordCurrentStepIdx === wachtwoordSteps.length - 1) {
+                    document.getElementById('wachtwoord-next-btn').disabled = true;
+                }
+            }
+        }
+
+        function updateWachtwoordUI() {
+            const step = wachtwoordSteps[wachtwoordCurrentStepIdx];
+            document.getElementById('wachtwoord-output').innerText = step.output;
+            document.getElementById('wachtwoord-state').innerText = step.state.replace("_", "");
+            document.getElementById('wachtwoord-step-log').innerText = step.log;
+        }
+    </script>
+</body>
+
+</html>
