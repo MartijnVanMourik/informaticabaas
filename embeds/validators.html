@@ -22,7 +22,7 @@
 
         <!-- Theorie-sectie -->
         <div class="space-y-4">
-            <span class="text-xs font-bold text-teal-600 uppercase tracking-widest">Les 4 &bull; Theorie</span>
+            <span class="text-xs font-bold text-teal-600 uppercase tracking-widest">Theorie</span>
             <h2 class="text-2xl font-bold text-slate-900 mt-1 mb-4">De Eindige Automaat als Controlemiddel</h2>
             <p class="text-slate-600 mb-4 text-sm leading-relaxed">
                 Wanneer je in een webshop je e-mailadres of telefoonnummer invoert, wordt dit live
@@ -42,55 +42,78 @@
                         placeholder="Bijv. 0612345678"
                         class="px-4 py-2.5 border rounded-xl text-base font-mono w-full sm:max-w-xs focus:ring-2 focus:ring-teal-500 focus:outline-none">
                     <div id="phone-validation-badge"
-                        class="px-4 py-2.5 rounded-xl text-sm font-bold bg-slate-200 text-slate-600">Voer nummer in...</div>
+                        class="px-4 py-2.5 rounded-xl text-sm font-bold bg-slate-200 text-slate-600">Voer nummer in...
+                    </div>
                 </div>
 
                 <!-- Live FSM visualisatie voor Telefoonnummer-Validator -->
                 <div class="mt-6 p-4 bg-white border border-slate-200 rounded-xl overflow-x-auto">
                     <svg class="w-full min-w-[750px] h-[210px] mx-auto" viewBox="0 0 760 220">
                         <defs>
-                            <marker id="p-arrow" viewBox="0 0 10 10" refX="18" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                            <marker id="p-arrow" viewBox="0 0 10 10" refX="18" refY="5" markerWidth="6" markerHeight="6"
+                                orient="auto-start-reverse">
                                 <path d="M 0 0 L 10 5 L 0 10 z" fill="#94a3b8" />
                             </marker>
-                            <marker id="p-arrow-active" viewBox="0 0 10 10" refX="18" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                            <marker id="p-arrow-active" viewBox="0 0 10 10" refX="18" refY="5" markerWidth="6"
+                                markerHeight="6" orient="auto-start-reverse">
                                 <path d="M 0 0 L 10 5 L 0 10 z" fill="#0d9488" />
                             </marker>
-                            <marker id="p-arrow-error" viewBox="0 0 10 10" refX="18" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                            <marker id="p-arrow-error" viewBox="0 0 10 10" refX="18" refY="5" markerWidth="6"
+                                markerHeight="6" orient="auto-start-reverse">
                                 <path d="M 0 0 L 10 5 L 0 10 z" fill="#ef4444" />
                             </marker>
                         </defs>
 
                         <!-- Transities (Edges) -->
                         <!-- +316 Tak -->
-                        <line id="p-edge-0-1" x1="35" y1="110" x2="95" y2="45" stroke="#94a3b8" stroke-width="2" marker-end="url(#p-arrow)" />
-                        <line id="p-edge-1-3" x1="95" y1="45" x2="155" y2="45" stroke="#94a3b8" stroke-width="2" marker-end="url(#p-arrow)" />
-                        <line id="p-edge-3-4" x1="155" y1="45" x2="215" y2="45" stroke="#94a3b8" stroke-width="2" marker-end="url(#p-arrow)" />
-                        <line id="p-edge-4-5" x1="215" y1="45" x2="320" y2="110" stroke="#94a3b8" stroke-width="2" marker-end="url(#p-arrow)" />
+                        <line id="p-edge-0-1" x1="35" y1="110" x2="95" y2="45" stroke="#94a3b8" stroke-width="2"
+                            marker-end="url(#p-arrow)" />
+                        <line id="p-edge-1-3" x1="95" y1="45" x2="155" y2="45" stroke="#94a3b8" stroke-width="2"
+                            marker-end="url(#p-arrow)" />
+                        <line id="p-edge-3-4" x1="155" y1="45" x2="215" y2="45" stroke="#94a3b8" stroke-width="2"
+                            marker-end="url(#p-arrow)" />
+                        <line id="p-edge-4-5" x1="215" y1="45" x2="320" y2="110" stroke="#94a3b8" stroke-width="2"
+                            marker-end="url(#p-arrow)" />
 
                         <!-- 06 Tak -->
-                        <line id="p-edge-0-2" x1="35" y1="110" x2="115" y2="110" stroke="#94a3b8" stroke-width="2" marker-end="url(#p-arrow)" />
-                        <line id="p-edge-2-5" x1="115" y1="110" x2="320" y2="110" stroke="#94a3b8" stroke-width="2" marker-end="url(#p-arrow)" />
+                        <line id="p-edge-0-2" x1="35" y1="110" x2="115" y2="110" stroke="#94a3b8" stroke-width="2"
+                            marker-end="url(#p-arrow)" />
+                        <line id="p-edge-2-5" x1="115" y1="110" x2="320" y2="110" stroke="#94a3b8" stroke-width="2"
+                            marker-end="url(#p-arrow)" />
 
                         <!-- 00316 Tak -->
-                        <line id="p-edge-2-6" x1="115" y1="110" x2="170" y2="175" stroke="#94a3b8" stroke-width="2" marker-end="url(#p-arrow)" />
-                        <line id="p-edge-6-7" x1="170" y1="175" x2="220" y2="175" stroke="#94a3b8" stroke-width="2" marker-end="url(#p-arrow)" />
-                        <line id="p-edge-7-8" x1="220" y1="175" x2="270" y2="175" stroke="#94a3b8" stroke-width="2" marker-end="url(#p-arrow)" />
-                        <line id="p-edge-8-5" x1="270" y1="175" x2="320" y2="110" stroke="#94a3b8" stroke-width="2" marker-end="url(#p-arrow)" />
+                        <line id="p-edge-2-6" x1="115" y1="110" x2="170" y2="175" stroke="#94a3b8" stroke-width="2"
+                            marker-end="url(#p-arrow)" />
+                        <line id="p-edge-6-7" x1="170" y1="175" x2="220" y2="175" stroke="#94a3b8" stroke-width="2"
+                            marker-end="url(#p-arrow)" />
+                        <line id="p-edge-7-8" x1="220" y1="175" x2="270" y2="175" stroke="#94a3b8" stroke-width="2"
+                            marker-end="url(#p-arrow)" />
+                        <line id="p-edge-8-5" x1="270" y1="175" x2="320" y2="110" stroke="#94a3b8" stroke-width="2"
+                            marker-end="url(#p-arrow)" />
 
                         <!-- Cijfer Reeks (8 cijfers) -->
-                        <line id="p-edge-5-9" x1="320" y1="110" x2="400" y2="110" stroke="#94a3b8" stroke-width="2" marker-end="url(#p-arrow)" />
-                        <line id="p-edge-9-10" x1="400" y1="110" x2="480" y2="110" stroke="#94a3b8" stroke-width="2" marker-end="url(#p-arrow)" />
-                        <line id="p-edge-10-11" x1="480" y1="110" x2="560" y2="110" stroke="#94a3b8" stroke-width="2" marker-end="url(#p-arrow)" />
-                        <line id="p-edge-11-12" x1="560" y1="110" x2="640" y2="110" stroke="#94a3b8" stroke-width="2" marker-end="url(#p-arrow)" />
-                        <line id="p-edge-12-13" x1="640" y1="110" x2="720" y2="110" stroke="#94a3b8" stroke-width="2" marker-end="url(#p-arrow)" />
-                        <line id="p-edge-13-14" x1="720" y1="110" x2="720" y2="175" stroke="#94a3b8" stroke-width="2" marker-end="url(#p-arrow)" />
-                        <line id="p-edge-14-15" x1="720" y1="175" x2="640" y2="175" stroke="#94a3b8" stroke-width="2" marker-end="url(#p-arrow)" />
-                        <line id="p-edge-15-16" x1="640" y1="175" x2="560" y2="175" stroke="#94a3b8" stroke-width="2" marker-end="url(#p-arrow)" />
+                        <line id="p-edge-5-9" x1="320" y1="110" x2="400" y2="110" stroke="#94a3b8" stroke-width="2"
+                            marker-end="url(#p-arrow)" />
+                        <line id="p-edge-9-10" x1="400" y1="110" x2="480" y2="110" stroke="#94a3b8" stroke-width="2"
+                            marker-end="url(#p-arrow)" />
+                        <line id="p-edge-10-11" x1="480" y1="110" x2="560" y2="110" stroke="#94a3b8" stroke-width="2"
+                            marker-end="url(#p-arrow)" />
+                        <line id="p-edge-11-12" x1="560" y1="110" x2="640" y2="110" stroke="#94a3b8" stroke-width="2"
+                            marker-end="url(#p-arrow)" />
+                        <line id="p-edge-12-13" x1="640" y1="110" x2="720" y2="110" stroke="#94a3b8" stroke-width="2"
+                            marker-end="url(#p-arrow)" />
+                        <line id="p-edge-13-14" x1="720" y1="110" x2="720" y2="175" stroke="#94a3b8" stroke-width="2"
+                            marker-end="url(#p-arrow)" />
+                        <line id="p-edge-14-15" x1="720" y1="175" x2="640" y2="175" stroke="#94a3b8" stroke-width="2"
+                            marker-end="url(#p-arrow)" />
+                        <line id="p-edge-15-16" x1="640" y1="175" x2="560" y2="175" stroke="#94a3b8" stroke-width="2"
+                            marker-end="url(#p-arrow)" />
 
                         <!-- Toestanden (Cirkels) -->
                         <g id="p-node-0">
                             <circle cx="35" cy="110" r="16" fill="#ccfbf1" stroke="#0d9488" stroke-width="2.5" />
-                            <text x="35" y="113.5" text-anchor="middle" font-size="9" font-weight="bold" fill="#115e59">S₀</text>
+                            <text x="35" y="113.5" text-anchor="middle" font-size="9" font-weight="bold"
+                                fill="#115e59">S₀</text>
                         </g>
                         <g id="p-node-1">
                             <circle cx="95" cy="45" r="16" fill="white" stroke="#94a3b8" stroke-width="2" />
@@ -159,746 +182,833 @@
                         </g>
 
                         <!-- Transitielabels -->
-                        <text x="65" y="70" text-anchor="middle" font-size="9" font-weight="bold" fill="#64748b">+</text>
-                        <text x="125" y="38" text-anchor="middle" font-size="9" font-weight="bold" fill="#64748b">3</text>
-                        <text x="185" y="38" text-anchor="middle" font-size="9" font-weight="bold" fill="#64748b">1</text>
-                        <text x="270" y="70" text-anchor="middle" font-size="9" font-weight="bold" fill="#64748b">6</text>
-                        
-                        <text x="75" y="105" text-anchor="middle" font-size="9" font-weight="bold" fill="#64748b">0</text>
-                        <text x="215" y="105" text-anchor="middle" font-size="9" font-weight="bold" fill="#64748b">6</text>
-                        
-                        <text x="142" y="150" text-anchor="middle" font-size="9" font-weight="bold" fill="#64748b">0</text>
-                        <text x="195" y="170" text-anchor="middle" font-size="9" font-weight="bold" fill="#64748b">3</text>
-                        <text x="245" y="170" text-anchor="middle" font-size="9" font-weight="bold" fill="#64748b">1</text>
-                        <text x="295" y="150" text-anchor="middle" font-size="9" font-weight="bold" fill="#64748b">6</text>
+                        <text x="65" y="70" text-anchor="middle" font-size="9" font-weight="bold"
+                            fill="#64748b">+</text>
+                        <text x="125" y="38" text-anchor="middle" font-size="9" font-weight="bold"
+                            fill="#64748b">3</text>
+                        <text x="185" y="38" text-anchor="middle" font-size="9" font-weight="bold"
+                            fill="#64748b">1</text>
+                        <text x="270" y="70" text-anchor="middle" font-size="9" font-weight="bold"
+                            fill="#64748b">6</text>
 
-                        <text x="360" y="102" text-anchor="middle" font-size="8" font-weight="bold" fill="#64748b">[0-9]</text>
-                        <text x="440" y="102" text-anchor="middle" font-size="8" font-weight="bold" fill="#64748b">[0-9]</text>
-                        <text x="520" y="102" text-anchor="middle" font-size="8" font-weight="bold" fill="#64748b">[0-9]</text>
-                        <text x="600" y="102" text-anchor="middle" font-size="8" font-weight="bold" fill="#64748b">[0-9]</text>
-                        <text x="680" y="102" text-anchor="middle" font-size="8" font-weight="bold" fill="#64748b">[0-9]</text>
-                        <text x="740" y="147" text-anchor="middle" font-size="8" font-weight="bold" fill="#64748b">[0-9]</text>
-                        <text x="680" y="190" text-anchor="middle" font-size="8" font-weight="bold" fill="#64748b">[0-9]</text>
-                        <text x="600" y="190" text-anchor="middle" font-size="8" font-weight="bold" fill="#64748b">[0-9]</text>
+                        <text x="75" y="105" text-anchor="middle" font-size="9" font-weight="bold"
+                            fill="#64748b">0</text>
+                        <text x="215" y="105" text-anchor="middle" font-size="9" font-weight="bold"
+                            fill="#64748b">6</text>
+
+                        <text x="142" y="150" text-anchor="middle" font-size="9" font-weight="bold"
+                            fill="#64748b">0</text>
+                        <text x="195" y="170" text-anchor="middle" font-size="9" font-weight="bold"
+                            fill="#64748b">3</text>
+                        <text x="245" y="170" text-anchor="middle" font-size="9" font-weight="bold"
+                            fill="#64748b">1</text>
+                        <text x="295" y="150" text-anchor="middle" font-size="9" font-weight="bold"
+                            fill="#64748b">6</text>
+
+                        <text x="360" y="102" text-anchor="middle" font-size="8" font-weight="bold"
+                            fill="#64748b">[0-9]</text>
+                        <text x="440" y="102" text-anchor="middle" font-size="8" font-weight="bold"
+                            fill="#64748b">[0-9]</text>
+                        <text x="520" y="102" text-anchor="middle" font-size="8" font-weight="bold"
+                            fill="#64748b">[0-9]</text>
+                        <text x="600" y="102" text-anchor="middle" font-size="8" font-weight="bold"
+                            fill="#64748b">[0-9]</text>
+                        <text x="680" y="102" text-anchor="middle" font-size="8" font-weight="bold"
+                            fill="#64748b">[0-9]</text>
+                        <text x="740" y="147" text-anchor="middle" font-size="8" font-weight="bold"
+                            fill="#64748b">[0-9]</text>
+                        <text x="680" y="190" text-anchor="middle" font-size="8" font-weight="bold"
+                            fill="#64748b">[0-9]</text>
+                        <text x="600" y="190" text-anchor="middle" font-size="8" font-weight="bold"
+                            fill="#64748b">[0-9]</text>
                     </svg>
                 </div>
             </div>
 
-        <hr class="border-slate-200 my-8">
+            <hr class="border-slate-200 my-8">
 
-        <!-- Oefeningen Deel -->
-        <div class="space-y-4">
-            <span class="text-xs font-bold text-teal-600 uppercase tracking-widest">Praktische Opdracht &bull; Les 4</span>
-            <h2 class="text-2xl font-bold text-slate-900 mt-1 mb-2">✏️ Oefeningen: Zelf een Validator Modelleren</h2>
-            <p class="text-slate-600 leading-relaxed text-sm">
-                Ontwerp zelf twee verschillende automaten die data controleren: een <strong>IBAN validator</strong> en een <strong>tijdvalidator (24-uurs hh:mm)</strong>.
-            </p>
+            <!-- Oefeningen Deel -->
+            <div class="space-y-4">
+                <span class="text-xs font-bold text-teal-600 uppercase tracking-widest">Praktische Opdracht</span>
+                <h2 class="text-2xl font-bold text-slate-900 mt-1 mb-2">✏️ Oefeningen: Zelf een Validator Modelleren
+                </h2>
+                <p class="text-slate-600 leading-relaxed text-sm">
+                    Ontwerp zelf twee verschillende automaten die data controleren: een <strong>IBAN validator</strong>
+                    en een <strong>tijdvalidator (24-uurs hh:mm)</strong>.
+                </p>
 
-            <!-- Oefeningen Tabs & Tekenbord Container -->
-            <div class="space-y-3">
-                <!-- Tabs Navigatie -->
-                <div class="flex border-b border-slate-200">
-                    <button onclick="switchTab('iban')" id="tab-btn-iban"
-                        class="px-4 py-2 text-xs font-bold border-b-2 border-teal-600 text-teal-600 transition focus:outline-none select-none flex items-center gap-1.5">
-                        🏦 1. IBAN Validator
-                    </button>
-                    <button onclick="switchTab('tijd')" id="tab-btn-tijd"
-                        class="px-4 py-2 text-xs font-semibold border-b-2 border-transparent text-slate-500 hover:text-slate-700 transition focus:outline-none select-none flex items-center gap-1.5">
-                        🕒 2. Tijd Validator
-                    </button>
-                </div>
+                <!-- Oefeningen Tabs & Tekenbord Container -->
+                <div class="space-y-3">
+                    <!-- Tabs Navigatie -->
+                    <div class="flex border-b border-slate-200">
+                        <button onclick="switchTab('iban')" id="tab-btn-iban"
+                            class="px-4 py-2 text-xs font-bold border-b-2 border-teal-600 text-teal-600 transition focus:outline-none select-none flex items-center gap-1.5">
+                            🏦 1. IBAN Validator
+                        </button>
+                        <button onclick="switchTab('tijd')" id="tab-btn-tijd"
+                            class="px-4 py-2 text-xs font-semibold border-b-2 border-transparent text-slate-500 hover:text-slate-700 transition focus:outline-none select-none flex items-center gap-1.5">
+                            🕒 2. Tijd Validator
+                        </button>
+                    </div>
 
-                <!-- TAB 1: IBAN -->
-                <div id="tab-iban" class="space-y-4">
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        <!-- Links: Uitleg & Validator Console -->
-                        <div class="bg-slate-50 border border-slate-200 rounded-xl p-4 flex flex-col justify-between space-y-4">
-                            <div class="space-y-2">
-                                <h3 class="font-extrabold text-slate-800 text-xs uppercase tracking-wider">📝 IBANs Controleren</h3>
-                                <p class="text-xs text-slate-600 leading-relaxed">
-                                    Ontwerp een FSM die controleert of een vereenvoudigde bankrekening (IBAN) klopt. 
-                                    De regels voor een geldige invoer zijn:
-                                    <strong>starten met <code>NL</code>, gevolgd door 2 cijfers, daarna de bankcode <code>ING</code> of <code>RAB</code>, en eindigend met minimaal 1 cijfer</strong> (bijv. <code>NL99ING1</code> of <code>NL12RAB0045</code>).
-                                </p>
-                                <div class="p-3 bg-teal-50 border border-teal-200 rounded-lg text-[11px] text-teal-800 leading-relaxed">
-                                    <strong>Specificaties:</strong>
-                                    <ul class="list-disc list-inside mt-1 space-y-0.5 ml-1">
-                                        <li><strong>Starttoestand:</strong> S₀.</li>
-                                        <li><strong>Transities:</strong> Gebruik letters (zoals <code>N</code>, <code>L</code>, <code>I</code>, <code>N</code>, <code>G</code>, <code>R</code>, <code>A</code>, <code>B</code>) en <code>cijfer</code>.</li>
-                                        <li><strong>Eindtoestand:</strong> S₉ (de enige acceptatietoestand).</li>
-                                    </ul>
-                                </div>
-                            </div>
-
-                            <!-- Validator Live Console -->
-                            <div class="bg-white border border-slate-150 rounded-lg p-3 space-y-3 shadow-sm">
-                                <span class="text-[10px] font-bold text-slate-400 uppercase block">Live Validator Console</span>
+                    <!-- TAB 1: IBAN -->
+                    <div id="tab-iban" class="space-y-4">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <!-- Links: Uitleg & Validator Console -->
+                            <div
+                                class="bg-slate-50 border border-slate-200 rounded-xl p-4 flex flex-col justify-between space-y-4">
                                 <div class="space-y-2">
-                                    <input oninput="runIbanValidator()" type="text" id="iban-input" placeholder="Typ een test-IBAN (bijv. NL12ING4)"
-                                        class="w-full px-3 py-2 border rounded-lg text-xs font-mono focus:ring-2 focus:ring-teal-500 focus:outline-none">
-                                    
-                                    <div id="iban-status-box" class="bg-slate-900 rounded-lg p-2.5 font-mono text-[11px] space-y-1.5 min-h-[90px] flex flex-col justify-center text-slate-300">
-                                        <div class="flex justify-between border-b border-slate-800 pb-1 text-slate-500">
-                                            <span>Invoer Tracing</span>
-                                            <span>Toestand</span>
+                                    <h3 class="font-extrabold text-slate-800 text-xs uppercase tracking-wider">📝 IBANs
+                                        Controleren</h3>
+                                    <p class="text-xs text-slate-600 leading-relaxed">
+                                        Ontwerp een FSM die controleert of een vereenvoudigde bankrekening (IBAN) klopt.
+                                        De regels voor een geldige invoer zijn:
+                                        <strong>starten met <code>NL</code>, gevolgd door 2 cijfers, daarna de bankcode
+                                            <code>ING</code> of <code>RAB</code>, en eindigend met minimaal 1
+                                            cijfer</strong> (bijv. <code>NL99ING1</code> of <code>NL12RAB0045</code>).
+                                    </p>
+                                    <div
+                                        class="p-3 bg-teal-50 border border-teal-200 rounded-lg text-[11px] text-teal-800 leading-relaxed">
+                                        <strong>Specificaties:</strong>
+                                        <ul class="list-disc list-inside mt-1 space-y-0.5 ml-1">
+                                            <li><strong>Starttoestand:</strong> S₀.</li>
+                                            <li><strong>Transities:</strong> Gebruik letters (zoals <code>N</code>,
+                                                <code>L</code>, <code>I</code>, <code>N</code>, <code>G</code>,
+                                                <code>R</code>, <code>A</code>, <code>B</code>) en <code>cijfer</code>.
+                                            </li>
+                                            <li><strong>Eindtoestand:</strong> S₉ (de enige acceptatietoestand).</li>
+                                        </ul>
+                                    </div>
+                                </div>
+
+                                <!-- Validator Live Console -->
+                                <div class="bg-white border border-slate-150 rounded-lg p-3 space-y-3 shadow-sm">
+                                    <span class="text-[10px] font-bold text-slate-400 uppercase block">Live Validator
+                                        Console</span>
+                                    <div class="space-y-2">
+                                        <input oninput="runIbanValidator()" type="text" id="iban-input"
+                                            placeholder="Typ een test-IBAN (bijv. NL12ING4)"
+                                            class="w-full px-3 py-2 border rounded-lg text-xs font-mono focus:ring-2 focus:ring-teal-500 focus:outline-none">
+
+                                        <div id="iban-status-box"
+                                            class="bg-slate-900 rounded-lg p-2.5 font-mono text-[11px] space-y-1.5 min-h-[90px] flex flex-col justify-center text-slate-300">
+                                            <div
+                                                class="flex justify-between border-b border-slate-800 pb-1 text-slate-500">
+                                                <span>Invoer Tracing</span>
+                                                <span>Toestand</span>
+                                            </div>
+                                            <div class="flex justify-between items-center text-xs font-bold pt-1">
+                                                <span id="iban-trace-text" class="text-white">-</span>
+                                                <span id="iban-current-state"
+                                                    class="bg-teal-950 text-teal-300 border border-teal-800 px-2 py-0.5 rounded">S_0</span>
+                                            </div>
+                                            <div id="iban-feedback-log" class="text-[10px] text-slate-400 italic mt-1">
+                                                Voer een IBAN in om te scannen...</div>
                                         </div>
-                                        <div class="flex justify-between items-center text-xs font-bold pt-1">
-                                            <span id="iban-trace-text" class="text-white">-</span>
-                                            <span id="iban-current-state" class="bg-teal-950 text-teal-300 border border-teal-800 px-2 py-0.5 rounded">S_0</span>
-                                        </div>
-                                        <div id="iban-feedback-log" class="text-[10px] text-slate-400 italic mt-1">Voer een IBAN in om te scannen...</div>
+                                    </div>
+                                </div>
+
+                                <!-- Tip -->
+                                <div>
+                                    <button onclick="toggleTip('tip-iban')" id="btn-tip-iban"
+                                        class="px-2.5 py-1 bg-slate-200 hover:bg-slate-300 text-slate-700 text-[10px] font-bold rounded-lg transition active:scale-95 focus:outline-none">
+                                        💡 Toon Tip
+                                    </button>
+                                    <div id="tip-iban"
+                                        class="hidden mt-2 p-2.5 bg-slate-100 border border-slate-200 rounded-lg text-[10px] text-slate-600 leading-normal">
+                                        Het begin is lineair: S₀ → S₁ → S₂ → S₃ → S₄. Vanaf S₄ splitst het diagram op in
+                                        twee aparte branches voor de bankcodes:
+                                        <br>&bull; ING-tak: S₄ → S₅ → S₆ → S₈.
+                                        <br>&bull; RAB-tak: S₄ → S₇ → S₇ₐ → S₈.
+                                        <br>Beide takken komen samen in S₈. Vanaf S₈ ga je met een <code>cijfer</code>
+                                        naar de eindtoestand S₉, die een self-loop heeft voor extra
+                                        <code>cijfers</code>.
                                     </div>
                                 </div>
                             </div>
 
-                            <!-- Tip -->
-                            <div>
-                                <button onclick="toggleTip('tip-iban')" id="btn-tip-iban"
-                                    class="px-2.5 py-1 bg-slate-200 hover:bg-slate-300 text-slate-700 text-[10px] font-bold rounded-lg transition active:scale-95 focus:outline-none">
-                                    💡 Toon Tip
-                                </button>
-                                <div id="tip-iban" class="hidden mt-2 p-2.5 bg-slate-100 border border-slate-200 rounded-lg text-[10px] text-slate-600 leading-normal">
-                                    Het begin is lineair: S₀ → S₁ → S₂ → S₃ → S₄. Vanaf S₄ splitst het diagram op in twee aparte branches voor de bankcodes:
-                                    <br>&bull; ING-tak: S₄ → S₅ → S₆ → S₈.
-                                    <br>&bull; RAB-tak: S₄ → S₇ → S₇ₐ → S₈.
-                                    <br>Beide takken komen samen in S₈. Vanaf S₈ ga je met een <code>cijfer</code> naar de eindtoestand S₉, die een self-loop heeft voor extra <code>cijfers</code>.
+                            <!-- Rechts: Didactische context -->
+                            <div
+                                class="bg-slate-50 border border-slate-200 rounded-xl p-4 flex flex-col justify-start space-y-4">
+                                <div class="space-y-2">
+                                    <h3 class="font-extrabold text-slate-800 text-xs uppercase tracking-wider">💡 Het
+                                        Concept van Vertakking (Branching)</h3>
+                                    <p class="text-xs text-slate-600 leading-relaxed">
+                                        Bij een validator bepaalt de invoer welke transitie wordt genomen. Als er
+                                        meerdere geldige opties zijn (zoals bankcodes <code>ING</code> of
+                                        <code>RAB</code>), splitst het diagram op in parallelle takken.
+                                    </p>
+                                    <p class="text-xs text-slate-600 leading-relaxed">
+                                        Nadat de specifieke tak is doorlopen, komen ze weer samen in een
+                                        gemeenschappelijke toestand om het resterende gedeelte (de rekeningcijfers) te
+                                        valideren. Dit voorkomt dat je het cijfer-gedeelte dubbel hoeft te tekenen!
+                                    </p>
                                 </div>
-                            </div>
-                        </div>
-
-                        <!-- Rechts: Didactische context -->
-                        <div class="bg-slate-50 border border-slate-200 rounded-xl p-4 flex flex-col justify-start space-y-4">
-                            <div class="space-y-2">
-                                <h3 class="font-extrabold text-slate-800 text-xs uppercase tracking-wider">💡 Het Concept van Vertakking (Branching)</h3>
-                                <p class="text-xs text-slate-600 leading-relaxed">
-                                    Bij een validator bepaalt de invoer welke transitie wordt genomen. Als er meerdere geldige opties zijn (zoals bankcodes <code>ING</code> of <code>RAB</code>), splitst het diagram op in parallelle takken.
-                                </p>
-                                <p class="text-xs text-slate-600 leading-relaxed">
-                                    Nadat de specifieke tak is doorlopen, komen ze weer samen in een gemeenschappelijke toestand om het resterende gedeelte (de rekeningcijfers) te valideren. Dit voorkomt dat je het cijfer-gedeelte dubbel hoeft te tekenen!
-                                </p>
-                            </div>
-                            <div class="p-3 bg-white border border-slate-150 rounded-lg text-[11px] text-slate-500 leading-relaxed shadow-sm">
-                                <strong>Teken-instructies:</strong>
-                                <ul class="list-disc list-inside mt-1 space-y-0.5 ml-1">
-                                    <li>Gebruik duidelijke names voor je vertakkingstoestanden (bijv. <code>S_5</code> voor de I van ING).</li>
-                                    <li>Zorg dat de transities in de takken exact overeenstemmen met de letters van de bankcode.</li>
-                                    <li>Teken de dubbele cirkel voor acceptatietoestand S₉ aan het einde.</li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- FSM Designer Canvas (IBAN) -->
-                    <div class="bg-slate-50 border border-slate-200 rounded-xl p-3 shadow-inner">
-                        <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-1 mb-2">
-                            <span class="text-[9px] font-bold text-slate-400 uppercase tracking-wider">Tekenbord: Ontwerp jouw IBAN-validator</span>
-                            <span class="text-[9px] text-teal-700 font-bold bg-teal-50 px-2 py-0.5 rounded border border-teal-100">
-                                💡 Klik in het tekenbord &bull; Shift + slepen = pijl &bull; Backspace/Delete = verwijderen
-                            </span>
-                        </div>
-
-                        <!-- FSM Tool Iframe -->
-                        <div onclick="focusIframe()"
-                            class="w-full h-[550px] rounded-lg overflow-hidden border border-slate-300 shadow bg-white relative cursor-pointer">
-                            <iframe id="fsm-iframe-iban" src="fsm-designer.html?id=iban" class="w-full h-full" title="FSM Tool IBAN"></iframe>
-                        </div>
-
-                        <!-- Fallback Link -->
-                        <div class="mt-3 flex flex-col sm:flex-row gap-2 items-center justify-between">
-                            <span class="text-[10px] text-slate-500">Werkt het tekenen niet goed? Klik op de knop om het bord in een los tabblad te openen.</span>
-                            <a href="fsm-designer.html?id=iban" target="_blank"
-                                class="px-4 py-2 bg-teal-600 hover:bg-teal-700 text-white text-xs font-bold rounded-lg transition active:scale-95 text-center shadow shadow-teal-700/10 whitespace-nowrap">
-                                🔗 Open tekenbord in nieuw tabblad
-                            </a>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- TAB 2: TIJD -->
-                <div id="tab-tijd" class="space-y-4 hidden">
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        <!-- Links: Uitleg & Validator Console -->
-                        <div class="bg-slate-50 border border-slate-200 rounded-xl p-4 flex flex-col justify-between space-y-4">
-                            <div class="space-y-2">
-                                <h3 class="font-extrabold text-slate-800 text-xs uppercase tracking-wider">📝 Tijdnotaties Controleren</h3>
-                                <p class="text-xs text-slate-600 leading-relaxed">
-                                    Ontwerp een FSM die controleert of een tijdsaanduiding in 24-uurs formaat (<code>HH:MM</code>) geldig is (bijv. <code>08:30</code>, <code>19:45</code> of <code>23:59</code>). 
-                                    Tijden zoals <code>25:00</code> of <code>12:60</code> moeten onmiddellijk worden afgekeurd!
-                                </p>
-                                <div class="p-3 bg-teal-50 border border-teal-200 rounded-lg text-[11px] text-teal-800 leading-relaxed">
-                                    <strong>Specificaties:</strong>
+                                <div
+                                    class="p-3 bg-white border border-slate-150 rounded-lg text-[11px] text-slate-500 leading-relaxed shadow-sm">
+                                    <strong>Teken-instructies:</strong>
                                     <ul class="list-disc list-inside mt-1 space-y-0.5 ml-1">
-                                        <li><strong>Starttoestand:</strong> S₀.</li>
-                                        <li><strong>Transities:</strong> Gebruik invoersymbolen zoals <code>0, 1</code>, <code>2</code>, <code>:</code>, <code>0-5</code> en cijferreeksen zoals <code>0-9</code>.</li>
-                                        <li><strong>Eindtoestand:</strong> S₆ (de acceptatietoestand).</li>
+                                        <li>Gebruik duidelijke names voor je vertakkingstoestanden (bijv.
+                                            <code>S_5</code> voor de I van ING).</li>
+                                        <li>Zorg dat de transities in de takken exact overeenstemmen met de letters van
+                                            de bankcode.</li>
+                                        <li>Teken de dubbele cirkel voor acceptatietoestand S₉ aan het einde.</li>
                                     </ul>
                                 </div>
                             </div>
+                        </div>
 
-                            <!-- Validator Live Console -->
-                            <div class="bg-white border border-slate-150 rounded-lg p-3 space-y-3 shadow-sm">
-                                <span class="text-[10px] font-bold text-slate-400 uppercase block">Live Validator Console</span>
+                        <!-- FSM Designer Canvas (IBAN) -->
+                        <div class="bg-slate-50 border border-slate-200 rounded-xl p-3 shadow-inner">
+                            <div
+                                class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-1 mb-2">
+                                <span class="text-[9px] font-bold text-slate-400 uppercase tracking-wider">Tekenbord:
+                                    Ontwerp jouw IBAN-validator</span>
+                                <span
+                                    class="text-[9px] text-teal-700 font-bold bg-teal-50 px-2 py-0.5 rounded border border-teal-100">
+                                    💡 Klik in het tekenbord &bull; Shift + slepen = pijl &bull; Backspace/Delete =
+                                    verwijderen
+                                </span>
+                            </div>
+
+                            <!-- FSM Tool Iframe -->
+                            <div onclick="focusIframe()"
+                                class="w-full h-[550px] rounded-lg overflow-hidden border border-slate-300 shadow bg-white relative cursor-pointer">
+                                <iframe id="fsm-iframe-iban" src="fsm-designer.html?id=iban" class="w-full h-full"
+                                    title="FSM Tool IBAN"></iframe>
+                            </div>
+
+                            <!-- Fallback Link -->
+                            <div class="mt-3 flex flex-col sm:flex-row gap-2 items-center justify-between">
+                                <span class="text-[10px] text-slate-500">Werkt het tekenen niet goed? Klik op de knop om
+                                    het bord in een los tabblad te openen.</span>
+                                <a href="fsm-designer.html?id=iban" target="_blank"
+                                    class="px-4 py-2 bg-teal-600 hover:bg-teal-700 text-white text-xs font-bold rounded-lg transition active:scale-95 text-center shadow shadow-teal-700/10 whitespace-nowrap">
+                                    🔗 Open tekenbord in nieuw tabblad
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- TAB 2: TIJD -->
+                    <div id="tab-tijd" class="space-y-4 hidden">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <!-- Links: Uitleg & Validator Console -->
+                            <div
+                                class="bg-slate-50 border border-slate-200 rounded-xl p-4 flex flex-col justify-between space-y-4">
                                 <div class="space-y-2">
-                                    <input oninput="runTimeValidator()" type="text" id="time-input" placeholder="Typ een tijd (bijv. 23:59)"
-                                        class="w-full px-3 py-2 border rounded-lg text-xs font-mono focus:ring-2 focus:ring-teal-500 focus:outline-none">
-                                    
-                                    <div id="time-status-box" class="bg-slate-900 rounded-lg p-2.5 font-mono text-[11px] space-y-1.5 min-h-[90px] flex flex-col justify-center text-slate-300">
-                                        <div class="flex justify-between border-b border-slate-800 pb-1 text-slate-500">
-                                            <span>Invoer Tracing</span>
-                                            <span>Toestand</span>
+                                    <h3 class="font-extrabold text-slate-800 text-xs uppercase tracking-wider">📝
+                                        Tijdnotaties Controleren</h3>
+                                    <p class="text-xs text-slate-600 leading-relaxed">
+                                        Ontwerp een FSM die controleert of een tijdsaanduiding in 24-uurs formaat
+                                        (<code>HH:MM</code>) geldig is (bijv. <code>08:30</code>, <code>19:45</code> of
+                                        <code>23:59</code>).
+                                        Tijden zoals <code>25:00</code> of <code>12:60</code> moeten onmiddellijk worden
+                                        afgekeurd!
+                                    </p>
+                                    <div
+                                        class="p-3 bg-teal-50 border border-teal-200 rounded-lg text-[11px] text-teal-800 leading-relaxed">
+                                        <strong>Specificaties:</strong>
+                                        <ul class="list-disc list-inside mt-1 space-y-0.5 ml-1">
+                                            <li><strong>Starttoestand:</strong> S₀.</li>
+                                            <li><strong>Transities:</strong> Gebruik invoersymbolen zoals
+                                                <code>0, 1</code>, <code>2</code>, <code>:</code>, <code>0-5</code> en
+                                                cijferreeksen zoals <code>0-9</code>.</li>
+                                            <li><strong>Eindtoestand:</strong> S₆ (de acceptatietoestand).</li>
+                                        </ul>
+                                    </div>
+                                </div>
+
+                                <!-- Validator Live Console -->
+                                <div class="bg-white border border-slate-150 rounded-lg p-3 space-y-3 shadow-sm">
+                                    <span class="text-[10px] font-bold text-slate-400 uppercase block">Live Validator
+                                        Console</span>
+                                    <div class="space-y-2">
+                                        <input oninput="runTimeValidator()" type="text" id="time-input"
+                                            placeholder="Typ een tijd (bijv. 23:59)"
+                                            class="w-full px-3 py-2 border rounded-lg text-xs font-mono focus:ring-2 focus:ring-teal-500 focus:outline-none">
+
+                                        <div id="time-status-box"
+                                            class="bg-slate-900 rounded-lg p-2.5 font-mono text-[11px] space-y-1.5 min-h-[90px] flex flex-col justify-center text-slate-300">
+                                            <div
+                                                class="flex justify-between border-b border-slate-800 pb-1 text-slate-500">
+                                                <span>Invoer Tracing</span>
+                                                <span>Toestand</span>
+                                            </div>
+                                            <div class="flex justify-between items-center text-xs font-bold pt-1">
+                                                <span id="time-trace-text" class="text-white">-</span>
+                                                <span id="time-current-state"
+                                                    class="bg-teal-950 text-teal-300 border border-teal-800 px-2 py-0.5 rounded">S_0</span>
+                                            </div>
+                                            <div id="time-feedback-log" class="text-[10px] text-slate-400 italic mt-1">
+                                                Voer een tijd in om te scannen...</div>
                                         </div>
-                                        <div class="flex justify-between items-center text-xs font-bold pt-1">
-                                            <span id="time-trace-text" class="text-white">-</span>
-                                            <span id="time-current-state" class="bg-teal-950 text-teal-300 border border-teal-800 px-2 py-0.5 rounded">S_0</span>
-                                        </div>
-                                        <div id="time-feedback-log" class="text-[10px] text-slate-400 italic mt-1">Voer een tijd in om te scannen...</div>
+                                    </div>
+                                </div>
+
+                                <!-- Tip -->
+                                <div>
+                                    <button onclick="toggleTip('tip-tijd')" id="btn-tip-tijd"
+                                        class="px-2.5 py-1 bg-slate-200 hover:bg-slate-300 text-slate-700 text-[10px] font-bold rounded-lg transition active:scale-95 focus:outline-none">
+                                        💡 Toon Tip
+                                    </button>
+                                    <div id="tip-tijd"
+                                        class="hidden mt-2 p-2.5 bg-slate-100 border border-slate-200 rounded-lg text-[10px] text-slate-600 leading-normal">
+                                        Het eerste cijfer vereist een splitsing vanaf S₀:
+                                        <br>&bull; Tak 1: Als het eerste cijfer <code>0</code> of <code>1</code> is, ga
+                                        je naar S₁. Vanaf S₁ mag elk cijfer van <code>0-9</code> volgen naar S₃.
+                                        <br>&bull; Tak 2: Als het eerste cijfer <code>2</code> is, ga je naar S₂. Vanaf
+                                        S₂ mag alleen <code>0-3</code> volgen naar S₃.
+                                        <br>Beide takken komen samen in S₃. Teken vanaf S₃ een transitie met
+                                        <code>:</code> naar S₄. Vanuit S₄ ga je met <code>0-5</code> naar S₅, en ten
+                                        slotte met <code>0-9</code> naar de eindtoestand S₆.
                                     </div>
                                 </div>
                             </div>
 
-                            <!-- Tip -->
-                            <div>
-                                <button onclick="toggleTip('tip-tijd')" id="btn-tip-tijd"
-                                    class="px-2.5 py-1 bg-slate-200 hover:bg-slate-300 text-slate-700 text-[10px] font-bold rounded-lg transition active:scale-95 focus:outline-none">
-                                    💡 Toon Tip
-                                </button>
-                                <div id="tip-tijd" class="hidden mt-2 p-2.5 bg-slate-100 border border-slate-200 rounded-lg text-[10px] text-slate-600 leading-normal">
-                                    Het eerste cijfer vereist een splitsing vanaf S₀:
-                                    <br>&bull; Tak 1: Als het eerste cijfer <code>0</code> of <code>1</code> is, ga je naar S₁. Vanaf S₁ mag elk cijfer van <code>0-9</code> volgen naar S₃.
-                                    <br>&bull; Tak 2: Als het eerste cijfer <code>2</code> is, ga je naar S₂. Vanaf S₂ mag alleen <code>0-3</code> volgen naar S₃.
-                                    <br>Beide takken komen samen in S₃. Teken vanaf S₃ een transitie met <code>:</code> naar S₄. Vanuit S₄ ga je met <code>0-5</code> naar S₅, en ten slotte met <code>0-9</code> naar de eindtoestand S₆.
+                            <!-- Rechts: Didactische context -->
+                            <div
+                                class="bg-slate-50 border border-slate-200 rounded-xl p-4 flex flex-col justify-start space-y-4">
+                                <div class="space-y-2">
+                                    <h3 class="font-extrabold text-slate-800 text-xs uppercase tracking-wider">💡 Waarom
+                                        Determinisme Belangrijk is</h3>
+                                    <p class="text-xs text-slate-600 leading-relaxed">
+                                        Een validator moet <strong>deterministisch</strong> zijn: er mag geen twijfel
+                                        zijn welke pijl de automaat kiest.
+                                    </p>
+                                    <p class="text-xs text-slate-600 leading-relaxed">
+                                        Door de splitsing aan het begin te baseren op de waarde (<code>0, 1</code> vs
+                                        <code>2</code>), blokkeert de automaat onmiddellijk ongeldige uren zoals
+                                        <code>25:00</code>. Omdat er vanuit S₂ geen pijl is voor het cijfer
+                                        <code>5</code>, loopt de automaat direct vast (de invoer strandt en is foutief).
+                                    </p>
+                                </div>
+                                <div
+                                    class="p-3 bg-white border border-slate-150 rounded-lg text-[11px] text-slate-500 leading-relaxed shadow-sm">
+                                    <strong>Teken-instructies:</strong>
+                                    <ul class="list-disc list-inside mt-1 space-y-0.5 ml-1">
+                                        <li>Gebruik duidelijke labels op de transities (zoals <code>0, 1</code> of
+                                            <code>0-9</code>).</li>
+                                        <li>Controleer dat er geen overlappende voorwaarden zijn op uitgaande transities
+                                            vanuit dezelfde toestand!</li>
+                                    </ul>
                                 </div>
                             </div>
                         </div>
 
-                        <!-- Rechts: Didactische context -->
-                        <div class="bg-slate-50 border border-slate-200 rounded-xl p-4 flex flex-col justify-start space-y-4">
-                            <div class="space-y-2">
-                                <h3 class="font-extrabold text-slate-800 text-xs uppercase tracking-wider">💡 Waarom Determinisme Belangrijk is</h3>
-                                <p class="text-xs text-slate-600 leading-relaxed">
-                                    Een validator moet <strong>deterministisch</strong> zijn: er mag geen twijfel zijn welke pijl de automaat kiest. 
-                                </p>
-                                <p class="text-xs text-slate-600 leading-relaxed">
-                                    Door de splitsing aan het begin te baseren op de waarde (<code>0, 1</code> vs <code>2</code>), blokkeert de automaat onmiddellijk ongeldige uren zoals <code>25:00</code>. Omdat er vanuit S₂ geen pijl is voor het cijfer <code>5</code>, loopt de automaat direct vast (de invoer strandt en is foutief).
-                                </p>
+                        <!-- FSM Designer Canvas (Tijd) -->
+                        <div class="bg-slate-50 border border-slate-200 rounded-xl p-3 shadow-inner">
+                            <div
+                                class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-1 mb-2">
+                                <span class="text-[9px] font-bold text-slate-400 uppercase tracking-wider">Tekenbord:
+                                    Ontwerp jouw Tijdvalidator</span>
+                                <span
+                                    class="text-[9px] text-teal-700 font-bold bg-teal-50 px-2 py-0.5 rounded border border-teal-100">
+                                    💡 Klik in het tekenbord &bull; Shift + slepen = pijl &bull; Backspace/Delete =
+                                    verwijderen
+                                </span>
                             </div>
-                            <div class="p-3 bg-white border border-slate-150 rounded-lg text-[11px] text-slate-500 leading-relaxed shadow-sm">
-                                <strong>Teken-instructies:</strong>
-                                <ul class="list-disc list-inside mt-1 space-y-0.5 ml-1">
-                                    <li>Gebruik duidelijke labels op de transities (zoals <code>0, 1</code> of <code>0-9</code>).</li>
-                                    <li>Controleer dat er geen overlappende voorwaarden zijn op uitgaande transities vanuit dezelfde toestand!</li>
-                                </ul>
+
+                            <!-- FSM Tool Iframe -->
+                            <div onclick="focusIframe()"
+                                class="w-full h-[550px] rounded-lg overflow-hidden border border-slate-300 shadow bg-white relative cursor-pointer">
+                                <iframe id="fsm-iframe-tijd" src="fsm-designer.html?id=tijd" class="w-full h-full"
+                                    title="FSM Tool Tijd"></iframe>
                             </div>
-                        </div>
-                    </div>
 
-                    <!-- FSM Designer Canvas (Tijd) -->
-                    <div class="bg-slate-50 border border-slate-200 rounded-xl p-3 shadow-inner">
-                        <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-1 mb-2">
-                            <span class="text-[9px] font-bold text-slate-400 uppercase tracking-wider">Tekenbord: Ontwerp jouw Tijdvalidator</span>
-                            <span class="text-[9px] text-teal-700 font-bold bg-teal-50 px-2 py-0.5 rounded border border-teal-100">
-                                💡 Klik in het tekenbord &bull; Shift + slepen = pijl &bull; Backspace/Delete = verwijderen
-                            </span>
-                        </div>
-
-                        <!-- FSM Tool Iframe -->
-                        <div onclick="focusIframe()"
-                            class="w-full h-[550px] rounded-lg overflow-hidden border border-slate-300 shadow bg-white relative cursor-pointer">
-                            <iframe id="fsm-iframe-tijd" src="fsm-designer.html?id=tijd" class="w-full h-full" title="FSM Tool Tijd"></iframe>
-                        </div>
-
-                        <!-- Fallback Link -->
-                        <div class="mt-3 flex flex-col sm:flex-row gap-2 items-center justify-between">
-                            <span class="text-[10px] text-slate-500">Werkt het tekenen niet goed? Klik op de knop om het bord in een los tabblad te openen.</span>
-                            <a href="fsm-designer.html?id=tijd" target="_blank"
-                                class="px-4 py-2 bg-teal-600 hover:bg-teal-700 text-white text-xs font-bold rounded-lg transition active:scale-95 text-center shadow shadow-teal-700/10 whitespace-nowrap">
-                                🔗 Open tekenbord in nieuw tabblad
-                            </a>
+                            <!-- Fallback Link -->
+                            <div class="mt-3 flex flex-col sm:flex-row gap-2 items-center justify-between">
+                                <span class="text-[10px] text-slate-500">Werkt het tekenen niet goed? Klik op de knop om
+                                    het bord in een los tabblad te openen.</span>
+                                <a href="fsm-designer.html?id=tijd" target="_blank"
+                                    class="px-4 py-2 bg-teal-600 hover:bg-teal-700 text-white text-xs font-bold rounded-lg transition active:scale-95 text-center shadow shadow-teal-700/10 whitespace-nowrap">
+                                    🔗 Open tekenbord in nieuw tabblad
+                                </a>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
+
         </div>
 
-    </div>
-
-    <!-- Scripts -->
-    <script>
-        // Tab switching
-        function switchTab(tabId) {
-            const tabs = ['iban', 'tijd'];
-            tabs.forEach(t => {
-                const contentEl = document.getElementById('tab-' + t);
-                const btnEl = document.getElementById('tab-btn-' + t);
-                if (t === tabId) {
-                    contentEl.classList.remove('hidden');
-                    btnEl.classList.add('border-teal-600', 'text-teal-600');
-                    btnEl.classList.remove('border-transparent', 'text-slate-500');
-                } else {
-                    contentEl.classList.add('hidden');
-                    btnEl.classList.remove('border-teal-600', 'text-teal-600');
-                    btnEl.classList.add('border-transparent', 'text-slate-500');
-                }
-            });
-            triggerResize();
-        }
-
-        // Toggle tip
-        function toggleTip(tipId) {
-            const tipEl = document.getElementById(tipId);
-            const btnEl = document.getElementById('btn-' + tipId);
-            if (tipEl.classList.contains('hidden')) {
-                tipEl.classList.remove('hidden');
-                btnEl.innerText = "💡 Verberg Tip";
-            } else {
-                tipEl.classList.add('hidden');
-                btnEl.innerText = "💡 Toon Tip";
-            }
-            triggerResize();
-        }
-
-        // Helper to get active iframe based on active tab
-        function getActiveIframe() {
-            const iframeIban = document.getElementById('fsm-iframe-iban');
-            const iframeTijd = document.getElementById('fsm-iframe-tijd');
-            if (iframeIban && !iframeIban.closest('#tab-iban').classList.contains('hidden')) {
-                return iframeIban;
-            }
-            return iframeTijd;
-        }
-
-        // Focus iframe helper
-        function focusIframe() {
-            const iframe = getActiveIframe();
-            if (iframe) {
-                try {
-                    iframe.focus();
-                    if (iframe.contentWindow) {
-                        iframe.contentWindow.focus();
-                    }
-                } catch (e) {}
-            }
-        }
-
-        // Key forwarding to same-origin iframe
-        function forwardKeyEvent(e, eventType) {
-            const iframe = getActiveIframe();
-            if (iframe && iframe.contentWindow) {
-                if (document.activeElement === document.body || document.activeElement.tagName === 'BODY') {
-                    try {
-                        const iframeDoc = iframe.contentWindow.document;
-                        const event = new KeyboardEvent(eventType, {
-                            key: e.key,
-                            code: e.code,
-                            keyCode: e.keyCode,
-                            which: e.which,
-                            shiftKey: e.shiftKey,
-                            ctrlKey: e.ctrlKey,
-                            metaKey: e.metaKey,
-                            altKey: e.altKey,
-                            bubbles: true
-                        });
-                        iframeDoc.dispatchEvent(event);
-                        const handlerName = 'on' + eventType;
-                        if (typeof iframeDoc[handlerName] === 'function') {
-                            iframeDoc[handlerName](event);
-                        }
-                    } catch (err) {}
-                }
-            }
-        }
-        document.addEventListener('keydown', (e) => forwardKeyEvent(e, 'keydown'));
-        document.addEventListener('keyup', (e) => forwardKeyEvent(e, 'keyup'));
-        document.addEventListener('keypress', (e) => forwardKeyEvent(e, 'keypress'));
-
-        // Same-origin dynamic height resizer
-        function triggerResize() {
-            if (window.parent && window.parent !== window) {
-                try {
-                    const iframe = window.frameElement;
-                    if (iframe) {
-                        iframe.style.height = document.documentElement.scrollHeight + 'px';
-                    }
-                } catch (e) {}
-            }
-        }
-
-        // Les 4: Phone number validator simulation
-        function tracePhoneNumber(inputVal) {
-            let cur = "S_0";
-            let path = [{ state: "S_0", edge: null }];
-            let valid = true;
-            let failedIdx = -1;
-
-            for (let i = 0; i < inputVal.length; i++) {
-                let c = inputVal[i];
-                let next = null;
-                let edge = null;
-
-                if (cur === "S_0") {
-                    if (c === "0") {
-                        next = "S_2";
-                        edge = "p-edge-0-2";
-                    } else if (c === "+") {
-                        next = "S_1";
-                        edge = "p-edge-0-1";
-                    }
-                } else if (cur === "S_1") {
-                    if (c === "3") {
-                        next = "S_3";
-                        edge = "p-edge-1-3";
-                    }
-                } else if (cur === "S_3") {
-                    if (c === "1") {
-                        next = "S_4";
-                        edge = "p-edge-3-4";
-                    }
-                } else if (cur === "S_4") {
-                    if (c === "6") {
-                        next = "S_5";
-                        edge = "p-edge-4-5";
-                    }
-                } else if (cur === "S_2") {
-                    if (c === "6") {
-                        next = "S_5";
-                        edge = "p-edge-2-5";
-                    } else if (c === "0") {
-                        next = "S_6";
-                        edge = "p-edge-2-6";
-                    }
-                } else if (cur === "S_6") {
-                    if (c === "3") {
-                        next = "S_7";
-                        edge = "p-edge-6-7";
-                    }
-                } else if (cur === "S_7") {
-                    if (c === "1") {
-                        next = "S_8";
-                        edge = "p-edge-7-8";
-                    }
-                } else if (cur === "S_8") {
-                    if (c === "6") {
-                        next = "S_5";
-                        edge = "p-edge-8-5";
-                    }
-                } else if (cur === "S_5" && c >= "0" && c <= "9") {
-                    next = "S_9";
-                    edge = "p-edge-5-9";
-                } else if (cur === "S_9" && c >= "0" && c <= "9") {
-                    next = "S_10";
-                    edge = "p-edge-9-10";
-                } else if (cur === "S_10" && c >= "0" && c <= "9") {
-                    next = "S_11";
-                    edge = "p-edge-10-11";
-                } else if (cur === "S_11" && c >= "0" && c <= "9") {
-                    next = "S_12";
-                    edge = "p-edge-11-12";
-                } else if (cur === "S_12" && c >= "0" && c <= "9") {
-                    next = "S_13";
-                    edge = "p-edge-12-13";
-                } else if (cur === "S_13" && c >= "0" && c <= "9") {
-                    next = "S_14";
-                    edge = "p-edge-13-14";
-                } else if (cur === "S_14" && c >= "0" && c <= "9") {
-                    next = "S_15";
-                    edge = "p-edge-14-15";
-                } else if (cur === "S_15" && c >= "0" && c <= "9") {
-                    next = "S_16";
-                    edge = "p-edge-15-16";
-                }
-
-                if (next) {
-                    cur = next;
-                    path.push({ state: next, edge: edge });
-                } else {
-                    valid = false;
-                    failedIdx = i;
-                    break;
-                }
-            }
-
-            return { valid, cur, path, failedIdx };
-        }
-
-        function highlightPhoneFsm(curState, lastEdge = null, isError = false) {
-            // Reset all nodes
-            const totalNodes = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16"];
-            totalNodes.forEach(num => {
-                const node = document.getElementById(`p-node-${num}`);
-                if (node) {
-                    const circle = node.querySelector('circle');
-                    const text = node.querySelector('text');
-                    const isAccept = (num === "16");
-                    const circleBorder = node.querySelectorAll('circle')[1];
-
-                    if (`S_${num}` === curState) {
-                        if (isError) {
-                            circle.setAttribute('stroke', '#ef4444');
-                            circle.setAttribute('fill', '#fee2e2');
-                            if (text) text.setAttribute('fill', '#991b1b');
-                        } else {
-                            circle.setAttribute('stroke', '#0d9488');
-                            circle.setAttribute('fill', '#ccfbf1');
-                            if (text) text.setAttribute('fill', '#115e59');
-                        }
-                        circle.setAttribute('stroke-width', '2.5');
-                        if (text) text.setAttribute('font-weight', 'bold');
+        <!-- Scripts -->
+        <script>
+            // Tab switching
+            function switchTab(tabId) {
+                const tabs = ['iban', 'tijd'];
+                tabs.forEach(t => {
+                    const contentEl = document.getElementById('tab-' + t);
+                    const btnEl = document.getElementById('tab-btn-' + t);
+                    if (t === tabId) {
+                        contentEl.classList.remove('hidden');
+                        btnEl.classList.add('border-teal-600', 'text-teal-600');
+                        btnEl.classList.remove('border-transparent', 'text-slate-500');
                     } else {
-                        circle.setAttribute('stroke', '#94a3b8');
-                        circle.setAttribute('fill', 'white');
-                        circle.setAttribute('stroke-width', '2');
-                        if (text) {
-                            text.setAttribute('fill', '#1e293b');
-                            text.removeAttribute('font-weight');
-                        }
+                        contentEl.classList.add('hidden');
+                        btnEl.classList.remove('border-teal-600', 'text-teal-600');
+                        btnEl.classList.add('border-transparent', 'text-slate-500');
                     }
+                });
+                triggerResize();
+            }
 
-                    if (isAccept) {
-                        const targetBorder = circleBorder || circle;
-                        if (`S_${num}` === curState) {
-                            targetBorder.setAttribute('stroke', isError ? '#ef4444' : '#0d9488');
-                        } else {
-                            targetBorder.setAttribute('stroke', '#94a3b8');
+            // Toggle tip
+            function toggleTip(tipId) {
+                const tipEl = document.getElementById(tipId);
+                const btnEl = document.getElementById('btn-' + tipId);
+                if (tipEl.classList.contains('hidden')) {
+                    tipEl.classList.remove('hidden');
+                    btnEl.innerText = "💡 Verberg Tip";
+                } else {
+                    tipEl.classList.add('hidden');
+                    btnEl.innerText = "💡 Toon Tip";
+                }
+                triggerResize();
+            }
+
+            // Helper to get active iframe based on active tab
+            function getActiveIframe() {
+                const iframeIban = document.getElementById('fsm-iframe-iban');
+                const iframeTijd = document.getElementById('fsm-iframe-tijd');
+                if (iframeIban && !iframeIban.closest('#tab-iban').classList.contains('hidden')) {
+                    return iframeIban;
+                }
+                return iframeTijd;
+            }
+
+            // Focus iframe helper
+            function focusIframe() {
+                const iframe = getActiveIframe();
+                if (iframe) {
+                    try {
+                        iframe.focus();
+                        if (iframe.contentWindow) {
+                            iframe.contentWindow.focus();
                         }
-                    }
-                }
-            });
-
-            // Reset all edges
-            const edges = [
-                "0-1", "1-3", "3-4", "4-5",
-                "0-2", "2-5", "2-6", "6-7", "7-8", "8-5",
-                "5-9", "9-10", "10-11", "11-12", "12-13", "13-14", "14-15", "15-16"
-            ];
-            edges.forEach(edgeId => {
-                const edge = document.getElementById(`p-edge-${edgeId}`);
-                if (edge) {
-                    edge.setAttribute('stroke', '#94a3b8');
-                    edge.setAttribute('stroke-width', '2');
-                    edge.setAttribute('marker-end', 'url(#p-arrow)');
-                }
-            });
-
-            // Highlight active edge
-            if (lastEdge) {
-                const activeEdge = document.getElementById(lastEdge);
-                if (activeEdge) {
-                    activeEdge.setAttribute('stroke', isError ? '#ef4444' : '#0d9488');
-                    activeEdge.setAttribute('stroke-width', '3.5');
-                    activeEdge.setAttribute('marker-end', isError ? 'url(#p-arrow-error)' : 'url(#p-arrow-active)');
+                    } catch (e) { }
                 }
             }
-        }
 
-        function validatePhoneNumber() {
-            const input = document.getElementById('phone-test-input').value.trim().replace(/\s+/g, '');
-            const badge = document.getElementById('phone-validation-badge');
+            // Key forwarding to same-origin iframe
+            function forwardKeyEvent(e, eventType) {
+                const iframe = getActiveIframe();
+                if (iframe && iframe.contentWindow) {
+                    if (document.activeElement === document.body || document.activeElement.tagName === 'BODY') {
+                        try {
+                            const iframeDoc = iframe.contentWindow.document;
+                            const event = new KeyboardEvent(eventType, {
+                                key: e.key,
+                                code: e.code,
+                                keyCode: e.keyCode,
+                                which: e.which,
+                                shiftKey: e.shiftKey,
+                                ctrlKey: e.ctrlKey,
+                                metaKey: e.metaKey,
+                                altKey: e.altKey,
+                                bubbles: true
+                            });
+                            iframeDoc.dispatchEvent(event);
+                            const handlerName = 'on' + eventType;
+                            if (typeof iframeDoc[handlerName] === 'function') {
+                                iframeDoc[handlerName](event);
+                            }
+                        } catch (err) { }
+                    }
+                }
+            }
+            document.addEventListener('keydown', (e) => forwardKeyEvent(e, 'keydown'));
+            document.addEventListener('keyup', (e) => forwardKeyEvent(e, 'keyup'));
+            document.addEventListener('keypress', (e) => forwardKeyEvent(e, 'keypress'));
 
-            if (input === "") {
-                badge.className = "px-4 py-2.5 rounded-xl text-sm font-bold bg-slate-200 text-slate-600";
-                badge.innerText = "Voer nummer in...";
+            // Same-origin dynamic height resizer
+            function triggerResize() {
+                if (window.parent && window.parent !== window) {
+                    try {
+                        const iframe = window.frameElement;
+                        if (iframe) {
+                            iframe.style.height = document.documentElement.scrollHeight + 'px';
+                        }
+                    } catch (e) { }
+                }
+            }
+
+            // Les 4: Phone number validator simulation
+            function tracePhoneNumber(inputVal) {
+                let cur = "S_0";
+                let path = [{ state: "S_0", edge: null }];
+                let valid = true;
+                let failedIdx = -1;
+
+                for (let i = 0; i < inputVal.length; i++) {
+                    let c = inputVal[i];
+                    let next = null;
+                    let edge = null;
+
+                    if (cur === "S_0") {
+                        if (c === "0") {
+                            next = "S_2";
+                            edge = "p-edge-0-2";
+                        } else if (c === "+") {
+                            next = "S_1";
+                            edge = "p-edge-0-1";
+                        }
+                    } else if (cur === "S_1") {
+                        if (c === "3") {
+                            next = "S_3";
+                            edge = "p-edge-1-3";
+                        }
+                    } else if (cur === "S_3") {
+                        if (c === "1") {
+                            next = "S_4";
+                            edge = "p-edge-3-4";
+                        }
+                    } else if (cur === "S_4") {
+                        if (c === "6") {
+                            next = "S_5";
+                            edge = "p-edge-4-5";
+                        }
+                    } else if (cur === "S_2") {
+                        if (c === "6") {
+                            next = "S_5";
+                            edge = "p-edge-2-5";
+                        } else if (c === "0") {
+                            next = "S_6";
+                            edge = "p-edge-2-6";
+                        }
+                    } else if (cur === "S_6") {
+                        if (c === "3") {
+                            next = "S_7";
+                            edge = "p-edge-6-7";
+                        }
+                    } else if (cur === "S_7") {
+                        if (c === "1") {
+                            next = "S_8";
+                            edge = "p-edge-7-8";
+                        }
+                    } else if (cur === "S_8") {
+                        if (c === "6") {
+                            next = "S_5";
+                            edge = "p-edge-8-5";
+                        }
+                    } else if (cur === "S_5" && c >= "0" && c <= "9") {
+                        next = "S_9";
+                        edge = "p-edge-5-9";
+                    } else if (cur === "S_9" && c >= "0" && c <= "9") {
+                        next = "S_10";
+                        edge = "p-edge-9-10";
+                    } else if (cur === "S_10" && c >= "0" && c <= "9") {
+                        next = "S_11";
+                        edge = "p-edge-10-11";
+                    } else if (cur === "S_11" && c >= "0" && c <= "9") {
+                        next = "S_12";
+                        edge = "p-edge-11-12";
+                    } else if (cur === "S_12" && c >= "0" && c <= "9") {
+                        next = "S_13";
+                        edge = "p-edge-12-13";
+                    } else if (cur === "S_13" && c >= "0" && c <= "9") {
+                        next = "S_14";
+                        edge = "p-edge-13-14";
+                    } else if (cur === "S_14" && c >= "0" && c <= "9") {
+                        next = "S_15";
+                        edge = "p-edge-14-15";
+                    } else if (cur === "S_15" && c >= "0" && c <= "9") {
+                        next = "S_16";
+                        edge = "p-edge-15-16";
+                    }
+
+                    if (next) {
+                        cur = next;
+                        path.push({ state: next, edge: edge });
+                    } else {
+                        valid = false;
+                        failedIdx = i;
+                        break;
+                    }
+                }
+
+                return { valid, cur, path, failedIdx };
+            }
+
+            function highlightPhoneFsm(curState, lastEdge = null, isError = false) {
+                // Reset all nodes
+                const totalNodes = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16"];
+                totalNodes.forEach(num => {
+                    const node = document.getElementById(`p-node-${num}`);
+                    if (node) {
+                        const circle = node.querySelector('circle');
+                        const text = node.querySelector('text');
+                        const isAccept = (num === "16");
+                        const circleBorder = node.querySelectorAll('circle')[1];
+
+                        if (`S_${num}` === curState) {
+                            if (isError) {
+                                circle.setAttribute('stroke', '#ef4444');
+                                circle.setAttribute('fill', '#fee2e2');
+                                if (text) text.setAttribute('fill', '#991b1b');
+                            } else {
+                                circle.setAttribute('stroke', '#0d9488');
+                                circle.setAttribute('fill', '#ccfbf1');
+                                if (text) text.setAttribute('fill', '#115e59');
+                            }
+                            circle.setAttribute('stroke-width', '2.5');
+                            if (text) text.setAttribute('font-weight', 'bold');
+                        } else {
+                            circle.setAttribute('stroke', '#94a3b8');
+                            circle.setAttribute('fill', 'white');
+                            circle.setAttribute('stroke-width', '2');
+                            if (text) {
+                                text.setAttribute('fill', '#1e293b');
+                                text.removeAttribute('font-weight');
+                            }
+                        }
+
+                        if (isAccept) {
+                            const targetBorder = circleBorder || circle;
+                            if (`S_${num}` === curState) {
+                                targetBorder.setAttribute('stroke', isError ? '#ef4444' : '#0d9488');
+                            } else {
+                                targetBorder.setAttribute('stroke', '#94a3b8');
+                            }
+                        }
+                    }
+                });
+
+                // Reset all edges
+                const edges = [
+                    "0-1", "1-3", "3-4", "4-5",
+                    "0-2", "2-5", "2-6", "6-7", "7-8", "8-5",
+                    "5-9", "9-10", "10-11", "11-12", "12-13", "13-14", "14-15", "15-16"
+                ];
+                edges.forEach(edgeId => {
+                    const edge = document.getElementById(`p-edge-${edgeId}`);
+                    if (edge) {
+                        edge.setAttribute('stroke', '#94a3b8');
+                        edge.setAttribute('stroke-width', '2');
+                        edge.setAttribute('marker-end', 'url(#p-arrow)');
+                    }
+                });
+
+                // Highlight active edge
+                if (lastEdge) {
+                    const activeEdge = document.getElementById(lastEdge);
+                    if (activeEdge) {
+                        activeEdge.setAttribute('stroke', isError ? '#ef4444' : '#0d9488');
+                        activeEdge.setAttribute('stroke-width', '3.5');
+                        activeEdge.setAttribute('marker-end', isError ? 'url(#p-arrow-error)' : 'url(#p-arrow-active)');
+                    }
+                }
+            }
+
+            function validatePhoneNumber() {
+                const input = document.getElementById('phone-test-input').value.trim().replace(/\s+/g, '');
+                const badge = document.getElementById('phone-validation-badge');
+
+                if (input === "") {
+                    badge.className = "px-4 py-2.5 rounded-xl text-sm font-bold bg-slate-200 text-slate-600";
+                    badge.innerText = "Voer nummer in...";
+                    highlightPhoneFsm("S_0", null, false);
+                    triggerResize();
+                    return;
+                }
+
+                const result = tracePhoneNumber(input);
+                const lastStep = result.path[result.path.length - 1];
+                const lastEdge = lastStep ? lastStep.edge : null;
+
+                // Highlight SVG
+                highlightPhoneFsm(result.cur, lastEdge, !result.valid);
+
+                if (result.valid && result.cur === "S_16") {
+                    badge.className = "px-4 py-2.5 rounded-xl text-sm font-bold bg-emerald-100 text-emerald-800 border border-emerald-200 animate-pulse";
+                    badge.innerText = "✓ GELDIG NUMMER";
+                } else if (!result.valid) {
+                    badge.className = "px-4 py-2.5 rounded-xl text-sm font-bold bg-red-100 text-red-800 border border-red-200";
+                    badge.innerText = "✗ ONGELDIG (GESTRAND)";
+                } else {
+                    badge.className = "px-4 py-2.5 rounded-xl text-sm font-bold bg-teal-100 text-teal-800 border border-teal-200";
+                    badge.innerText = "⚡ INVOER VERWERKEN...";
+                }
+                triggerResize();
+            }
+
+            window.onload = function () {
                 highlightPhoneFsm("S_0", null, false);
                 triggerResize();
-                return;
-            }
+            };
 
-            const result = tracePhoneNumber(input);
-            const lastStep = result.path[result.path.length - 1];
-            const lastEdge = lastStep ? lastStep.edge : null;
+            // --- IBAN Validator Simulator logic ---
+            function runIbanValidator() {
+                const inputVal = document.getElementById('iban-input').value.trim();
+                const traceTextEl = document.getElementById('iban-trace-text');
+                const stateEl = document.getElementById('iban-current-state');
+                const logEl = document.getElementById('iban-feedback-log');
+                const statusBoxEl = document.getElementById('iban-status-box');
 
-            // Highlight SVG
-            highlightPhoneFsm(result.cur, lastEdge, !result.valid);
-
-            if (result.valid && result.cur === "S_16") {
-                badge.className = "px-4 py-2.5 rounded-xl text-sm font-bold bg-emerald-100 text-emerald-800 border border-emerald-200 animate-pulse";
-                badge.innerText = "✓ GELDIG NUMMER";
-            } else if (!result.valid) {
-                badge.className = "px-4 py-2.5 rounded-xl text-sm font-bold bg-red-100 text-red-800 border border-red-200";
-                badge.innerText = "✗ ONGELDIG (GESTRAND)";
-            } else {
-                badge.className = "px-4 py-2.5 rounded-xl text-sm font-bold bg-teal-100 text-teal-800 border border-teal-200";
-                badge.innerText = "⚡ INVOER VERWERKEN...";
-            }
-            triggerResize();
-        }
-
-        window.onload = function() {
-            highlightPhoneFsm("S_0", null, false);
-            triggerResize();
-        };
-
-        // --- IBAN Validator Simulator logic ---
-        function runIbanValidator() {
-            const inputVal = document.getElementById('iban-input').value.trim();
-            const traceTextEl = document.getElementById('iban-trace-text');
-            const stateEl = document.getElementById('iban-current-state');
-            const logEl = document.getElementById('iban-feedback-log');
-            const statusBoxEl = document.getElementById('iban-status-box');
-
-            if (inputVal === "") {
-                traceTextEl.innerText = "-";
-                stateEl.innerText = "S_0";
-                stateEl.className = "bg-teal-950 text-teal-300 border border-teal-800 px-2 py-0.5 rounded";
-                logEl.innerText = "Voer een IBAN in om te scannen...";
-                statusBoxEl.className = "bg-slate-900 rounded-lg p-2.5 font-mono text-[11px] space-y-1.5 min-h-[90px] flex flex-col justify-center text-slate-300";
-                return;
-            }
-
-            let path = [{ state: "S_0", log: "Start in S₀." }];
-            let cur = "S_0";
-            let valid = true;
-            let failedChar = "";
-            let failedIdx = -1;
-
-            for (let i = 0; i < inputVal.length; i++) {
-                let c = inputVal[i].toUpperCase();
-                let next = null;
-                let log = "";
-
-                if (cur === "S_0" && c === "N") { next = "S_1"; log = "Landcode letter 'N' gelezen -> S₁." }
-                else if (cur === "S_1" && c === "L") { next = "S_2"; log = "Landcode letter 'L' gelezen (compleet 'NL') -> S₂." }
-                else if (cur === "S_2" && c >= "0" && c <= "9") { next = "S_3"; log = `Eerste controlegetal-cijfer '${c}' gelezen -> S₃.` }
-                else if (cur === "S_3" && c >= "0" && c <= "9") { next = "S_4"; log = `Tweede controlegetal-cijfer '${c}' gelezen -> S₄.` }
-                else if (cur === "S_4" && c === "I") { next = "S_5"; log = "Bankcode letter 'I' (tak ING) gelezen -> S₅." }
-                else if (cur === "S_5" && c === "N") { next = "S_6"; log = "Bankcode letter 'N' (tak ING) gelezen -> S₆." }
-                else if (cur === "S_6" && c === "G") { next = "S_8"; log = "Bankcode letter 'G' gelezen (ING compleet) -> Samenkomst S₈." }
-                else if (cur === "S_4" && c === "R") { next = "S_7"; log = "Bankcode letter 'R' (tak RAB) gelezen -> S₇." }
-                else if (cur === "S_7" && c === "A") { next = "S_7A"; log = "Bankcode letter 'A' (tak RAB) gelezen -> S₇ₐ." }
-                else if (cur === "S_7A" && c === "B") { next = "S_8"; log = "Bankcode letter 'B' gelezen (RAB compleet) -> Samenkomst S₈." }
-                else if ((cur === "S_8" || cur === "S_9") && c >= "0" && c <= "9") { next = "S_9"; log = `Rekeningcijfer '${c}' verwerkt -> S₉ (acceptatie).` }
-
-                if (next) {
-                    path.push({ state: next, log: log });
-                    cur = next;
-                } else {
-                    valid = false;
-                    failedChar = inputVal[i];
-                    failedIdx = i;
-                    break;
-                }
-            }
-
-            // Display trace
-            let formattedTrace = "";
-            for (let i = 0; i < inputVal.length; i++) {
-                if (!valid && i === failedIdx) {
-                    formattedTrace += `<span class="text-red-500 underline font-bold">${inputVal[i]}</span>`;
-                } else {
-                    formattedTrace += `<span class="text-emerald-400">${inputVal[i]}</span>`;
-                }
-            }
-            traceTextEl.innerHTML = formattedTrace;
-
-            if (!valid) {
-                stateEl.innerText = "Strand";
-                stateEl.className = "bg-red-950 text-red-300 border border-red-800 px-2 py-0.5 rounded";
-                
-                let explanation = `Geen transitie mogelijk vanuit ${cur.replace("_", "")}.`;
-                if (cur === "S_4") {
-                    explanation = `Fout: Alleen bankcode 'ING' of 'RAB' is toegestaan na de cijfers.`;
-                } else if (cur === "S_8") {
-                    explanation = `Fout: Er moet minimaal 1 cijfer volgen na de bankcode.`;
-                }
-                logEl.innerHTML = `<span class="text-red-400">Fout bij '${failedChar}' (positie ${failedIdx+1}): ${explanation}</span>`;
-                statusBoxEl.className = "bg-slate-900 rounded-lg p-2.5 font-mono text-[11px] space-y-1.5 min-h-[90px] flex flex-col justify-center border border-red-900/50";
-            } else {
-                stateEl.innerText = cur.replace("_", "");
-                if (cur === "S_9") {
-                    stateEl.className = "bg-emerald-950 text-emerald-300 border border-emerald-800 px-2 py-0.5 rounded animate-pulse";
-                    logEl.innerHTML = `<span class="text-emerald-400">Gefeliciteerd: De invoer is volledig verwerkt en eindigt in acceptatietoestand S₉! (Geldige IBAN!)</span>`;
-                    statusBoxEl.className = "bg-slate-900 rounded-lg p-2.5 font-mono text-[11px] space-y-1.5 min-h-[90px] flex flex-col justify-center border border-emerald-900/50";
-                } else {
+                if (inputVal === "") {
+                    traceTextEl.innerText = "-";
+                    stateEl.innerText = "S_0";
                     stateEl.className = "bg-teal-950 text-teal-300 border border-teal-800 px-2 py-0.5 rounded";
-                    logEl.innerText = `Lopend: Momenteel in toestand ${cur.replace("_", "")}. Nog niet in eindtoestand S₉.`;
+                    logEl.innerText = "Voer een IBAN in om te scannen...";
                     statusBoxEl.className = "bg-slate-900 rounded-lg p-2.5 font-mono text-[11px] space-y-1.5 min-h-[90px] flex flex-col justify-center text-slate-300";
+                    return;
                 }
-            }
-        }
 
-        // --- Tijd Validator Simulator logic ---
-        function runTimeValidator() {
-            const inputVal = document.getElementById('time-input').value.trim();
-            const traceTextEl = document.getElementById('time-trace-text');
-            const stateEl = document.getElementById('time-current-state');
-            const logEl = document.getElementById('time-feedback-log');
-            const statusBoxEl = document.getElementById('time-status-box');
+                let path = [{ state: "S_0", log: "Start in S₀." }];
+                let cur = "S_0";
+                let valid = true;
+                let failedChar = "";
+                let failedIdx = -1;
 
-            if (inputVal === "") {
-                traceTextEl.innerText = "-";
-                stateEl.innerText = "S_0";
-                stateEl.className = "bg-teal-950 text-teal-300 border border-teal-800 px-2 py-0.5 rounded";
-                logEl.innerText = "Voer een tijd in om te scannen...";
-                statusBoxEl.className = "bg-slate-900 rounded-lg p-2.5 font-mono text-[11px] space-y-1.5 min-h-[90px] flex flex-col justify-center text-slate-300";
-                return;
-            }
+                for (let i = 0; i < inputVal.length; i++) {
+                    let c = inputVal[i].toUpperCase();
+                    let next = null;
+                    let log = "";
 
-            let path = [{ state: "S_0", log: "Start in S₀." }];
-            let cur = "S_0";
-            let valid = true;
-            let failedChar = "";
-            let failedIdx = -1;
+                    if (cur === "S_0" && c === "N") { next = "S_1"; log = "Landcode letter 'N' gelezen -> S₁." }
+                    else if (cur === "S_1" && c === "L") { next = "S_2"; log = "Landcode letter 'L' gelezen (compleet 'NL') -> S₂." }
+                    else if (cur === "S_2" && c >= "0" && c <= "9") { next = "S_3"; log = `Eerste controlegetal-cijfer '${c}' gelezen -> S₃.` }
+                    else if (cur === "S_3" && c >= "0" && c <= "9") { next = "S_4"; log = `Tweede controlegetal-cijfer '${c}' gelezen -> S₄.` }
+                    else if (cur === "S_4" && c === "I") { next = "S_5"; log = "Bankcode letter 'I' (tak ING) gelezen -> S₅." }
+                    else if (cur === "S_5" && c === "N") { next = "S_6"; log = "Bankcode letter 'N' (tak ING) gelezen -> S₆." }
+                    else if (cur === "S_6" && c === "G") { next = "S_8"; log = "Bankcode letter 'G' gelezen (ING compleet) -> Samenkomst S₈." }
+                    else if (cur === "S_4" && c === "R") { next = "S_7"; log = "Bankcode letter 'R' (tak RAB) gelezen -> S₇." }
+                    else if (cur === "S_7" && c === "A") { next = "S_7A"; log = "Bankcode letter 'A' (tak RAB) gelezen -> S₇ₐ." }
+                    else if (cur === "S_7A" && c === "B") { next = "S_8"; log = "Bankcode letter 'B' gelezen (RAB compleet) -> Samenkomst S₈." }
+                    else if ((cur === "S_8" || cur === "S_9") && c >= "0" && c <= "9") { next = "S_9"; log = `Rekeningcijfer '${c}' verwerkt -> S₉ (acceptatie).` }
 
-            for (let i = 0; i < inputVal.length; i++) {
-                let c = inputVal[i];
-                let next = null;
-                let log = "";
+                    if (next) {
+                        path.push({ state: next, log: log });
+                        cur = next;
+                    } else {
+                        valid = false;
+                        failedChar = inputVal[i];
+                        failedIdx = i;
+                        break;
+                    }
+                }
 
-                if (cur === "S_0" && (c === "0" || c === "1")) { next = "S_1"; log = `Eerste uur-cijfer '${c}' gelezen -> S₁.` }
-                else if (cur === "S_0" && c === "2") { next = "S_2"; log = "Eerste uur-cijfer '2' gelezen -> S₂ (maximaal 23:59)." }
-                else if (cur === "S_1" && c >= "0" && c <= "9") { next = "S_3"; log = `Tweede uur-cijfer '${c}' gelezen -> S₃.` }
-                else if (cur === "S_2" && c >= "0" && c <= "3") { next = "S_3"; log = `Tweede uur-cijfer '${c}' gelezen (geldig na een 2) -> S₃.` }
-                else if (cur === "S_3" && c === ":") { next = "S_4"; log = "Dubbele punt ':' gelezen -> S₄." }
-                else if (cur === "S_4" && c >= "0" && c <= "5") { next = "S_5"; log = `Tiental minuten '${c}' gelezen (0 t/m 5) -> S₅.` }
-                else if (cur === "S_5" && c >= "0" && c <= "9") { next = "S_6"; log = `Eenheid minuten '${c}' gelezen -> S₆ (eindtoestand).` }
+                // Display trace
+                let formattedTrace = "";
+                for (let i = 0; i < inputVal.length; i++) {
+                    if (!valid && i === failedIdx) {
+                        formattedTrace += `<span class="text-red-500 underline font-bold">${inputVal[i]}</span>`;
+                    } else {
+                        formattedTrace += `<span class="text-emerald-400">${inputVal[i]}</span>`;
+                    }
+                }
+                traceTextEl.innerHTML = formattedTrace;
 
-                if (next) {
-                    path.push({ state: next, log: log });
-                    cur = next;
+                if (!valid) {
+                    stateEl.innerText = "Strand";
+                    stateEl.className = "bg-red-950 text-red-300 border border-red-800 px-2 py-0.5 rounded";
+
+                    let explanation = `Geen transitie mogelijk vanuit ${cur.replace("_", "")}.`;
+                    if (cur === "S_4") {
+                        explanation = `Fout: Alleen bankcode 'ING' of 'RAB' is toegestaan na de cijfers.`;
+                    } else if (cur === "S_8") {
+                        explanation = `Fout: Er moet minimaal 1 cijfer volgen na de bankcode.`;
+                    }
+                    logEl.innerHTML = `<span class="text-red-400">Fout bij '${failedChar}' (positie ${failedIdx + 1}): ${explanation}</span>`;
+                    statusBoxEl.className = "bg-slate-900 rounded-lg p-2.5 font-mono text-[11px] space-y-1.5 min-h-[90px] flex flex-col justify-center border border-red-900/50";
                 } else {
-                    valid = false;
-                    failedChar = inputVal[i];
-                    failedIdx = i;
-                    break;
+                    stateEl.innerText = cur.replace("_", "");
+                    if (cur === "S_9") {
+                        stateEl.className = "bg-emerald-950 text-emerald-300 border border-emerald-800 px-2 py-0.5 rounded animate-pulse";
+                        logEl.innerHTML = `<span class="text-emerald-400">Gefeliciteerd: De invoer is volledig verwerkt en eindigt in acceptatietoestand S₉! (Geldige IBAN!)</span>`;
+                        statusBoxEl.className = "bg-slate-900 rounded-lg p-2.5 font-mono text-[11px] space-y-1.5 min-h-[90px] flex flex-col justify-center border border-emerald-900/50";
+                    } else {
+                        stateEl.className = "bg-teal-950 text-teal-300 border border-teal-800 px-2 py-0.5 rounded";
+                        logEl.innerText = `Lopend: Momenteel in toestand ${cur.replace("_", "")}. Nog niet in eindtoestand S₉.`;
+                        statusBoxEl.className = "bg-slate-900 rounded-lg p-2.5 font-mono text-[11px] space-y-1.5 min-h-[90px] flex flex-col justify-center text-slate-300";
+                    }
                 }
             }
 
-            // Display trace
-            let formattedTrace = "";
-            for (let i = 0; i < inputVal.length; i++) {
-                if (!valid && i === failedIdx) {
-                    formattedTrace += `<span class="text-red-500 underline">${inputVal[i]}</span>`;
-                } else {
-                    formattedTrace += `<span class="text-emerald-400">${inputVal[i]}</span>`;
-                }
-            }
-            traceTextEl.innerHTML = formattedTrace;
+            // --- Tijd Validator Simulator logic ---
+            function runTimeValidator() {
+                const inputVal = document.getElementById('time-input').value.trim();
+                const traceTextEl = document.getElementById('time-trace-text');
+                const stateEl = document.getElementById('time-current-state');
+                const logEl = document.getElementById('time-feedback-log');
+                const statusBoxEl = document.getElementById('time-status-box');
 
-            if (!valid) {
-                stateEl.innerText = "Strand";
-                stateEl.className = "bg-red-950 text-red-300 border border-red-800 px-2 py-0.5 rounded";
-                
-                let explanation = `Geen transitie mogelijk vanuit ${cur.replace("_", "")}.`;
-                if (cur === "S_2" && c >= "4" && c <= "9") {
-                    explanation = `Fout: Na een '2' mag het uur-cijfer maximaal '3' zijn (om uren zoals 24:00 of 29:00 te voorkomen!).`;
-                } else if (cur === "S_4" && c >= "6" && c <= "9") {
-                    explanation = `Fout: Minuten-tientallen kunnen maximaal '5' zijn (om tijden zoals 12:60 te voorkomen!).`;
-                }
-                logEl.innerHTML = `<span class="text-red-400">Fout bij '${failedChar}' (positie ${failedIdx+1}): ${explanation}</span>`;
-                statusBoxEl.className = "bg-slate-900 rounded-lg p-2.5 font-mono text-[11px] space-y-1.5 min-h-[90px] flex flex-col justify-center border border-red-900/50";
-            } else {
-                stateEl.innerText = cur.replace("_", "");
-                if (cur === "S_6") {
-                    stateEl.className = "bg-emerald-950 text-emerald-300 border border-emerald-800 px-2 py-0.5 rounded animate-pulse";
-                    logEl.innerHTML = `<span class="text-emerald-400">Gefeliciteerd: De invoer is volledig verwerkt en eindigt in acceptatietoestand S₆! (Geldige tijd!)</span>`;
-                    statusBoxEl.className = "bg-slate-900 rounded-lg p-2.5 font-mono text-[11px] space-y-1.5 min-h-[90px] flex flex-col justify-center border border-emerald-900/50";
-                } else {
+                if (inputVal === "") {
+                    traceTextEl.innerText = "-";
+                    stateEl.innerText = "S_0";
                     stateEl.className = "bg-teal-950 text-teal-300 border border-teal-800 px-2 py-0.5 rounded";
-                    logEl.innerText = `Lopend: Momenteel in toestand ${cur.replace("_", "")}. Nog niet in eindtoestand S₆.`;
+                    logEl.innerText = "Voer een tijd in om te scannen...";
                     statusBoxEl.className = "bg-slate-900 rounded-lg p-2.5 font-mono text-[11px] space-y-1.5 min-h-[90px] flex flex-col justify-center text-slate-300";
+                    return;
+                }
+
+                let path = [{ state: "S_0", log: "Start in S₀." }];
+                let cur = "S_0";
+                let valid = true;
+                let failedChar = "";
+                let failedIdx = -1;
+
+                for (let i = 0; i < inputVal.length; i++) {
+                    let c = inputVal[i];
+                    let next = null;
+                    let log = "";
+
+                    if (cur === "S_0" && (c === "0" || c === "1")) { next = "S_1"; log = `Eerste uur-cijfer '${c}' gelezen -> S₁.` }
+                    else if (cur === "S_0" && c === "2") { next = "S_2"; log = "Eerste uur-cijfer '2' gelezen -> S₂ (maximaal 23:59)." }
+                    else if (cur === "S_1" && c >= "0" && c <= "9") { next = "S_3"; log = `Tweede uur-cijfer '${c}' gelezen -> S₃.` }
+                    else if (cur === "S_2" && c >= "0" && c <= "3") { next = "S_3"; log = `Tweede uur-cijfer '${c}' gelezen (geldig na een 2) -> S₃.` }
+                    else if (cur === "S_3" && c === ":") { next = "S_4"; log = "Dubbele punt ':' gelezen -> S₄." }
+                    else if (cur === "S_4" && c >= "0" && c <= "5") { next = "S_5"; log = `Tiental minuten '${c}' gelezen (0 t/m 5) -> S₅.` }
+                    else if (cur === "S_5" && c >= "0" && c <= "9") { next = "S_6"; log = `Eenheid minuten '${c}' gelezen -> S₆ (eindtoestand).` }
+
+                    if (next) {
+                        path.push({ state: next, log: log });
+                        cur = next;
+                    } else {
+                        valid = false;
+                        failedChar = inputVal[i];
+                        failedIdx = i;
+                        break;
+                    }
+                }
+
+                // Display trace
+                let formattedTrace = "";
+                for (let i = 0; i < inputVal.length; i++) {
+                    if (!valid && i === failedIdx) {
+                        formattedTrace += `<span class="text-red-500 underline">${inputVal[i]}</span>`;
+                    } else {
+                        formattedTrace += `<span class="text-emerald-400">${inputVal[i]}</span>`;
+                    }
+                }
+                traceTextEl.innerHTML = formattedTrace;
+
+                if (!valid) {
+                    stateEl.innerText = "Strand";
+                    stateEl.className = "bg-red-950 text-red-300 border border-red-800 px-2 py-0.5 rounded";
+
+                    let explanation = `Geen transitie mogelijk vanuit ${cur.replace("_", "")}.`;
+                    if (cur === "S_2" && c >= "4" && c <= "9") {
+                        explanation = `Fout: Na een '2' mag het uur-cijfer maximaal '3' zijn (om uren zoals 24:00 of 29:00 te voorkomen!).`;
+                    } else if (cur === "S_4" && c >= "6" && c <= "9") {
+                        explanation = `Fout: Minuten-tientallen kunnen maximaal '5' zijn (om tijden zoals 12:60 te voorkomen!).`;
+                    }
+                    logEl.innerHTML = `<span class="text-red-400">Fout bij '${failedChar}' (positie ${failedIdx + 1}): ${explanation}</span>`;
+                    statusBoxEl.className = "bg-slate-900 rounded-lg p-2.5 font-mono text-[11px] space-y-1.5 min-h-[90px] flex flex-col justify-center border border-red-900/50";
+                } else {
+                    stateEl.innerText = cur.replace("_", "");
+                    if (cur === "S_6") {
+                        stateEl.className = "bg-emerald-950 text-emerald-300 border border-emerald-800 px-2 py-0.5 rounded animate-pulse";
+                        logEl.innerHTML = `<span class="text-emerald-400">Gefeliciteerd: De invoer is volledig verwerkt en eindigt in acceptatietoestand S₆! (Geldige tijd!)</span>`;
+                        statusBoxEl.className = "bg-slate-900 rounded-lg p-2.5 font-mono text-[11px] space-y-1.5 min-h-[90px] flex flex-col justify-center border border-emerald-900/50";
+                    } else {
+                        stateEl.className = "bg-teal-950 text-teal-300 border border-teal-800 px-2 py-0.5 rounded";
+                        logEl.innerText = `Lopend: Momenteel in toestand ${cur.replace("_", "")}. Nog niet in eindtoestand S₆.`;
+                        statusBoxEl.className = "bg-slate-900 rounded-lg p-2.5 font-mono text-[11px] space-y-1.5 min-h-[90px] flex flex-col justify-center text-slate-300";
+                    }
                 }
             }
-        }
-    </script>
+        </script>
 </body>
 
 </html>
