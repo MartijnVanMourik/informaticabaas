@@ -47,7 +47,7 @@
                 <div class="lg:col-span-2 bg-slate-50 border border-slate-200 rounded-xl p-3 flex flex-col justify-between h-[270px]">
                     <span class="text-[10px] font-bold text-slate-400 uppercase block mb-1">Toestandsdiagram</span>
                     <div class="overflow-x-auto overflow-y-hidden flex-grow flex items-center">
-                        <svg class="w-full min-w-[700px] h-[160px]" viewBox="0 0 760 160" id="svg-kenteken">
+                        <svg class="w-full min-w-[680px] h-[160px]" viewBox="0 0 720 160" id="svg-kenteken">
                             <defs>
                                 <marker id="k-arrow" viewBox="0 0 10 10" refX="22" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
                                     <path d="M 0 0 L 10 5 L 0 10 z" fill="#94a3b8" />
@@ -57,64 +57,64 @@
                                 </marker>
                             </defs>
 
-                            <!-- Transities -->
-                            <line id="k-edge-0" x1="60" y1="80" x2="140" y2="80" stroke="#94a3b8" stroke-width="2" marker-end="url(#k-arrow)" />
-                            <line id="k-edge-1" x1="140" y1="80" x2="220" y2="80" stroke="#94a3b8" stroke-width="2" marker-end="url(#k-arrow)" />
-                            <line id="k-edge-2" x1="220" y1="80" x2="300" y2="80" stroke="#94a3b8" stroke-width="2" marker-end="url(#k-arrow)" />
-                            <line id="k-edge-3" x1="300" y1="80" x2="380" y2="80" stroke="#94a3b8" stroke-width="2" marker-end="url(#k-arrow)" />
-                            <line id="k-edge-4" x1="380" y1="80" x2="460" y2="80" stroke="#94a3b8" stroke-width="2" marker-end="url(#k-arrow)" />
-                            <line id="k-edge-5" x1="460" y1="80" x2="540" y2="80" stroke="#94a3b8" stroke-width="2" marker-end="url(#k-arrow)" />
-                            <line id="k-edge-6" x1="540" y1="80" x2="620" y2="80" stroke="#94a3b8" stroke-width="2" marker-end="url(#k-arrow)" />
-                            <line id="k-edge-7" x1="620" y1="80" x2="700" y2="80" stroke="#94a3b8" stroke-width="2" marker-end="url(#k-arrow)" />
+                            <!-- Transities (9 nodes, spacing 75px, totaal ~700px) -->
+                            <line id="k-edge-0" x1="35" y1="80" x2="105" y2="80" stroke="#94a3b8" stroke-width="2" marker-end="url(#k-arrow)" />
+                            <line id="k-edge-1" x1="105" y1="80" x2="180" y2="80" stroke="#94a3b8" stroke-width="2" marker-end="url(#k-arrow)" />
+                            <line id="k-edge-2" x1="180" y1="80" x2="255" y2="80" stroke="#94a3b8" stroke-width="2" marker-end="url(#k-arrow)" />
+                            <line id="k-edge-3" x1="255" y1="80" x2="330" y2="80" stroke="#94a3b8" stroke-width="2" marker-end="url(#k-arrow)" />
+                            <line id="k-edge-4" x1="330" y1="80" x2="405" y2="80" stroke="#94a3b8" stroke-width="2" marker-end="url(#k-arrow)" />
+                            <line id="k-edge-5" x1="405" y1="80" x2="480" y2="80" stroke="#94a3b8" stroke-width="2" marker-end="url(#k-arrow)" />
+                            <line id="k-edge-6" x1="480" y1="80" x2="555" y2="80" stroke="#94a3b8" stroke-width="2" marker-end="url(#k-arrow)" />
+                            <line id="k-edge-7" x1="555" y1="80" x2="630" y2="80" stroke="#94a3b8" stroke-width="2" marker-end="url(#k-arrow)" />
 
-                            <!-- Toestanden -->
+                            <!-- Toestanden (x: 35+n*75 voor n=0..7, eindtoestand n=8 op 650) -->
                             <g id="k-node-0" class="cursor-pointer" onclick="selectKentekenNode(0)">
-                                <circle cx="60" cy="80" r="20" fill="white" stroke="#64748b" stroke-width="2.5" />
-                                <text x="60" y="84" text-anchor="middle" font-size="10" font-weight="bold" fill="#1e293b">S₀</text>
+                                <circle cx="35" cy="80" r="18" fill="white" stroke="#64748b" stroke-width="2.5" />
+                                <text x="35" y="84" text-anchor="middle" font-size="10" font-weight="bold" fill="#1e293b">S₀</text>
                             </g>
                             <g id="k-node-1" class="cursor-pointer" onclick="selectKentekenNode(1)">
-                                <circle cx="140" cy="80" r="20" fill="white" stroke="#94a3b8" stroke-width="2" />
-                                <text x="140" y="84" text-anchor="middle" font-size="10" fill="#1e293b">S₁</text>
+                                <circle cx="105" cy="80" r="18" fill="white" stroke="#94a3b8" stroke-width="2" />
+                                <text x="105" y="84" text-anchor="middle" font-size="10" fill="#1e293b">S₁</text>
                             </g>
                             <g id="k-node-2" class="cursor-pointer" onclick="selectKentekenNode(2)">
-                                <circle cx="220" cy="80" r="20" fill="white" stroke="#94a3b8" stroke-width="2" />
-                                <text x="220" y="84" text-anchor="middle" font-size="10" fill="#1e293b">S₂</text>
+                                <circle cx="180" cy="80" r="18" fill="white" stroke="#94a3b8" stroke-width="2" />
+                                <text x="180" y="84" text-anchor="middle" font-size="10" fill="#1e293b">S₂</text>
                             </g>
                             <g id="k-node-3" class="cursor-pointer" onclick="selectKentekenNode(3)">
-                                <circle cx="300" cy="80" r="20" fill="white" stroke="#94a3b8" stroke-width="2" />
-                                <text x="300" y="84" text-anchor="middle" font-size="10" fill="#1e293b">S₃</text>
+                                <circle cx="255" cy="80" r="18" fill="white" stroke="#94a3b8" stroke-width="2" />
+                                <text x="255" y="84" text-anchor="middle" font-size="10" fill="#1e293b">S₃</text>
                             </g>
                             <g id="k-node-4" class="cursor-pointer" onclick="selectKentekenNode(4)">
-                                <circle cx="380" cy="80" r="20" fill="white" stroke="#94a3b8" stroke-width="2" />
-                                <text x="380" y="84" text-anchor="middle" font-size="10" fill="#1e293b">S₄</text>
+                                <circle cx="330" cy="80" r="18" fill="white" stroke="#94a3b8" stroke-width="2" />
+                                <text x="330" y="84" text-anchor="middle" font-size="10" fill="#1e293b">S₄</text>
                             </g>
                             <g id="k-node-5" class="cursor-pointer" onclick="selectKentekenNode(5)">
-                                <circle cx="460" cy="80" r="20" fill="white" stroke="#94a3b8" stroke-width="2" />
-                                <text x="460" y="84" text-anchor="middle" font-size="10" fill="#1e293b">S₅</text>
+                                <circle cx="405" cy="80" r="18" fill="white" stroke="#94a3b8" stroke-width="2" />
+                                <text x="405" y="84" text-anchor="middle" font-size="10" fill="#1e293b">S₅</text>
                             </g>
                             <g id="k-node-6" class="cursor-pointer" onclick="selectKentekenNode(6)">
-                                <circle cx="540" cy="80" r="20" fill="white" stroke="#94a3b8" stroke-width="2" />
-                                <text x="540" y="84" text-anchor="middle" font-size="10" fill="#1e293b">S₆</text>
+                                <circle cx="480" cy="80" r="18" fill="white" stroke="#94a3b8" stroke-width="2" />
+                                <text x="480" y="84" text-anchor="middle" font-size="10" fill="#1e293b">S₆</text>
                             </g>
                             <g id="k-node-7" class="cursor-pointer" onclick="selectKentekenNode(7)">
-                                <circle cx="620" cy="80" r="20" fill="white" stroke="#94a3b8" stroke-width="2" />
-                                <text x="620" y="84" text-anchor="middle" font-size="10" fill="#1e293b">S₇</text>
+                                <circle cx="555" cy="80" r="18" fill="white" stroke="#94a3b8" stroke-width="2" />
+                                <text x="555" y="84" text-anchor="middle" font-size="10" fill="#1e293b">S₇</text>
                             </g>
                             <g id="k-node-8" class="cursor-pointer" onclick="selectKentekenNode(8)">
-                                <circle cx="700" cy="80" r="20" fill="white" stroke="#94a3b8" stroke-width="2" />
-                                <circle cx="700" cy="80" r="16" fill="none" stroke="#94a3b8" stroke-width="1.5" />
-                                <text x="700" y="84" text-anchor="middle" font-size="10" fill="#1e293b">S₈</text>
+                                <circle cx="650" cy="80" r="18" fill="white" stroke="#94a3b8" stroke-width="2" />
+                                <circle cx="650" cy="80" r="14" fill="none" stroke="#94a3b8" stroke-width="1.5" />
+                                <text x="650" y="84" text-anchor="middle" font-size="10" fill="#1e293b">S₈</text>
                             </g>
 
                             <!-- Labels -->
-                            <text x="100" y="70" text-anchor="middle" font-size="9" font-weight="bold" fill="#64748b">letter</text>
-                            <text x="180" y="70" text-anchor="middle" font-size="9" font-weight="bold" fill="#64748b">letter</text>
-                            <text x="260" y="70" text-anchor="middle" font-size="9" font-weight="bold" fill="#64748b">-</text>
-                            <text x="340" y="70" text-anchor="middle" font-size="9" font-weight="bold" fill="#64748b">cijfer</text>
-                            <text x="420" y="70" text-anchor="middle" font-size="9" font-weight="bold" fill="#64748b">cijfer</text>
-                            <text x="500" y="70" text-anchor="middle" font-size="9" font-weight="bold" fill="#64748b">cijfer</text>
-                            <text x="580" y="70" text-anchor="middle" font-size="9" font-weight="bold" fill="#64748b">-</text>
-                            <text x="660" y="70" text-anchor="middle" font-size="9" font-weight="bold" fill="#64748b">letter</text>
+                            <text x="70" y="68" text-anchor="middle" font-size="9" font-weight="bold" fill="#64748b">letter</text>
+                            <text x="142" y="68" text-anchor="middle" font-size="9" font-weight="bold" fill="#64748b">letter</text>
+                            <text x="217" y="68" text-anchor="middle" font-size="9" font-weight="bold" fill="#64748b">-</text>
+                            <text x="292" y="68" text-anchor="middle" font-size="9" font-weight="bold" fill="#64748b">cijfer</text>
+                            <text x="367" y="68" text-anchor="middle" font-size="9" font-weight="bold" fill="#64748b">cijfer</text>
+                            <text x="442" y="68" text-anchor="middle" font-size="9" font-weight="bold" fill="#64748b">cijfer</text>
+                            <text x="517" y="68" text-anchor="middle" font-size="9" font-weight="bold" fill="#64748b">-</text>
+                            <text x="600" y="68" text-anchor="middle" font-size="9" font-weight="bold" fill="#64748b">letter</text>
                         </svg>
                     </div>
                 </div>
@@ -145,7 +145,7 @@
                 <div class="lg:col-span-2 bg-slate-50 border border-slate-200 rounded-xl p-3 flex flex-col justify-between h-[270px]">
                     <span class="text-[10px] font-bold text-slate-400 uppercase block mb-1">Toestandsdiagram</span>
                     <div class="overflow-x-auto overflow-y-hidden flex-grow flex items-center">
-                        <svg class="w-full min-w-[700px] h-[160px]" viewBox="0 0 680 160" id="svg-wachtwoord">
+                        <svg class="w-full min-w-[640px] h-[160px]" viewBox="0 0 680 160" id="svg-wachtwoord">
                             <defs>
                                 <marker id="w-arrow" viewBox="0 0 10 10" refX="22" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
                                     <path d="M 0 0 L 10 5 L 0 10 z" fill="#94a3b8" />
@@ -237,7 +237,7 @@
                 <div class="lg:col-span-2 bg-slate-50 border border-slate-200 rounded-xl p-3 flex flex-col justify-between h-[270px]">
                     <span class="text-[10px] font-bold text-slate-400 uppercase block mb-1">Toestandsdiagram</span>
                     <div class="overflow-x-auto overflow-y-hidden flex-grow flex items-center">
-                        <svg class="w-full min-w-[700px] h-[160px]" viewBox="0 0 710 160" id="svg-iban">
+                        <svg class="w-full min-w-[680px] h-[160px]" viewBox="0 0 710 160" id="svg-iban">
                             <defs>
                                 <marker id="i-arrow" viewBox="0 0 10 10" refX="22" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
                                     <path d="M 0 0 L 10 5 L 0 10 z" fill="#94a3b8" />
@@ -365,7 +365,7 @@
                 <div class="lg:col-span-2 bg-slate-50 border border-slate-200 rounded-xl p-3 flex flex-col justify-between h-[270px]">
                     <span class="text-[10px] font-bold text-slate-400 uppercase block mb-1">Toestandsdiagram</span>
                     <div class="overflow-x-auto overflow-y-hidden flex-grow flex items-center">
-                        <svg class="w-full min-w-[700px] h-[160px]" viewBox="0 0 620 160" id="svg-tijd">
+                        <svg class="w-full min-w-[580px] h-[160px]" viewBox="0 0 620 160" id="svg-tijd">
                             <defs>
                                 <marker id="t-arrow" viewBox="0 0 10 10" refX="22" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
                                     <path d="M 0 0 L 10 5 L 0 10 z" fill="#94a3b8" />
