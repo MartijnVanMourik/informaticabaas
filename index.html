@@ -400,7 +400,7 @@
                     <p class="text-slate-600 mb-4">
                         In deze les kijken we direct naar de casus uit de lesbrief <strong>"Les 1 &amp; 2 - Eindige
                             automaten en een nooddienstregeling bij de spoorwegen.pdf"</strong>. Bij Code Rood rijden
-                        treinen alleen over specifieke trajecten gemarkeerd met de letters $A$ of $B$.
+                        treinen alleen over specifieke trajecten gemarkeerd met de letters <strong>A</strong> of <strong>B</strong>.
                     </p>
 
                     <div class="bg-teal-50 border border-teal-100 rounded-xl p-4 mb-4 text-sm text-teal-800">
@@ -593,44 +593,20 @@
             <section id="tab-les5" class="space-y-6 hidden">
                 <div class="bg-white rounded-2xl border border-slate-200 p-6 shadow-sm">
                     <span class="text-xs font-bold text-teal-600 uppercase tracking-widest">Les 5 &bull; Theorie &amp; Beperking</span>
-                    <h2 class="text-2xl font-bold text-slate-900 mt-1 mb-4">De Beperkingen van Eindige Automaten</h2>
-                    <p class="text-slate-600 text-sm leading-relaxed mb-4">
+                    <h2 class="text-2xl font-bold text-slate-900 mt-1 mb-2">De Beperkingen van Eindige Automaten</h2>
+                    <p class="text-slate-600 text-sm leading-relaxed">
                         Hoewel eindige automaten krachtig zijn voor het genereren en controleren van gestructureerde patronen (zoals postcodes of telefoonnummers), hebben ze één fundamentele zwakte: <strong>een eindige automaat heeft geen extern geheugen</strong>. Hij 'weet' alleen in welke toestand hij zich op dit moment bevindt; hij kan niet onthouden hoe vaak hij ergens is geweest of wat hij eerder heeft verwerkt.
                     </p>
-
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 my-6">
-                        <div class="p-4 border border-slate-200 rounded-xl bg-slate-50">
-                            <h4 class="font-bold text-slate-950 text-sm">❌ Geen HTML-parsing</h4>
-                            <p class="text-xs text-slate-600 mt-1 leading-relaxed">
-                                Een automaat kan controleren of simpele HTML-tags openen en sluiten (zoals <code>&lt;h1&gt; tekst &lt;/h1&gt;</code>). Maar hij kan niet <em>onthouden</em> welke tag hij als eerste heeft geopend om te verifiëren of de sluitingstag exact dezelfde is. Hij kan geen willekeurige HTML valideren.
-                            </p>
-                        </div>
-                        <div class="p-4 border border-slate-200 rounded-xl bg-slate-50">
-                            <h4 class="font-bold text-slate-950 text-sm">❌ Geen recursieve berekeningen</h4>
-                            <p class="text-xs text-slate-600 mt-1 leading-relaxed">
-                                Controleren of de haakjes in een rekensom sluiten, bijv. <code>( ( 4 + 2 ) * 3 )</code>, is onmogelijk voor een FSM omdat de automaat moet onthouden hoe vaak hij een openend haakje heeft gezien om te matchen met een sluitend haakje. Hiervoor moet hij oneindig ver kunnen tellen, wat niet kan met een eindig aantal toestanden.
-                            </p>
-                        </div>
-                    </div>
                 </div>
 
-                <!-- Quiz Les 5 -->
-                <div class="bg-white rounded-2xl border border-slate-200 p-6 shadow-sm">
-                    <h3 class="text-xl font-bold text-slate-900 mb-4">✏️ Zelf-test: Les 5</h3>
-                    <div class="space-y-4">
-                        <div>
-                            <p class="text-sm font-semibold text-slate-700 mb-2">Vraag 1: Waarom kan een eindige automaat *niet* controleren of de haakjes in een ingewikkelde wiskundige vergelijking correct sluiten?</p>
-                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
-                                <button onclick="checkAnswer('q5', 'incorrect')" id="btn-q5-incorrect"
-                                    class="p-3 text-left border rounded-xl text-sm hover:bg-slate-50 transition">A)
-                                    Omdat wiskundige vergelijkingen te lang zijn.</button>
-                                <button onclick="checkAnswer('q5', 'correct')" id="btn-q5-correct"
-                                    class="p-3 text-left border rounded-xl text-sm hover:bg-slate-50 transition">B)
-                                    Omdat de automaat niet kan tellen of dynamisch onthouden hoeveel haakjes geopend zijn.</button>
-                            </div>
-                            <div id="feedback-q5" class="mt-2 text-xs font-medium hidden"></div>
-                        </div>
-                    </div>
+                <!-- Standalone Module Embed (Theorie, Visualisatie & Quiz) -->
+                <div class="my-4">
+                    <iframe
+                        src="embeds/beperkingen.html"
+                        style="width: 100%; border: none; border-radius: 16px; box-shadow: 0 1px 3px rgba(0,0,0,0.1), 0 1px 2px rgba(0,0,0,0.1); background: transparent; height: 1400px; overflow: hidden;"
+                        title="HTML-Parser: FSM versus stack demo"
+                        onload="try { this.style.height = this.contentWindow.document.documentElement.scrollHeight + 'px'; } catch(e) {}">
+                    </iframe>
                 </div>
             </section>
 
@@ -961,10 +937,6 @@
             q4: {
                 correct: "Uitstekend! Het woord 'eindig' slaat uitsluitend op het aantal *toestanden* (cirkels) van de automaat, niet op de lengte of hoeveelheid van de mogelijke strings.",
                 incorrect: "Nee, de automaat kan in theorie oneindig lange strings genereren (bijv. door loops)."
-            },
-            q5: {
-                correct: "Super! Omdat een FSM geen dynamische teller of stackgeheugen heeft, kan hij niet bijhouden hoeveel haakjes hij nog moet sluiten. Hiervoor is een Pushdown Automaat (PDA) nodig.",
-                incorrect: "Nee, lengte is geen wiskundige beperking voor de theorie. Het gebrek aan geheugen is de boosdoener."
             }
         };
 

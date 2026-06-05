@@ -1,0 +1,772 @@
+<!DOCTYPE html>
+<html lang="nl">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HTML Validator: FSM vs. Stack - Grondslagen (B3)</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+
+        .node-highlight-active {
+            filter: drop-shadow(0 0 4px rgba(13, 148, 136, 0.4));
+        }
+
+        .node-highlight-error {
+            filter: drop-shadow(0 0 4px rgba(239, 68, 68, 0.4));
+        }
+
+        .stack-block {
+            animation: slideDown 0.2s ease-out;
+        }
+
+        @keyframes slideDown {
+            from {
+                transform: translateY(-8px);
+                opacity: 0;
+            }
+
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+    </style>
+</head>
+
+<body class="bg-transparent text-slate-800 antialiased p-2">
+
+    <div class="bg-white rounded-2xl border border-slate-200 p-4 md:p-6 shadow-sm space-y-5 max-w-7xl mx-auto w-full">
+        <!-- Header -->
+        <div class="border-b border-slate-100 pb-3">
+            <span class="text-[10px] font-bold text-teal-600 uppercase tracking-widest">Les 5 &bull; Theorie &amp;
+                Beperking</span>
+            <h2 class="text-xl font-bold text-slate-900 mt-1 leading-tight font-sans">🌐 HTML-Parser: Waarom een FSM
+                geen HTML snapt</h2>
+            <p class="text-xs text-slate-500 mt-1.5 leading-relaxed">
+                HTML-tags moeten in de juiste volgorde openen en sluiten (zoals
+                <code>&lt;div&gt;&lt;span&gt;&lt;/span&gt;&lt;/div&gt;</code>). Ontdek waarom een FSM dit niet kan
+                controleren, en een computer met een <strong>stapelgeheugen (stack)</strong> wel.
+            </p>
+        </div>
+
+        <!-- Theorie-kaarten over beperkingen -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div class="p-4 border border-slate-200 rounded-xl bg-slate-50">
+                <h4 class="font-bold text-slate-950 text-sm">❌ Geen HTML-parsing</h4>
+                <p class="text-xs text-slate-600 mt-1 leading-relaxed">
+                    Een automaat kan controleren of simpele HTML-tags openen en sluiten (zoals
+                    <code>&lt;h1&gt; tekst &lt;/h1&gt;</code>). Maar hij kan niet <em>onthouden</em> welke tag hij als
+                    eerste heeft geopend om te verifiëren of de sluitingstag exact dezelfde is. Hij kan geen
+                    willekeurige HTML valideren.
+                </p>
+            </div>
+            <div class="p-4 border border-slate-200 rounded-xl bg-slate-50">
+                <h4 class="font-bold text-slate-950 text-sm">❌ Geen recursieve berekeningen</h4>
+                <p class="text-xs text-slate-600 mt-1 leading-relaxed">
+                    Controleren of de haakjes in een rekensom sluiten, bijv. <code>( ( 4 + 2 ) * 3 )</code>, is
+                    onmogelijk voor een FSM omdat de automaat moet onthouden hoe vaak hij een openend haakje heeft
+                    gezien om te matchen met een sluitend haakje. Hiervoor moet hij oneindig ver kunnen tellen, wat niet
+                    kan met een eindig aantal toestanden.
+                </p>
+            </div>
+        </div>
+
+        <!-- Invoer & Snelkeuzes -->
+        <div class="space-y-3 pt-2 border-t border-slate-100">
+            <div>
+                <label class="text-[10px] font-bold text-slate-400 uppercase tracking-wider block mb-1">Typ hier je
+                    HTML-tags</label>
+                <input type="text" id="expr-input" value="&lt;div&gt;&lt;span&gt;tekst&lt;/div&gt;"
+                    class="w-full px-3 py-2.5 border border-slate-200 rounded-xl font-mono text-sm focus:ring-2 focus:ring-teal-500 focus:outline-none"
+                    placeholder="Typ bijv. <div><span>tekst</span></div>" oninput="validateExpression()">
+            </div>
+            <div>
+                <span class="text-[10px] font-bold text-slate-400 uppercase tracking-wider block mb-1.5">Snelkeuze
+                    (Testcases)</span>
+                <div class="flex flex-wrap gap-2">
+                    <button onclick="setExample('<div><span>tekst</div>')"
+                        class="px-3 py-2 bg-slate-50 hover:bg-slate-100 text-slate-700 text-xs font-semibold rounded-lg border border-slate-200 transition text-left">
+                        Openstaande tag
+                    </button>
+                    <button onclick="setExample('<div>tekst</span>')"
+                        class="px-3 py-2 bg-slate-50 hover:bg-slate-100 text-slate-700 text-xs font-semibold rounded-lg border border-slate-200 transition text-left">
+                        Verkeerde sluitende tag
+                    </button>
+                    <button onclick="setExample('<div><span>tekst</span></div>')"
+                        class="px-3 py-2 bg-slate-50 hover:bg-slate-100 text-slate-700 text-xs font-semibold rounded-lg border border-slate-200 transition text-left">
+                        Correct genest
+                    </button>
+                    <button onclick="setExample('<div><span>tekst</div></span>')"
+                        class="px-3 py-2 bg-slate-50 hover:bg-slate-100 text-slate-700 text-xs font-semibold rounded-lg border border-slate-200 transition text-left">
+                        Kruislingse nesting
+                    </button>
+                    <button onclick="setExample('<div><div>tekst</div>')"
+                        class="px-3 py-2 bg-slate-50 hover:bg-slate-100 text-slate-700 text-xs font-semibold rounded-lg border border-slate-200 transition text-left">
+                        Ongesloten div
+                    </button>
+                    <button onclick="setExample('<div><div>tekst</div')"
+                        class="px-3 py-2 bg-slate-50 hover:bg-slate-100 text-slate-700 text-xs font-semibold rounded-lg border border-slate-200 transition text-left">
+                        Afgebroken sluitingstag
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Twee systemen vergelijking -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+
+            <!-- Linker systeem: FSM (Geen geheugen) -->
+            <div class="bg-slate-50 border border-slate-200 rounded-2xl p-4 flex flex-col space-y-4">
+                <div class="space-y-1">
+                    <div class="flex items-center justify-between">
+                        <span class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Systeem 1</span>
+                        <span id="fsm-badge"
+                            class="px-2.5 py-1 rounded-full text-[10px] font-bold bg-emerald-100 text-emerald-700">GELDIG</span>
+                    </div>
+                    <h3 class="text-sm font-bold text-slate-900">Eindige Automaat (FSM)</h3>
+                    <p class="text-xs text-slate-500 leading-relaxed">
+                        Heeft alleen een <strong>huidige toestand</strong>. Hij ziet dat er tags openen en sluiten, maar
+                        kan niet onthouden <em>welke</em> tags er openstaan en in <em>welke volgorde</em>.
+                    </p>
+                </div>
+
+                <!-- Simpel FSM Diagram -->
+                <div class="bg-white rounded-xl border border-slate-100 p-2 flex justify-center items-center h-32">
+                    <svg class="w-full max-w-[320px] h-[110px]" viewBox="0 0 320 110">
+                        <defs>
+                            <marker id="arrow" viewBox="0 0 10 10" refX="20" refY="5" markerWidth="5" markerHeight="5"
+                                orient="auto-start-reverse">
+                                <path d="M 0 0 L 10 5 L 0 10 z" fill="#94a3b8" />
+                            </marker>
+                            <marker id="arrow-active" viewBox="0 0 10 10" refX="20" refY="5" markerWidth="5"
+                                markerHeight="5" orient="auto-start-reverse">
+                                <path d="M 0 0 L 10 5 L 0 10 z" fill="#0d9488" />
+                            </marker>
+                            <marker id="loop-arrow" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="5"
+                                markerHeight="5" orient="auto-start-reverse">
+                                <path d="M 0 0 L 10 5 L 0 10 z" fill="#94a3b8" />
+                            </marker>
+                            <marker id="loop-arrow-active" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="5"
+                                markerHeight="5" orient="auto-start-reverse">
+                                <path d="M 0 0 L 10 5 L 0 10 z" fill="#0d9488" />
+                            </marker>
+                        </defs>
+                        <!-- Transitions -->
+                        <!-- S0 -> S1 on opening tag -->
+                        <path id="edge-0-1" d="M 40,60 L 160,60" stroke="#94a3b8" stroke-width="1.5"
+                            marker-end="url(#arrow)" />
+                        <!-- S1 -> S1 on opening tag (loop) -->
+                        <path id="edge-1-1" d="M 152,44 C 140,10 180,10 168,44" stroke="#94a3b8" stroke-width="1.5"
+                            fill="none" marker-end="url(#loop-arrow)" />
+                        <!-- S1 -> S2 on closing tag -->
+                        <path id="edge-1-2" d="M 160,60 L 280,60" stroke="#94a3b8" stroke-width="1.5"
+                            marker-end="url(#arrow)" />
+                        <!-- S2 -> S2 on closing tag (loop) -->
+                        <path id="edge-2-2" d="M 272,44 C 260,10 300,10 288,44" stroke="#94a3b8" stroke-width="1.5"
+                            fill="none" marker-end="url(#loop-arrow)" />
+
+                        <!-- Nodes -->
+                        <g id="node-s0">
+                            <circle cx="40" cy="60" r="18" fill="white" stroke="#94a3b8" stroke-width="2" />
+                            <text x="40" y="63" text-anchor="middle" font-size="9" fill="#64748b"
+                                font-weight="bold">S₀</text>
+                        </g>
+                        <g id="node-s1">
+                            <circle cx="160" cy="60" r="18" fill="white" stroke="#94a3b8" stroke-width="2" />
+                            <text x="160" y="63" text-anchor="middle" font-size="9" fill="#64748b"
+                                font-weight="bold">S₁</text>
+                        </g>
+                        <g id="node-s2">
+                            <circle cx="280" cy="60" r="18" fill="white" stroke="#94a3b8" stroke-width="2" />
+                            <circle cx="280" cy="60" r="14" fill="none" stroke="#94a3b8" stroke-width="1" />
+                            <text x="280" y="63" text-anchor="middle" font-size="9" fill="#64748b"
+                                font-weight="bold">S₂</text>
+                        </g>
+
+                        <!-- Labels -->
+                        <text x="100" y="52" text-anchor="middle" font-size="8" fill="#64748b" font-weight="bold"
+                            font-family="monospace">&lt;tag&gt;</text>
+                        <text x="160" y="10" text-anchor="middle" font-size="8" fill="#64748b" font-weight="bold"
+                            font-family="monospace">&lt;tag&gt;</text>
+                        <text x="220" y="52" text-anchor="middle" font-size="8" fill="#64748b" font-weight="bold"
+                            font-family="monospace">&lt;/tag&gt;</text>
+                        <text x="280" y="10" text-anchor="middle" font-size="8" fill="#64748b" font-weight="bold"
+                            font-family="monospace">&lt;/tag&gt;</text>
+                    </svg>
+                </div>
+
+                <!-- Analyse -->
+                <div id="fsm-desc-container"
+                    class="bg-red-50/50 border border-red-100 rounded-xl p-3 text-xs leading-relaxed transition-colors duration-200">
+                    <strong class="text-[10px] font-bold text-red-800 uppercase tracking-wide block mb-1">Hoe oordeelt
+                        de FSM?</strong>
+                    <p id="fsm-desc" class="text-slate-700">Voer invoer in...</p>
+                </div>
+            </div>
+
+            <!-- Rechter systeem: De Stack (Wel geheugen) -->
+            <div class="bg-teal-50/30 border border-teal-100 rounded-2xl p-4 flex flex-col space-y-4">
+                <div class="space-y-1">
+                    <div class="flex items-center justify-between">
+                        <span class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Systeem 2</span>
+                        <span id="counter-badge"
+                            class="px-2.5 py-1 rounded-full text-[10px] font-bold bg-red-100 text-red-700">ONGELDIG</span>
+                    </div>
+                    <h3 class="text-sm font-bold text-slate-900">Stapelgeheugen (Stack)</h3>
+                    <p class="text-xs text-slate-500 leading-relaxed">
+                        Houdt geopende tags bij op een <strong>stapel</strong>. Een nieuwe tag gaat bovenop (push). Een
+                        sluitende tag haalt de bovenste eraf (pop) en controleert of ze matchen (LIFO).
+                    </p>
+                </div>
+
+                <!-- Visuele Stapel (Stack) / Geheugen -->
+                <div
+                    class="bg-white rounded-xl border border-teal-50/50 p-2 flex justify-center items-center h-32 gap-6">
+                    <div id="stack-container"
+                        class="w-24 h-26 border-2 border-dashed border-teal-300 rounded-b-lg flex flex-col-reverse p-1.5 items-center gap-1 bg-teal-50/20">
+                        <span id="stack-empty" class="text-[9px] text-slate-300 italic mb-6 text-center">Stapel
+                            leeg</span>
+                    </div>
+                    <div class="text-left">
+                        <span class="text-[9px] font-bold text-slate-400 block uppercase tracking-wide">Bovenop
+                            stack</span>
+                        <span id="counter-value" class="text-sm font-extrabold text-teal-600 font-mono">geen</span>
+                    </div>
+                </div>
+
+                <!-- Analyse -->
+                <div id="stack-desc-container"
+                    class="bg-teal-50 border border-teal-100 rounded-xl p-3 text-xs leading-relaxed transition-colors duration-200">
+                    <strong class="text-[10px] font-bold text-teal-800 uppercase tracking-wide block mb-1">Hoe oordeelt
+                        de Stack?</strong>
+                    <p id="counter-desc" class="text-slate-700">Voer invoer in...</p>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Eindconclusie -->
+        <div id="conclusion-box" class="rounded-xl p-4 border text-xs leading-relaxed">
+            <!-- Gevuld door JS -->
+        </div>
+
+        <!-- Didactische toelichting -->
+        <div class="bg-slate-50 border border-slate-200 rounded-xl p-4 text-xs space-y-2">
+            <h4 class="font-bold text-slate-900">💡 Uitleg: De wisselwerking tussen HTML structuur, stacks en FSM's</h4>
+            <p class="text-slate-600 leading-relaxed">
+                HTML-tags volgen een <strong>recursieve en geneste</strong> structuur. Als je een
+                <code>&lt;div&gt;</code> opent en daarna een <code>&lt;span&gt;</code>, dan <em>moet</em> de
+                <code>&lt;span&gt;</code> eerst sluiten voordat je de <code>&lt;div&gt;</code> mag sluiten (LIFO: Last
+                In, First Out).
+            </p>
+            <p class="text-slate-600 leading-relaxed">
+                Een eindige automaat (FSM) heeft geen geheugen om te onthouden <em>welke</em> tag hij als laatst geopend
+                heeft. Zodra de FSM een sluitingstag ziet, gaat hij simpelweg naar de toestand "Klaar/Gesloten" (S₂),
+                ongeacht of die tag wel matcht met de geopende tag. Hierdoor keurt een FSM foutieve code zoals
+                <code>&lt;div&gt;&lt;span&gt;&lt;/div&gt;&lt;/span&gt;</code> goed. Browser-parsers gebruiken daarom
+                altijd een <strong>stack</strong> (stapel) om HTML correct te parseren.
+            </p>
+        </div>
+
+        <!-- Quiz -->
+        <div class="bg-slate-50 border border-slate-200 rounded-xl p-4 md:p-6 space-y-6">
+            <div>
+                <h3 class="text-sm font-bold text-slate-900 uppercase tracking-wider mb-1">✏️ Zelf-test</h3>
+                <p class="text-xs text-slate-500 leading-relaxed">
+                    Test je begrip over de beperkingen van eindige automaten en de rol van het stapelgeheugen.
+                </p>
+            </div>
+
+            <!-- Vraag 1 -->
+            <div class="space-y-3 pt-4 border-t border-slate-200/60">
+                <p class="text-xs font-semibold text-slate-700 leading-relaxed">
+                    <strong>Vraag 1:</strong> Waarom kan een standaard eindige automaat (FSM) <strong>niet</strong>
+                    controleren of de haakjes in een willekeurig complexe wiskundige vergelijking correct sluiten?
+                </p>
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                    <button onclick="checkAnswer('q5', 'incorrect')" id="btn-q5-incorrect"
+                        class="p-3 text-left border border-slate-200 rounded-xl text-xs hover:bg-white transition bg-white leading-relaxed">
+                        <strong>A)</strong> Omdat wiskundige vergelijkingen te lang zijn.
+                    </button>
+                    <button onclick="checkAnswer('q5', 'correct')" id="btn-q5-correct"
+                        class="p-3 text-left border border-slate-200 rounded-xl text-xs hover:bg-white transition bg-white leading-relaxed">
+                        <strong>B)</strong> Omdat de automaat niet kan tellen of de status van openstaande haakjes
+                        dynamisch kan onthouden.
+                    </button>
+                </div>
+                <div id="feedback-q5" class="mt-3 text-xs font-medium hidden"></div>
+            </div>
+
+            <!-- FSM Diagram voor Vraag 2 en 3 -->
+            <div class="space-y-3 pt-4 border-t border-slate-200/60">
+                <span class="text-[10px] font-bold text-slate-400 uppercase tracking-widest block">Haakjes-teller FSM
+                    (max. diepte 2)</span>
+                <p class="text-xs text-slate-600 leading-relaxed">
+                    De onderstaande automaat probeert haakjes te valideren. Hij heeft drie toestanden die bijhouden
+                    hoeveel haakjes er openstaan (0, 1 of 2). Als er meer dan 2 haakjes openstaan, of als er een haakje
+                    sluit terwijl er 0 openstaan, crasht de automaat (geen transitie). Andere tekens zoals getallen en
+                    operatoren worden genegeerd.
+                </p>
+                <div class="bg-white rounded-xl border border-slate-200 p-4 flex justify-center items-center">
+                    <svg class="w-full max-w-[360px] h-[120px]" viewBox="0 0 360 120">
+                        <defs>
+                            <marker id="quiz-arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6"
+                                markerHeight="6" orient="auto-start-reverse">
+                                <path d="M 0 1.5 L 8 5 L 0 8.5 z" fill="#64748b" />
+                            </marker>
+                        </defs>
+                        <!-- Transitions -->
+                        <!-- S0 -> S1 (top) -->
+                        <path d="M 78,53 Q 120,28 162,53" stroke="#64748b" stroke-width="2" fill="none"
+                            marker-end="url(#quiz-arrow)" />
+                        <!-- S1 -> S0 (bottom) -->
+                        <path d="M 162,67 Q 120,92 78,67" stroke="#64748b" stroke-width="2" fill="none"
+                            marker-end="url(#quiz-arrow)" />
+                        <!-- S1 -> S2 (top) -->
+                        <path d="M 198,53 Q 240,28 282,53" stroke="#64748b" stroke-width="2" fill="none"
+                            marker-end="url(#quiz-arrow)" />
+                        <!-- S2 -> S1 (bottom) -->
+                        <path d="M 282,67 Q 240,92 198,67" stroke="#64748b" stroke-width="2" fill="none"
+                            marker-end="url(#quiz-arrow)" />
+
+                        <!-- Start pointer arrow -->
+                        <path d="M 15,60 L 38,60" stroke="#64748b" stroke-width="2" fill="none"
+                            marker-end="url(#quiz-arrow)" />
+
+                        <!-- Nodes -->
+                        <!-- S0 (Accept State: Double circle) -->
+                        <g>
+                            <circle cx="60" cy="60" r="20" fill="white" stroke="#0f766e" stroke-width="2.5" />
+                            <circle cx="60" cy="60" r="15" fill="none" stroke="#0f766e" stroke-width="1.5" />
+                            <text x="60" y="64" text-anchor="middle" font-size="11" fill="#0f766e"
+                                font-weight="extrabold">S₀</text>
+                        </g>
+                        <!-- S1 -->
+                        <g>
+                            <circle cx="180" cy="60" r="20" fill="white" stroke="#64748b" stroke-width="2" />
+                            <text x="180" y="64" text-anchor="middle" font-size="11" fill="#334155"
+                                font-weight="bold">S₁</text>
+                        </g>
+                        <!-- S2 -->
+                        <g>
+                            <circle cx="300" cy="60" r="20" fill="white" stroke="#64748b" stroke-width="2" />
+                            <text x="300" y="64" text-anchor="middle" font-size="11" fill="#334155"
+                                font-weight="bold">S₂</text>
+                        </g>
+
+                        <!-- Labels -->
+                        <text x="120" y="25" text-anchor="middle" font-size="12" fill="#0d9488" font-family="monospace"
+                            font-weight="bold">(</text>
+                        <text x="120" y="103" text-anchor="middle" font-size="12" fill="#0d9488" font-family="monospace"
+                            font-weight="bold">)</text>
+                        <text x="240" y="25" text-anchor="middle" font-size="12" fill="#0d9488" font-family="monospace"
+                            font-weight="bold">(</text>
+                        <text x="240" y="103" text-anchor="middle" font-size="12" fill="#0d9488" font-family="monospace"
+                            font-weight="bold">)</text>
+                    </svg>
+                </div>
+            </div>
+
+            <!-- Vraag 2 -->
+            <div class="space-y-3 pt-4 border-t border-slate-200/60">
+                <p class="text-xs font-semibold text-slate-700 leading-relaxed">
+                    <strong>Vraag 2:</strong> Welke van de onderstaande expressies wordt door de hierboven getekende FSM
+                    (haakjesteller met max. diepte 2) <strong>goedgekeurd</strong> (eindigt in acceptatietoestand S₀)?
+                </p>
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                    <button onclick="checkAnswer('q6', 'incorrect1')" id="btn-q6-incorrect1"
+                        class="p-3 text-left border border-slate-200 rounded-xl text-xs hover:bg-white transition bg-white leading-relaxed">
+                        <strong>A)</strong> <code>(((5 + 5)))</code>
+                    </button>
+                    <button onclick="checkAnswer('q6', 'correct')" id="btn-q6-correct"
+                        class="p-3 text-left border border-slate-200 rounded-xl text-xs hover:bg-white transition bg-white leading-relaxed">
+                        <strong>B)</strong> <code>((3 + 4) * (2 - 1))</code>
+                    </button>
+                    <button onclick="checkAnswer('q6', 'incorrect2')" id="btn-q6-incorrect2"
+                        class="p-3 text-left border border-slate-200 rounded-xl text-xs hover:bg-white transition bg-white leading-relaxed">
+                        <strong>C)</strong> <code>(2 + 3</code>
+                    </button>
+                </div>
+                <div id="feedback-q6" class="mt-3 text-xs font-medium hidden"></div>
+            </div>
+
+            <!-- Vraag 3 -->
+            <div class="space-y-3 pt-4 border-t border-slate-200/60">
+                <p class="text-xs font-semibold text-slate-700 leading-relaxed">
+                    <strong>Vraag 3:</strong> Waarom lost deze "haakjes-teller FSM" met een maximale diepte van 2 het
+                    fundamentele probleem van recursieve berekeningen <strong>niet</strong> op?
+                </p>
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                    <button onclick="checkAnswer('q7', 'incorrect1')" id="btn-q7-incorrect1"
+                        class="p-3 text-left border border-slate-200 rounded-xl text-xs hover:bg-white transition bg-white leading-relaxed">
+                        <strong>A)</strong> Omdat de FSM de getallen en operatoren niet kan verwerken.
+                    </button>
+                    <button onclick="checkAnswer('q7', 'correct')" id="btn-q7-correct"
+                        class="p-3 text-left border border-slate-200 rounded-xl text-xs hover:bg-white transition bg-white leading-relaxed">
+                        <strong>B)</strong> Omdat een FSM een vaste limiet heeft (bijv. max. 2 openstaande haakjes).
+                        Voor willekeurige diepte heb je oneindig veel toestanden of een stack nodig.
+                    </button>
+                </div>
+                <div id="feedback-q7" class="mt-3 text-xs font-medium hidden"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function setExample(val) {
+            document.getElementById('expr-input').value = val;
+            validateExpression();
+        }
+
+        function highlightFsmNode(state, isError) {
+            ['s0', 's1', 's2'].forEach(s => {
+                const g = document.getElementById(`node-${s}`);
+                if (!g) return;
+                const circle = g.querySelector('circle');
+                const text = g.querySelector('text');
+                const isActive = (s === state.toLowerCase());
+
+                g.removeAttribute('class');
+
+                if (isActive) {
+                    circle.setAttribute('fill', isError ? '#fee2e2' : '#ccfbf1');
+                    circle.setAttribute('stroke', isError ? '#ef4444' : '#0d9488');
+                    circle.setAttribute('stroke-width', '3');
+                    text.setAttribute('fill', isError ? '#991b1b' : '#0f766e');
+                    g.setAttribute('class', isError ? 'node-highlight-error' : 'node-highlight-active');
+                } else {
+                    circle.setAttribute('fill', 'white');
+                    circle.setAttribute('stroke', '#94a3b8');
+                    circle.setAttribute('stroke-width', '2');
+                    text.setAttribute('fill', '#64748b');
+                }
+            });
+        }
+
+        function highlightFsmEdges(activeEdges) {
+            const arrow01 = document.getElementById('edge-0-1');
+            const arrow11 = document.getElementById('edge-1-1');
+            const arrow12 = document.getElementById('edge-1-2');
+            const arrow22 = document.getElementById('edge-2-2');
+
+            if (arrow01) {
+                const active = activeEdges['edge-0-1'];
+                arrow01.setAttribute('stroke', active ? '#0d9488' : '#94a3b8');
+                arrow01.setAttribute('stroke-width', active ? '2.5' : '1.5');
+                arrow01.setAttribute('marker-end', active ? 'url(#arrow-active)' : 'url(#arrow)');
+            }
+            if (arrow11) {
+                const active = activeEdges['edge-1-1'];
+                arrow11.setAttribute('stroke', active ? '#0d9488' : '#94a3b8');
+                arrow11.setAttribute('stroke-width', active ? '2.5' : '1.5');
+                arrow11.setAttribute('marker-end', active ? 'url(#loop-arrow-active)' : 'url(#loop-arrow)');
+            }
+            if (arrow12) {
+                const active = activeEdges['edge-1-2'];
+                arrow12.setAttribute('stroke', active ? '#0d9488' : '#94a3b8');
+                arrow12.setAttribute('stroke-width', active ? '2.5' : '1.5');
+                arrow12.setAttribute('marker-end', active ? 'url(#arrow-active)' : 'url(#arrow)');
+            }
+            if (arrow22) {
+                const active = activeEdges['edge-2-2'];
+                arrow22.setAttribute('stroke', active ? '#0d9488' : '#94a3b8');
+                arrow22.setAttribute('stroke-width', active ? '2.5' : '1.5');
+                arrow22.setAttribute('marker-end', active ? 'url(#loop-arrow-active)' : 'url(#loop-arrow)');
+            }
+        }
+
+        function updateStackBlocks(stack, isError) {
+            const container = document.getElementById('stack-container');
+            const emptyLabel = document.getElementById('stack-empty');
+
+            if (isError) {
+                container.className = "w-24 h-26 border-2 border-dashed border-red-400 rounded-b-lg flex flex-col-reverse p-1.5 items-center gap-1 bg-red-50/10 transition-colors duration-200";
+            } else {
+                container.className = "w-24 h-26 border-2 border-dashed border-teal-300 rounded-b-lg flex flex-col-reverse p-1.5 items-center gap-1 bg-teal-50/20 transition-colors duration-200";
+            }
+
+            const blocks = container.querySelectorAll('.stack-block');
+            blocks.forEach(b => b.remove());
+
+            if (stack.length === 0) {
+                emptyLabel.classList.remove('hidden');
+                return;
+            }
+
+            emptyLabel.classList.add('hidden');
+            const maxShow = 4;
+            const toShow = Math.min(stack.length, maxShow);
+
+            for (let i = 0; i < toShow; i++) {
+                const tag = stack[i];
+                const block = document.createElement('div');
+                const isDiv = (tag === 'div');
+                block.className = `stack-block w-20 h-4 rounded text-[9px] text-white flex items-center justify-center font-bold font-mono border ${isDiv ? 'bg-orange-500 border-orange-600' : 'bg-sky-500 border-sky-600'}`;
+                block.textContent = `<${tag}>`;
+                container.appendChild(block);
+            }
+
+            if (stack.length > maxShow) {
+                const moreBlock = document.createElement('div');
+                moreBlock.className = 'stack-block w-20 h-4 bg-teal-500 rounded text-[9px] text-white flex items-center justify-center font-bold';
+                moreBlock.textContent = `+${stack.length - maxShow} tags`;
+                container.appendChild(moreBlock);
+            }
+        }
+
+        function tokenizeHTML(str) {
+            const regex = /<\/?[a-z0-9]+>/gi;
+            let matches = [];
+            let match;
+            while ((match = regex.exec(str)) !== null) {
+                matches.push({
+                    text: match[0],
+                    index: match.index,
+                    isClose: match[0].startsWith('</'),
+                    tagName: match[0].replace(/[<>\/]/g, '').toLowerCase()
+                });
+            }
+            return matches;
+        }
+
+        function validateExpression() {
+            const input = document.getElementById('expr-input').value;
+            const tokens = tokenizeHTML(input);
+
+            // Reset states
+            let fsmState = 'S0';
+            let fsmError = false;
+
+            let stack = [];
+            let stackError = false;
+            let stackErrorMessage = '';
+
+            // Track highlights for SVG edges
+            let activeEdges = { 'edge-0-1': false, 'edge-1-1': false, 'edge-1-2': false, 'edge-2-2': false };
+
+            for (let i = 0; i < tokens.length; i++) {
+                const token = tokens[i];
+
+                // FSM transition (simpele controle: openend -> S1, sluitend -> S2)
+                if (!fsmError) {
+                    if (!token.isClose) {
+                        if (fsmState === 'S0') {
+                            fsmState = 'S1';
+                            activeEdges['edge-0-1'] = true;
+                        } else if (fsmState === 'S1') {
+                            fsmState = 'S1';
+                            activeEdges['edge-1-1'] = true;
+                        } else if (fsmState === 'S2') {
+                            fsmState = 'S1';
+                            activeEdges['edge-0-1'] = true;
+                        }
+                    } else {
+                        if (fsmState === 'S0') {
+                            fsmError = true;
+                        } else if (fsmState === 'S1') {
+                            fsmState = 'S2';
+                            activeEdges['edge-1-2'] = true;
+                        } else if (fsmState === 'S2') {
+                            fsmState = 'S2';
+                            activeEdges['edge-2-2'] = true;
+                        }
+                    }
+                }
+
+                // Stack transition (correcte parsering)
+                if (!stackError) {
+                    if (!token.isClose) {
+                        stack.push(token.tagName);
+                    } else {
+                        if (stack.length === 0) {
+                            stackError = true;
+                            stackErrorMessage = `Er sluit een tag <code>&lt;/${token.tagName}&gt;</code> maar er stond niks open.`;
+                        } else {
+                            const top = stack[stack.length - 1];
+                            if (top === token.tagName) {
+                                stack.pop();
+                            } else {
+                                stackError = true;
+                                stackErrorMessage = `Kruislingse fout: <code>&lt;/${token.tagName}&gt;</code> sluit, maar <code>&lt;${top}&gt;</code> staat nog open.`;
+                            }
+                        }
+                    }
+                }
+            }
+
+            // Update UI
+            // 1. Highlight FSM nodes
+            highlightFsmNode(fsmState, fsmError);
+
+            // 2. Highlight FSM edges
+            highlightFsmEdges(activeEdges);
+
+            // 3. FSM Verdict
+            const fsmValid = !fsmError && (fsmState === 'S2');
+            const fsmBadge = document.getElementById('fsm-badge');
+            const fsmDesc = document.getElementById('fsm-desc');
+            const fsmDescContainer = document.getElementById('fsm-desc-container');
+            if (fsmValid) {
+                fsmBadge.className = "px-2.5 py-1 rounded-full text-[10px] font-bold bg-emerald-100 text-emerald-700";
+                fsmBadge.textContent = "GELDIG";
+                fsmDesc.innerHTML = `De FSM eindigt in <strong>S₂</strong> (Klaar). Omdat de FSM geen geheugen heeft, denkt hij dat de tags kloppen zodra hij een sluitingstag ziet.`;
+                fsmDescContainer.className = "bg-emerald-50 border border-emerald-200 rounded-xl p-3 text-xs leading-relaxed transition-colors duration-200";
+                fsmDescContainer.querySelector('strong').className = "text-[10px] font-bold text-emerald-800 uppercase tracking-wide block mb-1";
+            } else {
+                fsmBadge.className = "px-2.5 py-1 rounded-full text-[10px] font-bold bg-red-100 text-red-700";
+                fsmBadge.textContent = "ONGELDIG";
+                if (fsmError) {
+                    fsmDesc.innerHTML = `De FSM is <strong>gecrasht</strong>: er sloot een tag terwijl er geen tags openstonden.`;
+                } else {
+                    fsmDesc.innerHTML = `De FSM eindigt in toestand <strong>${fsmState}</strong> (geen acceptatietoestand).`;
+                }
+                fsmDescContainer.className = "bg-red-50 border border-red-200 rounded-xl p-3 text-xs leading-relaxed transition-colors duration-200";
+                fsmDescContainer.querySelector('strong').className = "text-[10px] font-bold text-red-800 uppercase tracking-wide block mb-1";
+            }
+
+            // 4. Counter Verdict
+            const counterValid = !stackError && stack.length === 0;
+            const counterBadge = document.getElementById('counter-badge');
+            const counterDesc = document.getElementById('counter-desc');
+            const counterValEl = document.getElementById('counter-value');
+            const stackDescContainer = document.getElementById('stack-desc-container');
+
+            counterValEl.textContent = stackError ? 'Fout' : (stack.length > 0 ? `<${stack[stack.length - 1]}>` : 'geen');
+
+            if (counterValid) {
+                counterBadge.className = "px-2.5 py-1 rounded-full text-[10px] font-bold bg-emerald-100 text-emerald-700";
+                counterBadge.textContent = "GELDIG";
+                counterDesc.innerHTML = `De stack is <strong>leeg</strong>. Alle geopende tags zijn netjes en in de juiste volgorde gesloten.`;
+                stackDescContainer.className = "bg-emerald-50 border border-emerald-200 rounded-xl p-3 text-xs leading-relaxed transition-colors duration-200";
+                stackDescContainer.querySelector('strong').className = "text-[10px] font-bold text-emerald-800 uppercase tracking-wide block mb-1";
+            } else {
+                counterBadge.className = "px-2.5 py-1 rounded-full text-[10px] font-bold bg-red-100 text-red-700";
+                counterBadge.textContent = "ONGELDIG";
+                if (stackError) {
+                    counterDesc.innerHTML = stackErrorMessage;
+                } else {
+                    counterDesc.innerHTML = `Er staan nog openstaande tags op de stack: <code>&lt;${stack.join('&gt;, &lt;')}&gt;</code>.`;
+                }
+                stackDescContainer.className = "bg-red-50 border border-red-200 rounded-xl p-3 text-xs leading-relaxed transition-colors duration-200";
+                stackDescContainer.querySelector('strong').className = "text-[10px] font-bold text-red-800 uppercase tracking-wide block mb-1";
+            }
+
+            // 5. Update stack blocks
+            updateStackBlocks(stack, stackError);
+
+            // 6. Update conclusion box
+            const conclusionBox = document.getElementById('conclusion-box');
+            if (tokens.length === 0) {
+                conclusionBox.classList.add('hidden');
+            } else {
+                conclusionBox.classList.remove('hidden');
+                if (fsmValid && !counterValid) {
+                    conclusionBox.className = "rounded-xl p-4 border bg-red-50 border-red-200 text-xs space-y-1";
+                    conclusionBox.innerHTML = `
+                        <strong class="text-red-800 text-sm font-bold block">⚠️ Automaat faalt hier!</strong>
+                        <p class="text-slate-700 leading-relaxed">
+                            De FSM keurt deze HTML <strong>Geldig</strong> (eindigt in S₂), maar de stack-parser ziet direct dat de tags kruislings sluiten of niet correct zijn afgemaakt. Dit bewijst de beperking: een FSM kan geen geneste structuren parsen!
+                        </p>
+                    `;
+                } else if (fsmValid && counterValid) {
+                    conclusionBox.className = "rounded-xl p-4 border bg-emerald-50 border-emerald-200 text-xs space-y-1";
+                    conclusionBox.innerHTML = `
+                        <strong class="text-emerald-800 text-sm font-bold block">🟢 Beide systemen keuren dit goed</strong>
+                        <p class="text-slate-700 leading-relaxed font-medium">
+                            De HTML-tags sluiten keurig in de juiste geneste volgorde. Probeer de snelkeuze <strong>"Kruislingse nesting"</strong> om te zien waar de FSM de mist in gaat!
+                        </p>
+                    `;
+                } else if (!fsmValid && counterValid) {
+                    conclusionBox.className = "rounded-xl p-4 border bg-emerald-50 border-emerald-200 text-xs space-y-1";
+                    conclusionBox.innerHTML = `
+                        <strong class="text-emerald-800 text-sm font-bold block">🟢 HTML is geldig, maar de FSM faalt!</strong>
+                        <p class="text-slate-700 leading-relaxed">
+                            De stack-parser keurt deze HTML correct <strong>Geldig</strong> goed. De FSM keurt deze echter af (ongeldig) omdat deze de structuur niet goed kon verwerken. Dit illustreert de zwakte van de FSM.
+                        </p>
+                    `;
+                } else {
+                    conclusionBox.className = "rounded-xl p-4 border bg-amber-50 border-amber-200 text-xs space-y-1";
+                    conclusionBox.innerHTML = `
+                        <strong class="text-amber-800 text-sm font-bold block">❌ HTML is ongeldig</strong>
+                        <p class="text-slate-700 leading-relaxed font-medium">
+                            Beide systemen keuren deze HTML af. Er staan ofwel tags open, of de automaat is tussentijds gecrasht.
+                        </p>
+                    `;
+                }
+            }
+            triggerResize();
+        }
+
+        const feedbacks = {
+            q5: {
+                correct: "Super! Omdat een FSM geen dynamische teller of stackgeheugen heeft, kan hij niet bijhouden hoeveel haakjes hij nog moet sluiten. Hiervoor is een Pushdown Automaat (PDA) nodig.",
+                incorrect: "Nee, lengte is geen wiskundige beperking voor de theorie. Het gebrek aan geheugen is de boosdoener."
+            },
+            q6: {
+                correct: "Correct! S₁ heeft 1 open haakje en S₂ heeft er 2. De expressie <code>((3 + 4) * (2 - 1))</code> nestelt maximaal 2 diep en keert aan het einde netjes terug naar acceptatietoestand S₀. De automaat crasht dus niet.",
+                incorrect1: "Nee, bij het derde openende haakje <code>(</code> crasht de automaat omdat er geen transitie is vanuit S₂ voor een extra openend haakje.",
+                incorrect2: "Nee, deze expressie eindigt in S₁ (1 openstaand haakje) wat geen acceptatietoestand is."
+            },
+            q7: {
+                correct: "Uitstekend! Een FSM heeft een vast aantal toestanden (en dus een vaste limiet). Omdat wiskundige berekeningen willekeurig diep genest kunnen zijn, is er geen FSM die elke correct geneste som kan verifiëren. Een computer met een stack kan dat wel.",
+                incorrect1: "Nee, we zagen dat de FSM andere tekens prima kan negeren door simpelweg in dezelfde toestand te blijven. De echte beperking zit in het gebrek aan geheugen om willekeurig diepe nesting te tellen."
+            }
+        };
+
+        function checkAnswer(question, answer) {
+            const feedbackBox = document.getElementById('feedback-' + question);
+            feedbackBox.classList.remove('hidden');
+
+            const isCorrect = answer === 'correct';
+            feedbackBox.className = "mt-3 text-xs font-semibold p-3 rounded-lg " + (isCorrect ? "bg-emerald-50 text-emerald-800 border border-emerald-100" : "bg-red-50 text-red-800 border border-red-100");
+            feedbackBox.innerHTML = feedbacks[question][answer];
+
+            // Highlight selected button
+            const buttons = ['correct', 'incorrect', 'incorrect1', 'incorrect2'];
+            buttons.forEach(btn => {
+                const b = document.getElementById(`btn-${question}-${btn}`);
+                if (b) {
+                    if (btn === answer) {
+                        b.className = "p-3 text-left border rounded-xl text-xs font-bold " + (isCorrect ? "border-emerald-500 bg-emerald-50 text-emerald-900" : "border-red-500 bg-red-50 text-red-900");
+                    } else {
+                        b.className = "p-3 text-left border rounded-xl text-xs text-slate-400 border-slate-100 cursor-not-allowed bg-white";
+                    }
+                }
+            });
+            triggerResize();
+        }
+
+        function triggerResize() {
+            if (window.parent && window.parent !== window) {
+                try {
+                    const iframe = window.frameElement;
+                    if (iframe) iframe.style.height = document.documentElement.scrollHeight + 'px';
+                } catch (e) { }
+            }
+        }
+
+        window.onload = function () {
+            validateExpression();
+            if (window.parent && window.parent !== window) {
+                try {
+                    const iframe = window.frameElement;
+                    if (iframe) {
+                        const observer = new ResizeObserver(() => {
+                            iframe.style.height = document.documentElement.scrollHeight + 'px';
+                        });
+                        observer.observe(document.body);
+                    }
+                } catch (e) { }
+            }
+        };
+    </script>
+
+</body>
+
+</html>
