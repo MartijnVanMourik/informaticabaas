@@ -1,0 +1,991 @@
+<!DOCTYPE html>
+<html lang="nl">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Praktische Opdrachten: Generatoren &amp; Validators - Grondslagen (B3)</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+    </style>
+</head>
+
+<body class="bg-transparent text-slate-800 min-h-screen flex flex-col antialiased p-2">
+
+    <!-- Het Opdracht Element -->
+    <div class="bg-white rounded-2xl border border-slate-200 p-4 md:p-6 shadow-sm space-y-6 max-w-7xl mx-auto w-full">
+
+        <!-- Header -->
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between border-b border-slate-100 pb-3">
+            <div>
+                <span class="text-[10px] font-bold text-teal-600 uppercase tracking-widest">Praktische Opdrachten</span>
+                <h2 class="text-xl font-bold text-slate-900 mt-1 leading-tight font-sans">✏️ Opdrachten: Modelleren met Eindige Automaten</h2>
+            </div>
+            <span class="text-[10px] font-semibold text-slate-400 mt-1 sm:mt-0">Ontwerp je eigen generatoren en validators op het tekenbord.</span>
+        </div>
+
+        <!-- Tabs Navigatie -->
+        <div class="flex border-b border-slate-200 flex-wrap" id="tabs-container">
+            <button onclick="switchTab('kenteken')" id="tab-btn-kenteken"
+                class="px-4 py-2 text-xs font-bold border-b-2 border-teal-600 text-teal-600 transition focus:outline-none select-none flex items-center gap-1.5">
+                🚗 1. Kentekengenerator
+            </button>
+            <button onclick="switchTab('wachtwoord')" id="tab-btn-wachtwoord"
+                class="px-4 py-2 text-xs font-semibold border-b-2 border-transparent text-slate-500 hover:text-slate-700 transition focus:outline-none select-none flex items-center gap-1.5">
+                🔑 2. Wachtwoordengenerator
+            </button>
+            <button onclick="switchTab('iban')" id="tab-btn-iban"
+                class="px-4 py-2 text-xs font-semibold border-b-2 border-transparent text-slate-500 hover:text-slate-700 transition focus:outline-none select-none flex items-center gap-1.5">
+                🏦 3. IBAN Validator
+            </button>
+            <button onclick="switchTab('tijd')" id="tab-btn-tijd"
+                class="px-4 py-2 text-xs font-semibold border-b-2 border-transparent text-slate-500 hover:text-slate-700 transition focus:outline-none select-none flex items-center gap-1.5">
+                🕒 4. Tijd Validator
+            </button>
+        </div>
+
+        <!-- TAB 1: KENTEKEN -->
+        <div id="tab-kenteken" class="space-y-4">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <!-- Links: Uitleg & Simulator -->
+                <div
+                    class="bg-slate-50 border border-slate-200 rounded-xl p-4 flex flex-col justify-between space-y-4">
+                    <div class="space-y-2">
+                        <h3 class="font-extrabold text-slate-800 text-xs uppercase tracking-wider">📝 Kentekens
+                            Genereren</h3>
+                        <p class="text-xs text-slate-600 leading-relaxed">
+                            Ontwerp een eindige automaat die geldige kentekens genereert volgens het formaat:
+                            <strong>2 letters, een koppelteken, 3 cijfers, een koppelteken, 1 letter</strong> (bijv.
+                            <code>XX-999-X</code>).
+                        </p>
+                        <div
+                            class="p-3 bg-teal-50 border border-teal-150 rounded-lg text-[11px] text-teal-800 leading-relaxed">
+                            <strong>Specificaties:</strong>
+                            <ul class="list-disc list-inside mt-1 space-y-0.5 ml-1">
+                                <li><strong>Starttoestand:</strong> S₀.</li>
+                                <li><strong>Transities:</strong> Gebruik <code>letter</code>, <code>-</code>
+                                    (koppelteken) en <code>cijfer</code> als invoersymbolen.</li>
+                                <li><strong>Eindtoestand:</strong> S₈ (acceptatietoestand, getekend met dubbele
+                                    cirkel).</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <!-- Simulator -->
+                    <div class="bg-white border border-slate-150 rounded-lg p-3 space-y-3 shadow-sm">
+                        <span class="text-[10px] font-bold text-slate-400 uppercase block">Simulator: Automaat in
+                            Werking</span>
+                        <div class="flex items-center gap-2">
+                            <button onclick="startKentekenGen()"
+                                class="px-3 py-1.5 bg-teal-600 hover:bg-teal-700 active:scale-95 text-white text-[11px] font-bold rounded-lg transition">
+                                ⚡ Genereer kenteken
+                            </button>
+                            <button onclick="nextKentekenStep()" id="kenteken-next-btn" disabled
+                                class="px-3 py-1.5 bg-slate-100 hover:bg-slate-200 disabled:opacity-50 active:scale-95 text-slate-700 text-[11px] font-bold rounded-lg transition">
+                                Volgende stap &rarr;
+                            </button>
+                        </div>
+                        <div
+                            class="bg-slate-900 rounded-lg p-2.5 font-mono text-[11px] text-teal-400 space-y-1.5 min-h-[90px] flex flex-col justify-center">
+                            <div class="flex justify-between border-b border-slate-800 pb-1 text-slate-500">
+                                <span>Output string</span>
+                                <span>Toestand</span>
+                            </div>
+                            <div class="flex justify-between items-center text-xs font-bold pt-1">
+                                <span id="kenteken-output" class="text-white tracking-widest">-</span>
+                                <span id="kenteken-state"
+                                    class="bg-teal-950 text-teal-300 border border-teal-800 px-2 py-0.5 rounded">S₀</span>
+                            </div>
+                            <div id="kenteken-step-log" class="text-[10px] text-slate-400 italic mt-1">-</div>
+                        </div>
+                    </div>
+
+                    <!-- Tip -->
+                    <div>
+                        <button onclick="toggleTip('tip-kenteken')" id="btn-tip-kenteken"
+                            class="px-2.5 py-1 bg-slate-200 hover:bg-slate-300 text-slate-700 text-[10px] font-bold rounded-lg transition active:scale-95 focus:outline-none">
+                            💡 Toon Tip
+                        </button>
+                        <div id="tip-kenteken"
+                            class="hidden mt-2 p-2.5 bg-slate-100 border border-slate-200 rounded-lg text-[10px] text-slate-600 leading-normal">
+                            Denk stap-voor-stap: van S₀ ga je naar S₁ via <code>letter</code>, en naar S₂ via
+                            <code>letter</code>. Vanaf S₂ ga je met <code>-</code> naar S₃. Vanaf S₃ moet je drie cijfers
+                            verwerken: S₃ → S₄ → S₅ → S₆ telkens via <code>cijfer</code>. Dan met <code>-</code> naar
+                            S₇, en tot slot met <code>letter</code> naar de acceptatietoestand S₈.
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Rechts: Didactische context -->
+                <div
+                    class="bg-slate-50 border border-slate-200 rounded-xl p-4 flex flex-col justify-start space-y-4">
+                    <div class="space-y-2">
+                        <h3 class="font-extrabold text-slate-800 text-xs uppercase tracking-wider">💡 Waarom een generator?</h3>
+                        <p class="text-xs text-slate-600 leading-relaxed">
+                            Door transities achter elkaar te kiezen in de editor, zie je exact hoe een automaat stap-voor-stap
+                            symbolen aan elkaar rijgt. In de praktijk worden dit soort systemen gebruikt voor data-generatie,
+                            zoals het aanmaken van testgegevens, kentekens of gestructureerde serienummers.
+                        </p>
+                    </div>
+                    <div
+                        class="p-3 bg-white border border-slate-150 rounded-lg text-[11px] text-slate-500 leading-relaxed shadow-sm">
+                        <strong>Teken-instructies:</strong>
+                        <ul class="list-disc list-inside mt-1 space-y-0.5 ml-1">
+                            <li>Klik in het tekenbord om een toestand (cirkel) te plaatsen.</li>
+                            <li>Druk op <strong>Shift</strong>, klik op een toestand en sleep naar een andere toestand om een pijl (transitie) te trekken.</li>
+                            <li>Dubbelklik op een toestand om de naam aan te passen (bijv. <code>S_0</code> voor S₀).</li>
+                            <li>Klik op een transitie-pijl om de invoerwaarde te bepalen (bijv. <code>letter</code> of <code>-</code>).</li>
+                            <li>Klik op een toestand en druk op <strong>Accept</strong> in de balk onder het tekenbord om er een eindtoestand (dubbele cirkel) van te maken.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- FSM Designer Canvas (Kenteken) -->
+            <div class="bg-slate-50 border border-slate-200 rounded-xl p-3 shadow-inner">
+                <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-1 mb-2">
+                    <span class="text-[9px] font-bold text-slate-400 uppercase tracking-wider">Tekenbord: Ontwerp
+                        jouw Kentekengenerator</span>
+                    <span
+                        class="text-[9px] text-teal-700 font-bold bg-teal-50 px-2 py-0.5 rounded border border-teal-100">
+                        💡 Klik in het tekenbord &bull; Shift + slepen = pijl &bull; Backspace/Delete = verwijderen
+                    </span>
+                </div>
+
+                <!-- FSM Tool Iframe -->
+                <div onclick="focusIframe()"
+                    class="w-full h-[550px] rounded-lg overflow-hidden border border-slate-300 shadow bg-white relative cursor-pointer">
+                    <iframe id="fsm-iframe-kenteken" src="fsm-designer.html?id=kenteken" class="w-full h-full"
+                        title="FSM Tool Kenteken"></iframe>
+                </div>
+
+                <!-- Fallback Link -->
+                <div class="mt-3 flex flex-col sm:flex-row gap-2 items-center justify-between">
+                    <span class="text-[10px] text-slate-500">Werkt het tekenen niet goed? Klik op de knop om het bord in
+                        een los tabblad te openen.</span>
+                    <a href="fsm-designer.html?id=kenteken" target="_blank"
+                        class="px-4 py-2 bg-teal-600 hover:bg-teal-700 text-white text-xs font-bold rounded-lg transition active:scale-95 text-center shadow shadow-teal-700/10 whitespace-nowrap">
+                        🔗 Open tekenbord in nieuw tabblad
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- TAB 2: WACHTWOORD -->
+        <div id="tab-wachtwoord" class="space-y-4 hidden">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <!-- Links: Uitleg & Simulator -->
+                <div
+                    class="bg-slate-50 border border-slate-200 rounded-xl p-4 flex flex-col justify-between space-y-4">
+                    <div class="space-y-2">
+                        <h3 class="font-extrabold text-slate-800 text-xs uppercase tracking-wider">📝 Wachtwoorden
+                            Genereren</h3>
+                        <p class="text-xs text-slate-600 leading-relaxed">
+                            Ontwerp een automaat die geldige wachtwoorden genereert volgens het formaat:
+                            <strong>exact 1 hoofdletter, minimaal 3 kleine letters, en eindigt op exact 1 cijfer óf 1 speciaal
+                                teken</strong> (bijv. <code>Password1</code> of <code>Fsm!?</code>).
+                        </p>
+                        <div
+                            class="p-3 bg-teal-50 border border-teal-155 rounded-lg text-[11px] text-teal-800 leading-relaxed">
+                            <strong>Specificaties:</strong>
+                            <ul class="list-disc list-inside mt-1 space-y-0.5 ml-1">
+                                <li><strong>Starttoestand:</strong> S₀.</li>
+                                <li><strong>Transities:</strong> Gebruik <code>hoofdletter</code>, <code>kleine letter</code>,
+                                    <code>cijfer</code> en <code>speciaal</code>.</li>
+                                <li><strong>Eindtoestand:</strong> S₅.</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <!-- Simulator -->
+                    <div class="bg-white border border-slate-150 rounded-lg p-3 space-y-3 shadow-sm">
+                        <span class="text-[10px] font-bold text-slate-400 uppercase block">Simulator: Automaat in
+                            Werking</span>
+                        <div class="flex items-center gap-2">
+                            <button onclick="startWachtwoordGen()"
+                                class="px-3 py-1.5 bg-teal-600 hover:bg-teal-700 active:scale-95 text-white text-[11px] font-bold rounded-lg transition">
+                                ⚡ Genereer wachtwoord
+                            </button>
+                            <button onclick="nextWachtwoordStep()" id="wachtwoord-next-btn" disabled
+                                class="px-3 py-1.5 bg-slate-100 hover:bg-slate-200 disabled:opacity-50 active:scale-95 text-slate-700 text-[11px] font-bold rounded-lg transition">
+                                Volgende stap &rarr;
+                            </button>
+                        </div>
+                        <div
+                            class="bg-slate-900 rounded-lg p-2.5 font-mono text-[11px] text-teal-400 space-y-1.5 min-h-[90px] flex flex-col justify-center">
+                            <div class="flex justify-between border-b border-slate-800 pb-1 text-slate-500">
+                                <span>Output string</span>
+                                <span>Toestand</span>
+                            </div>
+                            <div class="flex justify-between items-center text-xs font-bold pt-1">
+                                <span id="wachtwoord-output" class="text-white tracking-widest">-</span>
+                                <span id="wachtwoord-state"
+                                    class="bg-teal-950 text-teal-300 border border-teal-800 px-2 py-0.5 rounded">S₀</span>
+                            </div>
+                            <div id="wachtwoord-step-log" class="text-[10px] text-slate-400 italic mt-1">-</div>
+                        </div>
+                    </div>
+
+                    <!-- Tip -->
+                    <div>
+                        <button onclick="toggleTip('tip-wachtwoord')" id="btn-tip-wachtwoord"
+                            class="px-2.5 py-1 bg-slate-200 hover:bg-slate-300 text-slate-700 text-[10px] font-bold rounded-lg transition active:scale-95 focus:outline-none">
+                            💡 Toon Tip
+                        </button>
+                        <div id="tip-wachtwoord"
+                            class="hidden mt-2 p-2.5 bg-slate-100 border border-slate-200 rounded-lg text-[10px] text-slate-600 leading-normal">
+                            Het wachtwoord vereist minimaal 3 kleine letters. Teken transities van S₀ naar S₁ via
+                            <code>hoofdletter</code>. Loop van S₁ → S₂ → S₃ → S₄ telkens via
+                            <code>kleine letter</code>. Om meer dan 3 kleine letters toe te staan, geef je S₄ een
+                            self-loop met de transitie <code>kleine letter</code>. Teken ten slotte vanaf S₄ twee
+                            transities (een met <code>cijfer</code> en een met <code>speciaal</code>) die naar de
+                            eindtoestand S₅ leiden.
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Rechts: Didactische context -->
+                <div
+                    class="bg-slate-50 border border-slate-200 rounded-xl p-4 flex flex-col justify-start space-y-4">
+                    <div class="space-y-2">
+                        <h3 class="font-extrabold text-slate-800 text-xs uppercase tracking-wider">💡 Oneindige Talen met Eindige Automaten</h3>
+                        <p class="text-xs text-slate-600 leading-relaxed">
+                            Hoewel de FSM een *eindig* aantal toestanden heeft, kan hij met behulp van een
+                            <strong>self-loop</strong> (een transitie die terugkeert naar dezelfde toestand) strings
+                            van *oneindige* lengtes genereren!
+                        </p>
+                        <p class="text-xs text-slate-600 leading-relaxed">
+                            In deze oefening zorgt de self-loop voor `kleine letter` op de toestand S₄ ervoor dat
+                            wachtwoorden zoals <code>Paaaaaaassword1</code> ook geldig zijn, terwijl de drie
+                            voorgaande stappen garanderen dat er altijd minstens 3 kleine letters aanwezig zijn.
+                        </p>
+                    </div>
+                    <div
+                        class="p-3 bg-white border border-slate-155 rounded-lg text-[11px] text-slate-500 leading-relaxed shadow-sm">
+                        <strong>Teken-instructies:</strong>
+                        <ul class="list-disc list-inside mt-1 space-y-0.5 ml-1">
+                            <li>Typ een underscores <code>_</code> om indices te maken (bijv. <code>S_0</code> wordt S₀).</li>
+                            <li>Teken een self-loop door een pijl te slepen en op dezelfde toestand los te laten.</li>
+                            <li>Noem transities bijv. <code>hoofdletter</code> of <code>kleine letter</code> door op de pijl te klikken en te typen.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- FSM Designer Canvas (Wachtwoord) -->
+            <div class="bg-slate-50 border border-slate-200 rounded-xl p-3 shadow-inner">
+                <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-1 mb-2">
+                    <span class="text-[9px] font-bold text-slate-400 uppercase tracking-wider">Tekenbord: Ontwerp
+                        jouw Wachtwoordengenerator</span>
+                    <span
+                        class="text-[9px] text-teal-700 font-bold bg-teal-50 px-2 py-0.5 rounded border border-teal-100">
+                        💡 Klik in het tekenbord &bull; Shift + slepen = pijl &bull; Backspace/Delete = verwijderen
+                    </span>
+                </div>
+
+                <!-- FSM Tool Iframe -->
+                <div onclick="focusIframe()"
+                    class="w-full h-[550px] rounded-lg overflow-hidden border border-slate-300 shadow bg-white relative cursor-pointer">
+                    <iframe id="fsm-iframe-wachtwoord" src="fsm-designer.html?id=wachtwoord" class="w-full h-full"
+                        title="FSM Tool Wachtwoord"></iframe>
+                </div>
+
+                <!-- Fallback Link -->
+                <div class="mt-3 flex flex-col sm:flex-row gap-2 items-center justify-between">
+                    <span class="text-[10px] text-slate-500">Werkt het tekenen niet goed? Klik op de knop om het bord in
+                        een los tabblad te openen.</span>
+                    <a href="fsm-designer.html?id=wachtwoord" target="_blank"
+                        class="px-4 py-2 bg-teal-600 hover:bg-teal-700 text-white text-xs font-bold rounded-lg transition active:scale-95 text-center shadow shadow-teal-700/10 whitespace-nowrap">
+                        🔗 Open tekenbord in nieuw tabblad
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- TAB 3: IBAN -->
+        <div id="tab-iban" class="space-y-4 hidden">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <!-- Links: Uitleg & Validator Console -->
+                <div
+                    class="bg-slate-50 border border-slate-200 rounded-xl p-4 flex flex-col justify-between space-y-4">
+                    <div class="space-y-2">
+                        <h3 class="font-extrabold text-slate-800 text-xs uppercase tracking-wider">📝 IBANs Valideren</h3>
+                        <p class="text-xs text-slate-600 leading-relaxed">
+                            Ontwerp een automaat die controleert of een string een geldige, vereenvoudigde Nederlandse IBAN
+                            is.
+                        </p>
+                        <div
+                            class="p-3 bg-teal-50 border border-teal-150 rounded-lg text-[11px] text-teal-800 leading-relaxed">
+                            <strong>Geldig IBAN Formaat:</strong>
+                            <ul class="list-disc list-inside mt-1 space-y-0.5 ml-1">
+                                <li>Begint met de landcode letters <code>NL</code>.</li>
+                                <li>Gevolgd door precies 2 cijfers (het controlegetal).</li>
+                                <li>Gevolgd door de bankcode <code>ING</code> of <code>RAB</code>.</li>
+                                <li>Eindigt met minimaal 1 rekeningcijfer (bijv. <code>NL99ING1</code> of
+                                    <code>NL00RAB98765</code>).</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <!-- Live Validator Console -->
+                    <div class="bg-white border border-slate-150 rounded-lg p-3 space-y-3 shadow-sm">
+                        <span class="text-[10px] font-bold text-slate-400 uppercase block">Simulator: Controleer Invoer</span>
+                        <div class="flex flex-col gap-2">
+                            <div class="flex gap-2">
+                                <input oninput="runIbanValidator()" type="text" id="iban-input"
+                                    placeholder="Typ bijv. NL99ING1"
+                                    class="w-full px-3 py-2 border border-slate-200 rounded-lg font-mono text-xs focus:ring-2 focus:ring-teal-500 focus:outline-none uppercase">
+                            </div>
+                            <div id="iban-status-box"
+                                class="bg-slate-900 rounded-lg p-2.5 font-mono text-[11px] text-slate-300 space-y-1.5 min-h-[90px] flex flex-col justify-center">
+                                <div class="flex justify-between border-b border-slate-800 pb-1 text-slate-500">
+                                    <span>Gescande string</span>
+                                    <span>Toestand</span>
+                                </div>
+                                <div class="flex justify-between items-center text-xs font-bold pt-1">
+                                    <span id="iban-trace-text" class="text-white tracking-wider">-</span>
+                                    <span id="iban-current-state"
+                                        class="bg-teal-950 text-teal-300 border border-teal-800 px-2 py-0.5 rounded">S₀</span>
+                                </div>
+                                <div id="iban-feedback-log" class="text-[10px] text-slate-400 italic mt-1">Voer een IBAN in om te scannen...</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Tip -->
+                    <div>
+                        <button onclick="toggleTip('tip-iban')" id="btn-tip-iban"
+                            class="px-2.5 py-1 bg-slate-200 hover:bg-slate-300 text-slate-700 text-[10px] font-bold rounded-lg transition active:scale-95 focus:outline-none">
+                            💡 Toon Tip
+                        </button>
+                        <div id="tip-iban"
+                            class="hidden mt-2 p-2.5 bg-slate-100 border border-slate-200 rounded-lg text-[10px] text-slate-600 leading-normal">
+                            Teken het pad S₀ → S₁ → S₂ met de letters <code>N</code> en <code>L</code>. Vanaf S₂ ga je
+                            met twee cijfers naar S₃ en S₄ (controlegetal). Vanaf S₄ splits je in twee takken:
+                            voor ING teken je transities naar S₅, S₆ en S₈ via <code>I</code>, <code>N</code> en <code>G</code>.
+                            Voor RAB teken je transities naar S₇, S₇ₐ en S₈ via <code>R</code>, <code>A</code> en <code>B</code>.
+                            Vanaf de samenkomsttoestand S₈ teken je een pijl naar acceptatietoestand S₉ via <code>cijfer</code>,
+                            en geef je S₉ een self-loop via <code>cijfer</code> voor eventuele extra rekeningcijfers.
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Rechts: Didactische context -->
+                <div
+                    class="bg-slate-50 border border-slate-200 rounded-xl p-4 flex flex-col justify-start space-y-4">
+                    <div class="space-y-2">
+                        <h3 class="font-extrabold text-slate-800 text-xs uppercase tracking-wider">💡 Vertakkende Transities (DFA-regels)</h3>
+                        <p class="text-xs text-slate-600 leading-relaxed">
+                            Voor een deterministische eindige automaat (DFA) geldt dat er vanuit toestand S₄ twee verschillende
+                            takken mogen vertrekken, zolang de invoersymbolen maar uniek zijn (namelijk <code>I</code> voor de
+                            ene tak, en <code>R</code> voor de andere). 
+                        </p>
+                        <p class="text-xs text-slate-600 leading-relaxed">
+                            Beide takken kunnen later weer samenkomen in een gemeenschappelijke toestand (S₈), vanaf waar de
+                            rekeningcijfers op dezelfde manier worden verwerkt.
+                        </p>
+                    </div>
+                    <div
+                        class="p-3 bg-white border border-slate-150 rounded-lg text-[11px] text-slate-500 leading-relaxed shadow-sm">
+                        <strong>Specificaties &amp; Instructies:</strong>
+                        <ul class="list-disc list-inside mt-1 space-y-0.5 ml-1">
+                            <li><strong>Starttoestand:</strong> S₀.</li>
+                            <li><strong>Eindtoestand:</strong> S₉ (acceptatietoestand, getekend met dubbele cirkel).</li>
+                            <li>Gebruik transities met hoofdletters (<code>N</code>, <code>L</code>, <code>I</code>,
+                                <code>N</code>, <code>G</code>, <code>R</code>, <code>A</code>, <code>B</code>) en
+                                <code>cijfer</code> voor de getallen.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- FSM Designer Canvas (IBAN) -->
+            <div class="bg-slate-50 border border-slate-200 rounded-xl p-3 shadow-inner">
+                <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-1 mb-2">
+                    <span class="text-[9px] font-bold text-slate-400 uppercase tracking-wider">Tekenbord: Ontwerp
+                        jouw IBAN Validator</span>
+                    <span
+                        class="text-[9px] text-teal-700 font-bold bg-teal-50 px-2 py-0.5 rounded border border-teal-100">
+                        💡 Klik in het tekenbord &bull; Shift + slepen = pijl &bull; Backspace/Delete = verwijderen
+                    </span>
+                </div>
+
+                <!-- FSM Tool Iframe -->
+                <div onclick="focusIframe()"
+                    class="w-full h-[550px] rounded-lg overflow-hidden border border-slate-300 shadow bg-white relative cursor-pointer">
+                    <iframe id="fsm-iframe-iban" src="fsm-designer.html?id=iban" class="w-full h-full"
+                        title="FSM Tool IBAN"></iframe>
+                </div>
+
+                <!-- Fallback Link -->
+                <div class="mt-3 flex flex-col sm:flex-row gap-2 items-center justify-between">
+                    <span class="text-[10px] text-slate-500">Werkt het tekenen niet goed? Klik op de knop om het bord in
+                        een los tabblad te openen.</span>
+                    <a href="fsm-designer.html?id=iban" target="_blank"
+                        class="px-4 py-2 bg-teal-600 hover:bg-teal-700 text-white text-xs font-bold rounded-lg transition active:scale-95 text-center shadow shadow-teal-700/10 whitespace-nowrap">
+                        🔗 Open tekenbord in nieuw tabblad
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- TAB 4: TIJD -->
+        <div id="tab-tijd" class="space-y-4 hidden">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <!-- Links: Uitleg & Validator Console -->
+                <div
+                    class="bg-slate-50 border border-slate-200 rounded-xl p-4 flex flex-col justify-between space-y-4">
+                    <div class="space-y-2">
+                        <h3 class="font-extrabold text-slate-800 text-xs uppercase tracking-wider">📝 Tijdnotatie Valideren</h3>
+                        <p class="text-xs text-slate-600 leading-relaxed">
+                            Ontwerp een automaat die live een 24-uurs tijdnotatie controleert in het formaat:
+                            <strong><code>uu:mm</code> (van 00:00 tot 23:59)</strong>.
+                        </p>
+                        <div
+                            class="p-3 bg-teal-50 border border-teal-150 rounded-lg text-[11px] text-teal-800 leading-relaxed">
+                            <strong>Geldige Tijdnotaties:</strong>
+                            <ul class="list-disc list-inside mt-1 space-y-0.5 ml-1">
+                                <li>Start met een uur-cijfer <code>0</code>, <code>1</code> of <code>2</code>.</li>
+                                <li>Als het eerste cijfer <code>0</code> of <code>1</code> is, mag het tweede cijfer <code>0-9</code> zijn.</li>
+                                <li>Als het eerste cijfer <code>2</code> is, mag het tweede uur-cijfer maximaal <code>3</code> zijn (tijden zoals 24:12 of 29:00 zijn ongeldig!).</li>
+                                <li>Gevolgd door een dubbele punt <code>:</code>.</li>
+                                <li>Gevolgd door een minuten-tiental van <code>0-5</code> (tijden zoals 12:60 zijn ongeldig!).</li>
+                                <li>Eindigt met een minuten-eenheid van <code>0-9</code>.</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <!-- Live Validator Console -->
+                    <div class="bg-white border border-slate-150 rounded-lg p-3 space-y-3 shadow-sm">
+                        <span class="text-[10px] font-bold text-slate-400 uppercase block">Simulator: Controleer Invoer</span>
+                        <div class="flex flex-col gap-2">
+                            <div class="flex gap-2">
+                                <input oninput="runTimeValidator()" type="text" id="time-input"
+                                    placeholder="Typ bijv. 23:59"
+                                    class="w-full px-3 py-2 border border-slate-200 rounded-lg font-mono text-xs focus:ring-2 focus:ring-teal-500 focus:outline-none">
+                            </div>
+                            <div id="time-status-box"
+                                class="bg-slate-900 rounded-lg p-2.5 font-mono text-[11px] text-slate-300 space-y-1.5 min-h-[90px] flex flex-col justify-center">
+                                <div class="flex justify-between border-b border-slate-800 pb-1 text-slate-500">
+                                    <span>Gescande string</span>
+                                    <span>Toestand</span>
+                                </div>
+                                <div class="flex justify-between items-center text-xs font-bold pt-1">
+                                    <span id="time-trace-text" class="text-white tracking-wider">-</span>
+                                    <span id="time-current-state"
+                                        class="bg-teal-950 text-teal-300 border border-teal-800 px-2 py-0.5 rounded">S₀</span>
+                                </div>
+                                <div id="time-feedback-log" class="text-[10px] text-slate-400 italic mt-1">Voer een tijd in om te scannen...</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Tip -->
+                    <div>
+                        <button onclick="toggleTip('tip-tijd')" id="btn-tip-tijd"
+                            class="px-2.5 py-1 bg-slate-200 hover:bg-slate-300 text-slate-700 text-[10px] font-bold rounded-lg transition active:scale-95 focus:outline-none">
+                            💡 Toon Tip
+                        </button>
+                        <div id="tip-tijd"
+                            class="hidden mt-2 p-2.5 bg-slate-100 border border-slate-200 rounded-lg text-[10px] text-slate-600 leading-normal">
+                            Start in S₀. Splits in twee paden:
+                            1. Pad 1 (0 of 1): S₀ naar S₁ via <code>0</code> of <code>1</code> (of <code>0, 1</code>), en van S₁ naar S₃ via <code>cijfer</code>.
+                            2. Pad 2 (2): S₀ naar S₂ via <code>2</code>, en van S₂ naar S₃ via <code>0-3</code> (bijv. <code>0, 1, 2, 3</code> of <code>cijfer</code> met beperkte check).
+                            Vanaf de samenkomsttoestand S₃ ga je naar S₄ via <code>:</code>. Vanaf S₄ ga je via <code>0-5</code> (bijv. <code>0, 1, 2, 3, 4, 5</code>) naar S₅. Tot slot ga je via <code>cijfer</code> naar de acceptatietoestand S₆.
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Rechts: Didactische context -->
+                <div
+                    class="bg-slate-50 border border-slate-200 rounded-xl p-4 flex flex-col justify-start space-y-4">
+                    <div class="space-y-2">
+                        <h3 class="font-extrabold text-slate-800 text-xs uppercase tracking-wider">💡 Contextgevoeligheid Voorkomen</h3>
+                        <p class="text-xs text-slate-600 leading-relaxed">
+                            Dit is een fantastisch voorbeeld van hoe we met een eindige automaat complexe semantische regels
+                            (zoals "uren kunnen tot 23, maar niet tot 29") wiskundig kunnen controleren door paden te splitsen.
+                        </p>
+                        <p class="text-xs text-slate-600 leading-relaxed">
+                            Door twee verschillende toestanden (S₁ en S₂) te gebruiken voor het eerste uur-cijfer, weet de
+                            automaat in welke 'context' hij zich bevindt en weigert hij ongeldige cijfercombinaties zonder dat hij
+                            daarvoor extern geheugen nodig heeft.
+                        </p>
+                    </div>
+                    <div
+                        class="p-3 bg-white border border-slate-150 rounded-lg text-[11px] text-slate-500 leading-relaxed shadow-sm">
+                        <strong>Specificaties &amp; Instructies:</strong>
+                        <ul class="list-disc list-inside mt-1 space-y-0.5 ml-1">
+                            <li><strong>Starttoestand:</strong> S₀.</li>
+                            <li><strong>Eindtoestand:</strong> S₆ (acceptatietoestand, getekend met dubbele cirkel).</li>
+                            <li>Gebruik specifieke cijferbereiken (zoals <code>0-3</code>, <code>0-5</code>, <code>0-9</code> of losse karakters gescheiden door komma's zoals <code>0, 1</code>) als transitiewaarden.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- FSM Designer Canvas (Tijd) -->
+            <div class="bg-slate-50 border border-slate-200 rounded-xl p-3 shadow-inner">
+                <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-1 mb-2">
+                    <span class="text-[9px] font-bold text-slate-400 uppercase tracking-wider">Tekenbord: Ontwerp
+                        jouw Tijd Validator</span>
+                    <span
+                        class="text-[9px] text-teal-700 font-bold bg-teal-50 px-2 py-0.5 rounded border border-teal-100">
+                        💡 Klik in het tekenbord &bull; Shift + slepen = pijl &bull; Backspace/Delete = verwijderen
+                    </span>
+                </div>
+
+                <!-- FSM Tool Iframe -->
+                <div onclick="focusIframe()"
+                    class="w-full h-[550px] rounded-lg overflow-hidden border border-slate-300 shadow bg-white relative cursor-pointer">
+                    <iframe id="fsm-iframe-tijd" src="fsm-designer.html?id=tijd" class="w-full h-full"
+                        title="FSM Tool Tijd"></iframe>
+                </div>
+
+                <!-- Fallback Link -->
+                <div class="mt-3 flex flex-col sm:flex-row gap-2 items-center justify-between">
+                    <span class="text-[10px] text-slate-500">Werkt het tekenen niet goed? Klik op de knop om het bord in
+                        een los tabblad te openen.</span>
+                    <a href="fsm-designer.html?id=tijd" target="_blank"
+                        class="px-4 py-2 bg-teal-600 hover:bg-teal-700 text-white text-xs font-bold rounded-lg transition active:scale-95 text-center shadow shadow-teal-700/10 whitespace-nowrap">
+                        🔗 Open tekenbord in nieuw tabblad
+                    </a>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Scripts -->
+    <script>
+        // Tab switching
+        function switchTab(tabId) {
+            const tabs = ['kenteken', 'wachtwoord', 'iban', 'tijd'];
+            tabs.forEach(t => {
+                const contentEl = document.getElementById('tab-' + t);
+                const btnEl = document.getElementById('tab-btn-' + t);
+                if (!btnEl) return;
+                if (t === tabId) {
+                    if (contentEl) contentEl.classList.remove('hidden');
+                    btnEl.classList.add('border-teal-600', 'text-teal-600');
+                    btnEl.classList.remove('border-transparent', 'text-slate-500');
+                } else {
+                    if (contentEl) contentEl.classList.add('hidden');
+                    btnEl.classList.remove('border-teal-600', 'text-teal-600');
+                    btnEl.classList.add('border-transparent', 'text-slate-500');
+                }
+            });
+            triggerResize();
+        }
+
+        // Toggle tip
+        function toggleTip(tipId) {
+            const tipEl = document.getElementById(tipId);
+            const btnEl = document.getElementById('btn-' + tipId);
+            if (tipEl.classList.contains('hidden')) {
+                tipEl.classList.remove('hidden');
+                btnEl.innerText = "💡 Verberg Tip";
+            } else {
+                tipEl.classList.add('hidden');
+                btnEl.innerText = "💡 Toon Tip";
+            }
+            triggerResize();
+        }
+
+        // Helper to get active iframe based on active tab
+        function getActiveIframe() {
+            const tabs = ['kenteken', 'wachtwoord', 'iban', 'tijd'];
+            for (let t of tabs) {
+                const contentEl = document.getElementById('tab-' + t);
+                if (contentEl && !contentEl.classList.contains('hidden')) {
+                    return document.getElementById('fsm-iframe-' + t);
+                }
+            }
+            return null;
+        }
+
+        // Focus iframe helper
+        function focusIframe() {
+            const iframe = getActiveIframe();
+            if (iframe) {
+                try {
+                    iframe.focus();
+                    if (iframe.contentWindow) {
+                        iframe.contentWindow.focus();
+                    }
+                } catch (e) { }
+            }
+        }
+
+        // Key forwarding to same-origin iframe
+        function forwardKeyEvent(e, eventType) {
+            const iframe = getActiveIframe();
+            if (iframe && iframe.contentWindow) {
+                if (document.activeElement === document.body || document.activeElement.tagName === 'BODY') {
+                    try {
+                        const iframeDoc = iframe.contentWindow.document;
+                        const event = new KeyboardEvent(eventType, {
+                            key: e.key,
+                            code: e.code,
+                            keyCode: e.keyCode,
+                            which: e.which,
+                            shiftKey: e.shiftKey,
+                            ctrlKey: e.ctrlKey,
+                            metaKey: e.metaKey,
+                            altKey: e.altKey,
+                            bubbles: true
+                        });
+                        iframeDoc.dispatchEvent(event);
+                        const handlerName = 'on' + eventType;
+                        if (typeof iframeDoc[handlerName] === 'function') {
+                            iframeDoc[handlerName](event);
+                        }
+                    } catch (err) { }
+                }
+            }
+        }
+        document.addEventListener('keydown', (e) => forwardKeyEvent(e, 'keydown'));
+        document.addEventListener('keyup', (e) => forwardKeyEvent(e, 'keyup'));
+        document.addEventListener('keypress', (e) => forwardKeyEvent(e, 'keypress'));
+
+        // Same-origin dynamic height resizer
+        function triggerResize() {
+            if (window.parent && window.parent !== window) {
+                try {
+                    const iframe = window.frameElement;
+                    if (iframe) {
+                        iframe.style.height = document.documentElement.scrollHeight + 'px';
+                    }
+                } catch (e) { }
+            }
+        }
+
+        // --- Simulator: Kentekengenerator ---
+        const letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+        const digits = "0123456789";
+        let kentekenSteps = [];
+        let kentekenCurrentStepIdx = 0;
+
+        function startKentekenGen() {
+            const l1 = letters[Math.floor(Math.random() * letters.length)];
+            const l2 = letters[Math.floor(Math.random() * letters.length)];
+            const d1 = digits[Math.floor(Math.random() * digits.length)];
+            const d2 = digits[Math.floor(Math.random() * digits.length)];
+            const d3 = digits[Math.floor(Math.random() * digits.length)];
+            const l3 = letters[Math.floor(Math.random() * letters.length)];
+
+            kentekenSteps = [
+                { state: "S_0", output: "-", log: "Start in de begintoestand S₀." },
+                { state: "S_1", output: l1, log: `Kies letter '${l1}' -> transitie naar S₁.` },
+                { state: "S_2", output: l1 + l2, log: `Kies letter '${l2}' -> transitie naar S₂.` },
+                { state: "S_3", output: l1 + l2 + "-", log: "Volg het koppelteken '-' -> transitie naar S₃." },
+                { state: "S_4", output: l1 + l2 + "-" + d1, log: `Kies cijfer '${d1}' -> transitie naar S₄.` },
+                { state: "S_5", output: l1 + l2 + "-" + d1 + d2, log: `Kies cijfer '${d2}' -> transitie naar S₅.` },
+                { state: "S_6", output: l1 + l2 + "-" + d1 + d2 + d3, log: `Kies cijfer '${d3}' -> transitie naar S₆.` },
+                { state: "S_7", output: l1 + l2 + "-" + d1 + d2 + d3 + "-", log: "Volg het koppelteken '-' -> transitie naar S₇." },
+                { state: "S_8", output: l1 + l2 + "-" + d1 + d2 + d3 + "-" + l3, log: `Kies letter '${l3}' -> transitie naar S₈ (Eindtoestand!).` }
+            ];
+
+            kentekenCurrentStepIdx = 0;
+            updateKentekenUI();
+            document.getElementById('kenteken-next-btn').disabled = false;
+        }
+
+        function nextKentekenStep() {
+            if (kentekenCurrentStepIdx < kentekenSteps.length - 1) {
+                kentekenCurrentStepIdx++;
+                updateKentekenUI();
+                if (kentekenCurrentStepIdx === kentekenSteps.length - 1) {
+                    document.getElementById('kenteken-next-btn').disabled = true;
+                }
+            }
+        }
+
+        function updateKentekenUI() {
+            const step = kentekenSteps[kentekenCurrentStepIdx];
+            document.getElementById('kenteken-output').innerText = step.output;
+            document.getElementById('kenteken-state').innerText = step.state.replace("_", "");
+            document.getElementById('kenteken-step-log').innerText = step.log;
+        }
+
+        // --- Simulator: Wachtwoordengenerator ---
+        const lowerLetters = "abcdefghijklmnopqrstuvwxyz";
+        const specials = "!?";
+        let wachtwoordSteps = [];
+        let wachtwoordCurrentStepIdx = 0;
+
+        function startWachtwoordGen() {
+            const u1 = letters[Math.floor(Math.random() * letters.length)];
+            const len = 3 + Math.floor(Math.random() * 4);
+            let lowers = [];
+            for (let i = 0; i < len; i++) {
+                lowers.push(lowerLetters[Math.floor(Math.random() * lowerLetters.length)]);
+            }
+            const useDigit = Math.random() > 0.5;
+            const endChar = useDigit ? digits[Math.floor(Math.random() * digits.length)] : specials[Math.floor(Math.random() * specials.length)];
+            const endType = useDigit ? "cijfer" : "speciaal";
+
+            wachtwoordSteps = [
+                { state: "S_0", output: "-", log: "Start in de begintoestand S₀." },
+                { state: "S_1", output: u1, log: `Kies hoofdletter '${u1}' -> transitie naar S₁.` },
+                { state: "S_2", output: u1 + lowers[0], log: `Kies kleine letter '${lowers[0]}' -> transitie naar S₂.` },
+                { state: "S_3", output: u1 + lowers[0] + lowers[1], log: `Kies kleine letter '${lowers[1]}' -> transitie naar S₃.` },
+                { state: "S_4", output: u1 + lowers[0] + lowers[1] + lowers[2], log: `Kies kleine letter '${lowers[2]}' -> transitie naar S₄.` }
+            ];
+
+            let curStr = u1 + lowers[0] + lowers[1] + lowers[2];
+            for (let i = 3; i < len; i++) {
+                curStr += lowers[i];
+                wachtwoordSteps.push({
+                    state: "S_4",
+                    output: curStr,
+                    log: `Self-loop S₄: kies kleine letter '${lowers[i]}' -> blijft in S₄.`
+                });
+            }
+
+            wachtwoordSteps.push({
+                state: "S_5",
+                output: curStr + endChar,
+                log: `Kies ${endType} '${endChar}' -> transitie naar S₅ (Eindtoestand!).`
+            });
+
+            wachtwoordCurrentStepIdx = 0;
+            updateWachtwoordUI();
+            document.getElementById('wachtwoord-next-btn').disabled = false;
+        }
+
+        function nextWachtwoordStep() {
+            if (wachtwoordCurrentStepIdx < wachtwoordSteps.length - 1) {
+                wachtwoordCurrentStepIdx++;
+                updateWachtwoordUI();
+                if (wachtwoordCurrentStepIdx === wachtwoordSteps.length - 1) {
+                    document.getElementById('wachtwoord-next-btn').disabled = true;
+                }
+            }
+        }
+
+        function updateWachtwoordUI() {
+            const step = wachtwoordSteps[wachtwoordCurrentStepIdx];
+            document.getElementById('wachtwoord-output').innerText = step.output;
+            document.getElementById('wachtwoord-state').innerText = step.state.replace("_", "");
+            document.getElementById('wachtwoord-step-log').innerText = step.log;
+        }
+
+        // --- IBAN Validator Simulator logic ---
+        function runIbanValidator() {
+            const inputVal = document.getElementById('iban-input').value.trim();
+            const traceTextEl = document.getElementById('iban-trace-text');
+            const stateEl = document.getElementById('iban-current-state');
+            const logEl = document.getElementById('iban-feedback-log');
+            const statusBoxEl = document.getElementById('iban-status-box');
+
+            if (inputVal === "") {
+                traceTextEl.innerText = "-";
+                stateEl.innerText = "S_0";
+                stateEl.className = "bg-teal-950 text-teal-300 border border-teal-800 px-2 py-0.5 rounded";
+                logEl.innerText = "Voer een IBAN in om te scannen...";
+                statusBoxEl.className = "bg-slate-900 rounded-lg p-2.5 font-mono text-[11px] space-y-1.5 min-h-[90px] flex flex-col justify-center text-slate-300";
+                return;
+            }
+
+            let path = [{ state: "S_0", log: "Start in S₀." }];
+            let cur = "S_0";
+            let valid = true;
+            let failedChar = "";
+            let failedIdx = -1;
+
+            for (let i = 0; i < inputVal.length; i++) {
+                let c = inputVal[i].toUpperCase();
+                let next = null;
+                let log = "";
+
+                if (cur === "S_0" && c === "N") { next = "S_1"; log = "Landcode letter 'N' gelezen -> S₁." }
+                else if (cur === "S_1" && c === "L") { next = "S_2"; log = "Landcode letter 'L' gelezen (compleet 'NL') -> S₂." }
+                else if (cur === "S_2" && c >= "0" && c <= "9") { next = "S_3"; log = `Eerste controlegetal-cijfer '${c}' gelezen -> S₃.` }
+                else if (cur === "S_3" && c >= "0" && c <= "9") { next = "S_4"; log = `Tweede controlegetal-cijfer '${c}' gelezen -> S₄.` }
+                else if (cur === "S_4" && c === "I") { next = "S_5"; log = "Bankcode letter 'I' (tak ING) gelezen -> S₅." }
+                else if (cur === "S_5" && c === "N") { next = "S_6"; log = "Bankcode letter 'N' (tak ING) gelezen -> S₆." }
+                else if (cur === "S_6" && c === "G") { next = "S_8"; log = "Bankcode letter 'G' gelezen (ING compleet) -> Samenkomst S₈." }
+                else if (cur === "S_4" && c === "R") { next = "S_7"; log = "Bankcode letter 'R' (tak RAB) gelezen -> S₇." }
+                else if (cur === "S_7" && c === "A") { next = "S_7A"; log = "Bankcode letter 'A' (tak RAB) gelezen -> S₇ₐ." }
+                else if (cur === "S_7A" && c === "B") { next = "S_8"; log = "Bankcode letter 'B' gelezen (RAB compleet) -> Samenkomst S₈." }
+                else if ((cur === "S_8" || cur === "S_9") && c >= "0" && c <= "9") { next = "S_9"; log = `Rekeningcijfer '${c}' verwerkt -> S₉ (acceptatie).` }
+
+                if (next) {
+                    path.push({ state: next, log: log });
+                    cur = next;
+                } else {
+                    valid = false;
+                    failedChar = inputVal[i];
+                    failedIdx = i;
+                    break;
+                }
+            }
+
+            let formattedTrace = "";
+            for (let i = 0; i < inputVal.length; i++) {
+                if (!valid && i === failedIdx) {
+                    formattedTrace += `<span class="text-red-500 underline font-bold">${inputVal[i]}</span>`;
+                } else {
+                    formattedTrace += `<span class="text-emerald-400">${inputVal[i]}</span>`;
+                }
+            }
+            traceTextEl.innerHTML = formattedTrace;
+
+            if (!valid) {
+                stateEl.innerText = "Strand";
+                stateEl.className = "bg-red-950 text-red-300 border border-red-800 px-2 py-0.5 rounded";
+                let explanation = `Geen transitie mogelijk vanuit ${cur.replace("_", "")}.`;
+                if (cur === "S_4") {
+                    explanation = `Fout: Alleen bankcode 'ING' of 'RAB' is toegestaan na de cijfers.`;
+                } else if (cur === "S_8") {
+                    explanation = `Fout: Er moet minimaal 1 cijfer volgen na de bankcode.`;
+                }
+                logEl.innerHTML = `<span class="text-red-400">Fout bij '${failedChar}' (positie ${failedIdx + 1}): ${explanation}</span>`;
+                statusBoxEl.className = "bg-slate-900 rounded-lg p-2.5 font-mono text-[11px] space-y-1.5 min-h-[90px] flex flex-col justify-center border border-red-900/50";
+            } else {
+                stateEl.innerText = cur.replace("_", "");
+                if (cur === "S_9") {
+                    stateEl.className = "bg-emerald-950 text-emerald-300 border border-emerald-800 px-2 py-0.5 rounded animate-pulse";
+                    logEl.innerHTML = `<span class="text-emerald-400">Gefeliciteerd: De invoer is volledig verwerkt en eindigt in acceptatietoestand S₉! (Geldige IBAN!)</span>`;
+                    statusBoxEl.className = "bg-slate-900 rounded-lg p-2.5 font-mono text-[11px] space-y-1.5 min-h-[90px] flex flex-col justify-center border border-emerald-900/50";
+                } else {
+                    stateEl.className = "bg-teal-950 text-teal-300 border border-teal-800 px-2 py-0.5 rounded";
+                    logEl.innerText = `Lopend: Momenteel in toestand ${cur.replace("_", "")}. Nog niet in eindtoestand S₉.`;
+                    statusBoxEl.className = "bg-slate-900 rounded-lg p-2.5 font-mono text-[11px] space-y-1.5 min-h-[90px] flex flex-col justify-center text-slate-300";
+                }
+            }
+        }
+
+        // --- Tijd Validator Simulator logic ---
+        function runTimeValidator() {
+            const inputVal = document.getElementById('time-input').value.trim();
+            const traceTextEl = document.getElementById('time-trace-text');
+            const stateEl = document.getElementById('time-current-state');
+            const logEl = document.getElementById('time-feedback-log');
+            const statusBoxEl = document.getElementById('time-status-box');
+
+            if (inputVal === "") {
+                traceTextEl.innerText = "-";
+                stateEl.innerText = "S_0";
+                stateEl.className = "bg-teal-950 text-teal-300 border border-teal-800 px-2 py-0.5 rounded";
+                logEl.innerText = "Voer een tijd in om te scannen...";
+                statusBoxEl.className = "bg-slate-900 rounded-lg p-2.5 font-mono text-[11px] space-y-1.5 min-h-[90px] flex flex-col justify-center text-slate-300";
+                return;
+            }
+
+            let path = [{ state: "S_0", log: "Start in S₀." }];
+            let cur = "S_0";
+            let valid = true;
+            let failedChar = "";
+            let failedIdx = -1;
+
+            for (let i = 0; i < inputVal.length; i++) {
+                let c = inputVal[i];
+                let next = null;
+                let log = "";
+
+                if (cur === "S_0" && (c === "0" || c === "1")) { next = "S_1"; log = `Eerste uur-cijfer '${c}' gelezen -> S₁.` }
+                else if (cur === "S_0" && c === "2") { next = "S_2"; log = "Eerste uur-cijfer '2' gelezen -> S₂ (maximaal 23:59)." }
+                else if (cur === "S_1" && c >= "0" && c <= "9") { next = "S_3"; log = `Tweede uur-cijfer '${c}' gelezen -> S₃.` }
+                else if (cur === "S_2" && c >= "0" && c <= "3") { next = "S_3"; log = `Tweede uur-cijfer '${c}' gelezen (geldig na een 2) -> S₃.` }
+                else if (cur === "S_3" && c === ":") { next = "S_4"; log = "Dubbele punt ':' gelezen -> S₄." }
+                else if (cur === "S_4" && c >= "0" && c <= "5") { next = "S_5"; log = `Tiental minuten '${c}' gelezen (0 t/m 5) -> S₅.` }
+                else if (cur === "S_5" && c >= "0" && c <= "9") { next = "S_6"; log = `Eenheid minuten '${c}' gelezen -> S₆ (eindtoestand).` }
+
+                if (next) {
+                    path.push({ state: next, log: log });
+                    cur = next;
+                } else {
+                    valid = false;
+                    failedChar = inputVal[i];
+                    failedIdx = i;
+                    break;
+                }
+            }
+
+            let formattedTrace = "";
+            for (let i = 0; i < inputVal.length; i++) {
+                if (!valid && i === failedIdx) {
+                    formattedTrace += `<span class="text-red-500 underline">${inputVal[i]}</span>`;
+                } else {
+                    formattedTrace += `<span class="text-emerald-400">${inputVal[i]}</span>`;
+                }
+            }
+            traceTextEl.innerHTML = formattedTrace;
+
+            if (!valid) {
+                stateEl.innerText = "Strand";
+                stateEl.className = "bg-red-950 text-red-300 border border-red-800 px-2 py-0.5 rounded";
+                let explanation = `Geen transitie mogelijk vanuit ${cur.replace("_", "")}.`;
+                if (cur === "S_2" && c >= "4" && c <= "9") {
+                    explanation = `Fout: Na een '2' mag het uur-cijfer maximaal '3' zijn (om uren zoals 24:00 of 29:00 te voorkomen!).`;
+                } else if (cur === "S_4" && c >= "6" && c <= "9") {
+                    explanation = `Fout: Minuten-tientallen kunnen maximaal '5' zijn (om tijden zoals 12:60 te voorkomen!).`;
+                }
+                logEl.innerHTML = `<span class="text-red-400">Fout bij '${failedChar}' (positie ${failedIdx + 1}): ${explanation}</span>`;
+                statusBoxEl.className = "bg-slate-900 rounded-lg p-2.5 font-mono text-[11px] space-y-1.5 min-h-[90px] flex flex-col justify-center border border-red-900/50";
+            } else {
+                stateEl.innerText = cur.replace("_", "");
+                if (cur === "S_6") {
+                    stateEl.className = "bg-emerald-950 text-emerald-300 border border-emerald-800 px-2 py-0.5 rounded animate-pulse";
+                    logEl.innerHTML = `<span class="text-emerald-400">Gefeliciteerd: De invoer is volledig verwerkt en eindigt in acceptatietoestand S₆! (Geldige tijd!)</span>`;
+                    statusBoxEl.className = "bg-slate-900 rounded-lg p-2.5 font-mono text-[11px] space-y-1.5 min-h-[90px] flex flex-col justify-center border border-emerald-900/50";
+                } else {
+                    stateEl.className = "bg-teal-950 text-teal-300 border border-teal-800 px-2 py-0.5 rounded";
+                    logEl.innerText = `Lopend: Momenteel in toestand ${cur.replace("_", "")}. Nog niet in eindtoestand S₆.`;
+                    statusBoxEl.className = "bg-slate-900 rounded-lg p-2.5 font-mono text-[11px] space-y-1.5 min-h-[90px] flex flex-col justify-center text-slate-300";
+                }
+            }
+        }
+
+        window.onload = function () {
+            // Parse parameters
+            const urlParams = new URLSearchParams(window.location.search);
+            const defaultTab = urlParams.get('tab');
+            const type = urlParams.get('type');
+
+            if (type === 'generator') {
+                const ibanBtn = document.getElementById('tab-btn-iban');
+                const tijdBtn = document.getElementById('tab-btn-tijd');
+                if (ibanBtn) ibanBtn.classList.add('hidden');
+                if (tijdBtn) tijdBtn.classList.add('hidden');
+            } else if (type === 'validator') {
+                const kentekenBtn = document.getElementById('tab-btn-kenteken');
+                const wachtwoordBtn = document.getElementById('tab-btn-wachtwoord');
+                if (kentekenBtn) kentekenBtn.classList.add('hidden');
+                if (wachtwoordBtn) wachtwoordBtn.classList.add('hidden');
+            }
+
+            if (defaultTab) {
+                switchTab(defaultTab);
+            } else {
+                if (type === 'validator') {
+                    switchTab('iban');
+                } else {
+                    switchTab('kenteken');
+                }
+            }
+            triggerResize();
+
+            // Self-resizing logic
+            if (window.parent && window.parent !== window) {
+                try {
+                    const iframe = window.frameElement;
+                    if (iframe) {
+                        const resizeObserver = new ResizeObserver(() => {
+                            iframe.style.height = document.documentElement.scrollHeight + 'px';
+                        });
+                        resizeObserver.observe(document.body);
+                    }
+                } catch (e) { }
+            }
+        };
+    </script>
+</body>
+
+</html>
